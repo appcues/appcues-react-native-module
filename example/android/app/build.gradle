@@ -205,12 +205,33 @@ dependencies {
     }
 
     implementation project(':appcuesreactnativesdk')
+
+    // Appcues SDK
+    // hopefully not needed once Segment-Appcues is fully configured to bring in Appcues
+    // dependencies from Maven, and we are not using a local .aar
+    implementation files('libs/appcues-debug.aar')
+
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+
+    // Appcues SDK Compose dependencies
+    // hopefully will not be needed directly in customer
+    // app once we have SDK integration that is not using a local .aar
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    implementation 'androidx.compose.ui:ui:1.0.5'
+    implementation "androidx.compose.ui:ui-tooling:1.0.5"
+    implementation 'androidx.compose.material:material:1.0.5'
+    implementation "io.coil-kt:coil-compose:1.4.0"
+
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
 }
 
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use
 task copyDownloadableDepsToLibs(type: Copy) {
-    from configurations.compile
+    from configurations.implementation
     into 'libs'
 }
 
