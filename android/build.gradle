@@ -9,7 +9,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
+    classpath 'com.android.tools.build:gradle:7.0.4'
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
@@ -29,13 +29,11 @@ def getExtOrIntegerDefault(name) {
 android {
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
   defaultConfig {
-    minSdkVersion 16
+    minSdkVersion 21
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-    versionCode 1
-    versionName "1.0"
-    
+
   }
-  
+
   buildTypes {
     release {
       minifyEnabled false
@@ -124,7 +122,31 @@ repositories {
 def kotlin_version = getExtOrDefault('kotlinVersion')
 
 dependencies {
-  // noinspection GradleDynamicVersion
-  api 'com.facebook.react:react-native:+'
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    // noinspection GradleDynamicVersion
+    api 'com.facebook.react:react-native:+'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // Appcues
+    implementation files('libs/appcues-debug.aar')
+
+    // Appcues SDK Compose dependencies
+    // hopefully will not be needed directly in customer
+    // app once we have SDK integration that is not using a local .aar
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    implementation 'androidx.compose.ui:ui:1.0.5'
+    implementation "androidx.compose.ui:ui-tooling:1.0.5"
+    implementation 'androidx.compose.material:material:1.0.5'
+    implementation "io.coil-kt:coil-compose:1.4.0"
+
+    // Appcues SDK Koin dependencies
+    // hopefully will not be needed directly in customer
+    // app once we have SDK integration that is not using a local .aar
+    implementation "io.insert-koin:koin-core:3.1.4"
+    implementation "io.insert-koin:koin-android:3.1.4"
+
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
+    implementation "androidx.appcompat:appcompat:1.4.1"
 }
