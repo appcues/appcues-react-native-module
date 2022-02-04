@@ -25,6 +25,18 @@ export function identify(userID: string, properties?: object) {
   AppcuesReactNativeSdk.identify(userID, properties)
 }
 
+export function reset() {
+  AppcuesReactNativeSdk.reset()
+}
+
+export function anonymous() {
+  AppcuesReactNativeSdk.anonymous()
+}
+
+export function group(groupID: string, properties?: object) {
+  AppcuesReactNativeSdk.group(groupID, properties)
+}
+
 export function screen(title: string, properties?: object) {
   AppcuesReactNativeSdk.screen(title, properties)
 }
