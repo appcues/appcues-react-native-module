@@ -16,6 +16,7 @@ target 'AppcuesReactNativeSdkExample' do
   pod 'Appcues', :path => '../../../appcues-ios-sdk/Appcues.podspec'
 
   pod 'appcues-react-native-sdk', :path => '../..'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   # Enables Flipper.
   #

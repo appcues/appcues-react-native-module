@@ -20,7 +20,6 @@ class AppcuesReactNativeSdkModule(reactContext: ReactApplicationContext) : React
         val activity = currentActivity
         if (context != null && activity != null) {
           implementation = Appcues.Builder(context, accountID, applicationID)
-            .activity(activity)
             .logging(Appcues.LoggingLevel.BASIC).build()
         }
     }
@@ -28,6 +27,21 @@ class AppcuesReactNativeSdkModule(reactContext: ReactApplicationContext) : React
     @ReactMethod
     fun identify(userID: String, properties: ReadableMap? = null) {
         implementation.identify(userID, properties?.toHashMap())
+    }
+
+    @ReactMethod
+    fun reset() {
+        implementation.reset()
+    }
+
+    @ReactMethod
+    fun anonymous() {
+        implementation.anonymous()
+    }
+
+    @ReactMethod
+    fun group(groupID: String, properties: ReadableMap? = null) {
+        implementation.group(groupID, properties?.toHashMap())
     }
 
     @ReactMethod

@@ -22,6 +22,21 @@ class AppcuesReactNativeSdk: NSObject {
     }
 
     @objc
+    func reset() {
+        implementation?.reset()
+    }
+
+    @objc
+    func anonymous() {
+        implementation?.anonymous()
+    }
+
+    @objc
+    func group(_ groupID: String, properties: [String: Any]) {
+        implementation?.group(groupID: groupID, properties: properties)
+    }
+
+    @objc
     func screen(_ title: String, properties: [String: Any]) {
         implementation?.screen(title: title, properties: properties)
     }
