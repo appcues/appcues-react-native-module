@@ -27,7 +27,7 @@ const EventsScreen = () => {
       <Stack.Screen
         name="Trigger Events" 
         component={EventsView}
-        options={{ headerShadowVisible: false, headerTitleStyle: { fontWeight: 'bold' },
+        options={{ headerShadowVisible: false, headerTitleStyle: { fontWeight: '600' },
           headerRight: () => ( <PlainButton title="Debug" onPress={() => Appcues.debug()} /> )
         }}
       />

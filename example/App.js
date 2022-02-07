@@ -29,7 +29,7 @@ const App = () => {
         <RootStack.Screen name="Sign In" component={SignInScreen}
             options={({ navigation }) => ({
               headerShadowVisible: false,
-              headerTitleStyle: { fontWeight: 'bold' },
+              headerTitleStyle: { fontWeight: '600' },
               headerRight: () => (
                 <PlainButton title="Skip"
                   onPress={() => {

@@ -32,7 +32,7 @@ const GroupScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Update Group" component={GroupView}
-        options={{ headerShadowVisible: false, headerTitleStyle: { fontWeight: 'bold' } }} />
+        options={{ headerShadowVisible: false, headerTitleStyle: { fontWeight: '600' } }} />
     </Stack.Navigator>
   );
 }

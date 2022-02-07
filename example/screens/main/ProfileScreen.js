@@ -41,7 +41,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Update Profile" component={ProfileView}
-        options={{ headerShadowVisible: false, headerTitleStyle: { fontWeight: 'bold' },
+        options={{ headerShadowVisible: false, headerTitleStyle: { fontWeight: '600' },
           headerRight: () => (
             <PlainButton title="Sign Out" onPress={() => {
               Appcues.reset()
