@@ -52,6 +52,7 @@ repositories {
   mavenCentral()
   jcenter()
   google()
+  mavenLocal()
 
   def found = false
   def defaultDir = null
@@ -127,22 +128,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Appcues
-    implementation files('libs/appcues-debug.aar')
-
-    // Appcues SDK Compose dependencies
-    // hopefully will not be needed directly in customer
-    // app once we have SDK integration that is not using a local .aar
-    implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation 'androidx.compose.ui:ui:1.0.5'
-    implementation "androidx.compose.ui:ui-tooling:1.0.5"
-    implementation 'androidx.compose.material:material:1.0.5'
-    implementation "io.coil-kt:coil-compose:1.4.0"
-
-    // Appcues SDK Koin dependencies
-    // hopefully will not be needed directly in customer
-    // app once we have SDK integration that is not using a local .aar
-    implementation "io.insert-koin:koin-core:3.1.4"
-    implementation "io.insert-koin:koin-android:3.1.4"
+    implementation ("com.appcues:appcues:0.1.0") {
+      // leave this flag to make it easier to work with SNAPSHOT versions
+      changing = true
+    }
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
