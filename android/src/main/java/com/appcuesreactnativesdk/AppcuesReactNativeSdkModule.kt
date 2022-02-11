@@ -56,15 +56,11 @@ class AppcuesReactNativeSdkModule(reactContext: ReactApplicationContext) : React
 
     @ReactMethod
     fun show(experienceID: String) {
-        currentActivity?.runOnUiThread {
-            implementation.show(experienceID)
-        }
+        implementation.show(experienceID)
     }
 
     @ReactMethod
     fun debug() {
-        currentActivity?.runOnUiThread {
-            implementation.debug()
-        }
+        implementation.debug()
     }
 }
