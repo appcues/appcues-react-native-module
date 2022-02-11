@@ -205,11 +205,6 @@ dependencies {
     }
 
     implementation project(':appcuesreactnativesdk')
-
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
-
 }
 
 // Run this once to be able to run the application with BUCK

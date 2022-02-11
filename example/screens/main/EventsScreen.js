@@ -3,8 +3,7 @@ import { View } from 'react-native';
 import { useFocusEffect } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from 'appcues-react-native-sdk'
-import TintedButton from '../../components/TintedButton';
-import PlainButton from '../../components/PlainButton';
+import { TintedButton, PlainButton } from '../../components/Button';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +20,7 @@ const EventsView = () => {
   );
 };
 
-const EventsScreen = () => {
+export default function EventsScreen() {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -34,5 +33,3 @@ const EventsScreen = () => {
     </Stack.Navigator>
   );
 }
-
-export default EventsScreen

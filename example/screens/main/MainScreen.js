@@ -7,7 +7,7 @@ import GroupScreen from './GroupScreen';
 
 const Tab = createBottomTabNavigator();
 
-const MainScreen = () => {
+export default function MainScreen() {
 
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
@@ -26,6 +26,4 @@ const MainScreen = () => {
         <Tab.Screen name="Group" component={GroupScreen} options={{ 'title': 'Group' }} />
       </Tab.Navigator>
   );
-};
-
-export default MainScreen
+}

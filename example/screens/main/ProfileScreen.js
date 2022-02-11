@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
-import { useFocusEffect } from "@react-navigation/native";
+import { View } from 'react-native';
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from 'appcues-react-native-sdk'
 import UserContext from '../../contexts/UserContext';
-import AppcuesStyle from '../../style/AppcuesStyle';
-import FilledButton from '../../components/FilledButton';
-import PlainButton from '../../components/PlainButton';
+import { FilledButton, PlainButton } from '../../components/Button';
+import Text from '../../components/Text';
+import TextInput from '../../components/TextInput';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,10 +21,10 @@ const ProfileView = () => {
 
   return (
     <View style={{ flex: 1, alignItems: 'stretch', paddingTop: 35, paddingLeft: 40, paddingRight: 40 }}>
-      <Text style={AppcuesStyle.text}>Given Name</Text>
-      <TextInput style={AppcuesStyle.input} onChangeText={onChangeGivenName} placeholder="Given Name" value={givenName} />
-      <Text style={AppcuesStyle.text}>Family Name</Text>
-      <TextInput style={AppcuesStyle.input} onChangeText={onChangeFamilyName} placeholder="Family Name" value={familyName} />
+      <Text>Given Name</Text>
+      <TextInput onChangeText={onChangeGivenName} placeholder="Given Name" value={givenName} />
+      <Text>Family Name</Text>
+      <TextInput onChangeText={onChangeFamilyName} placeholder="Family Name" value={familyName} />
       <FilledButton title='Save' onPress={() => {
           Appcues.identify(userID, { 'givenName': givenName, 'familyName': familyName })
           onChangeGivenName(null)
@@ -34,9 +34,10 @@ const ProfileView = () => {
   );
 };
 
-const ProfileScreen = ({ navigation }) => {
+export default function ProfileScreen() {
 
   const { setUserID } = useContext(UserContext);
+  const navigation = useNavigation();
 
   return (
     <Stack.Navigator>
@@ -53,5 +54,3 @@ const ProfileScreen = ({ navigation }) => {
     </Stack.Navigator>
   );
 }
-
-export default ProfileScreen

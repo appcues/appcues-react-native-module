@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { useFocusEffect } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from 'appcues-react-native-sdk'
-import FilledButton from '../../components/FilledButton';
-import AppcuesStyle from '../../style/AppcuesStyle';
+import { FilledButton } from '../../components/Button';
+import Text from '../../components/Text';
+import TextInput from '../../components/TextInput';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,8 +18,8 @@ const GroupView = () => {
 
   return (
     <View style={{ flex: 1, alignItems: 'stretch', paddingTop: 35, paddingLeft: 40, paddingRight: 40 }}>
-      <Text style={AppcuesStyle.text}>Group</Text>
-      <TextInput style={AppcuesStyle.input} onChangeText={onChangeGroupID} placeholder="Group" value={groupID} />
+      <Text>Group</Text>
+      <TextInput onChangeText={onChangeGroupID} placeholder="Group" value={groupID} />
       <FilledButton title='Save' onPress={() => {
             Appcues.group(groupID, {'test_user': true})
             onChangeGroupID(null)
@@ -28,7 +29,7 @@ const GroupView = () => {
   );
 };
 
-const GroupScreen = () => {
+export default function GroupScreen() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Update Group" component={GroupView}
@@ -36,5 +37,3 @@ const GroupScreen = () => {
     </Stack.Navigator>
   );
 }
-
-export default GroupScreen

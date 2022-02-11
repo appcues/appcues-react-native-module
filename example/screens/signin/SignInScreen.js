@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
-import { Text, TextInput, View } from 'react-native';
-import { useFocusEffect } from "@react-navigation/native";
+import { View } from 'react-native';
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as Appcues from 'appcues-react-native-sdk'
-import FilledButton from '../../components/FilledButton';
-import PlainButton from "../../components/PlainButton";
 import UserContext from "../../contexts/UserContext";
-import AppcuesStyle from "../../style/AppcuesStyle";
+import { FilledButton, PlainButton } from "../../components/Button";
+import Text from "../../components/Text";
+import TextInput from "../../components/TextInput";
 
-const SignInScreen = ({navigation}) => {
+export default function SignInScreen() {
   const { userID, setUserID } = useContext(UserContext);
+  const navigation = useNavigation();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -19,8 +20,8 @@ const SignInScreen = ({navigation}) => {
   return (
     <View style={{ flex: 1 }}>
         <View style={{ flex: 1, alignItems: 'stretch', paddingTop: 35, paddingLeft: 40, paddingRight: 40 }}>
-        <Text style={AppcuesStyle.text}>User ID</Text>
-        <TextInput style={AppcuesStyle.input} onChangeText={setUserID} placeholder="UserID" value={userID} />
+        <Text >User ID</Text>
+        <TextInput onChangeText={setUserID} placeholder="UserID" value={userID} />
         <FilledButton title='Sign In' onPress={() =>  {
               Appcues.identify(userID)
               setUserID(userID)
@@ -35,6 +36,4 @@ const SignInScreen = ({navigation}) => {
       </View>
     </View>
   );
-};
-
-export default SignInScreen
+}
