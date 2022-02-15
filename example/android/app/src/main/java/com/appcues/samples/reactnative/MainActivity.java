@@ -1,4 +1,4 @@
-package com.example.appcuesreactnativesdk;
+package com.appcues.samples.reactnative;
 
 import com.facebook.react.ReactActivity;
 
