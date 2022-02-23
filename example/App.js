@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Appcues from 'appcues-react-native-sdk'
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import UserContext from './contexts/UserContext';
 import SignInScreen from './screens/signin/SignInScreen';
 import MainScreen from './screens/main/MainScreen';
 import { PlainButton } from './components/Button';
 
-const { DefaultTheme } = require("@react-navigation/native");
 const RootStack = createNativeStackNavigator();
 
 export default function App() {
@@ -23,12 +21,9 @@ export default function App() {
   const [initComplete, setInitComplete] = useState(false)
 
   useEffect(() => {
-    if (initComplete) {
-      return;
-    }
     Appcues.setup('ACCOUNT_ID', 'APP_ID')
     setInitComplete(true)
-  });
+  }, []);
 
   return (
     <UserContext.Provider value={{ userID, setUserID }}>
