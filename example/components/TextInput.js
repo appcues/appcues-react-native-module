@@ -5,7 +5,7 @@ export default function TextInput(props) {
   const { value, onChangeText } = props;
 
   return (
-    <ReactTextInput onChangeText={text => onChangeText(text)} placeholder={props.placeholder} value={value}
+    <ReactTextInput onChangeText={onChangeText} placeholder={props.placeholder} value={value}
       style={{
         height: 35,
         borderWidth: 1,

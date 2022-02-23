@@ -3,17 +3,17 @@ import { TouchableOpacity, Text } from 'react-native';
 
 function Button(props) {
   return (
-      <TouchableOpacity onPress={props.onPress} style={props.style.container}>
-          <Text style={props.style.buttonText}>
-              {props.title}
-          </Text>
-      </TouchableOpacity>
+    <TouchableOpacity onPress={props.onPress} style={props.style.container}>
+      <Text style={props.style.buttonText}>
+        {props.title}
+      </Text>
+    </TouchableOpacity>
   );
 }
 
 export function FilledButton(props) {
   return (
-    Button({title: props.title, onPress: props.onPress, style: {
+    <Button style={{
       container: {
         backgroundColor: "#1EB5C4",
         borderRadius: 5,
@@ -26,25 +26,25 @@ export function FilledButton(props) {
         color: "#FFFFFF",
         alignSelf: "center",
       }
-    }})
+    }} {...props} />
   );
 }
 
 export function PlainButton(props) {
   return (
-    Button({title: props.title, onPress: props.onPress, style: {
+    <Button style={{
       buttonText: {
         fontSize: 17,
         color: "#1EB5C4",
         alignSelf: "center",
       }
-    }})
+    }} {...props} />
   );
 }
 
 export function TintedButton(props) {
   return (
-    Button({title: props.title, onPress: props.onPress, style: {
+    <Button style={{
       container: {
         backgroundColor: "#E8FBFA",
         borderRadius: 5,
@@ -57,6 +57,6 @@ export function TintedButton(props) {
         color: "#1EB5C4",
         alignSelf: "center",
       }
-    }})
+    }} {...props} />
   );
 }
