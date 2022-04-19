@@ -5,10 +5,15 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AppcuesReactNativeSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
     private lateinit var implementation: Appcues
+
+    private val mainScope = CoroutineScope(Dispatchers.Main)
 
     override fun getName(): String {
         return "AppcuesReactNativeSdk"
@@ -19,7 +24,7 @@ class AppcuesReactNativeSdkModule(reactContext: ReactApplicationContext) : React
         val context = reactApplicationContextIfActiveOrWarn
         val activity = currentActivity
         if (context != null && activity != null) {
-          implementation = Appcues.Builder(context, accountID, applicationID).build()
+            implementation = Appcues.Builder(context, accountID, applicationID).build()
         }
     }
 
@@ -55,11 +60,15 @@ class AppcuesReactNativeSdkModule(reactContext: ReactApplicationContext) : React
 
     @ReactMethod
     fun show(experienceID: String) {
-        implementation.show(experienceID)
+        mainScope.launch {
+          implementation.show(experienceID)
+        }
     }
 
     @ReactMethod
     fun debug() {
-        implementation.debug()
+        currentActivity?.let {
+          implementation.debug(it)
+        }
     }
 }
