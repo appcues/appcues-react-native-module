@@ -1,6 +1,6 @@
-# appcues-react-native-sdk
+# appcues-react-native-module
 
-Appcues React Native SDK
+Native Module to bridge the native Appcues SDKs in a React Native application.
 
 ## Setup
 
