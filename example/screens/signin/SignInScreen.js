@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View } from 'react-native';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import * as Appcues from 'appcues-react-native-sdk'
+import * as Appcues from 'appcues-react-native'
 import UserContext from "../../contexts/UserContext";
 import { FilledButton, PlainButton } from "../../components/Button";
 import Text from "../../components/Text";

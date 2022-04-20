@@ -5,7 +5,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '13.0'
 
-target 'AppcuesReactNativeSdkExample' do
+target 'AppcuesReactNativeExample' do
   config = use_native_modules!
 
   use_react_native!(
@@ -14,7 +14,7 @@ target 'AppcuesReactNativeSdkExample' do
     :hermes_enabled => false,
   )
 
-  pod 'appcues-react-native-sdk', :path => '../..'
+  pod 'appcues-react-native-module', :path => '../..'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   # Enables Flipper.

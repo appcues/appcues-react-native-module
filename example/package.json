@@ -1,6 +1,6 @@
 {
-  "name": "appcues-react-native-sdk-example",
-  "description": "Example app for appcues-react-native-sdk",
+  "name": "appcues-react-native-example",
+  "description": "Example app for appcues-react-native",
   "version": "0.0.1",
   "private": true,
   "scripts": {

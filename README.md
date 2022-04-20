@@ -4,7 +4,7 @@ Native Module to bridge the native Appcues SDKs in a React Native application.
 
 ## Setup
 
-**NOTE:** because the Appcues iOS podspec isn't public, the Appcues SDK must be references locally. The Podfile in `./example/ios` will need to be updated to match your local path to the Appcues iOS SDK (if your `appcues-ios-sdk` repo is a sibling to `appcues-react-native-sdk` you should already be good to go).
+**NOTE:** because the Appcues iOS podspec isn't public, the Appcues SDK must be references locally. The Podfile in `./example/ios` will need to be updated to match your local path to the Appcues iOS SDK (if your `appcues-ios-sdk` repo is a sibling to `appcues-react-native` you should already be good to go).
 
 Refer to https://reactnative.dev/docs/environment-setup for general React Native Setup. This project uses the React Native CLI (not Expo, which might work, but is untested)
 

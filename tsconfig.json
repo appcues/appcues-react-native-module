@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "appcues-react-native-sdk": ["./src/index"]
+      "appcues-react-native-module": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

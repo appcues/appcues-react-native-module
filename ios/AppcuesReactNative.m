@@ -1,6 +1,6 @@
 #import <React/RCTBridgeModule.h>
 
-@interface RCT_EXTERN_MODULE(AppcuesReactNativeSdk, NSObject)
+@interface RCT_EXTERN_MODULE(AppcuesReactNative, NSObject)
 
 RCT_EXTERN_METHOD(setup:(NSString *)accountID applicationID:(NSString *))
 
