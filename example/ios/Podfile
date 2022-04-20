@@ -1,3 +1,5 @@
+source 'ssh://git@github.com/appcues/cocoapods-specs'
+
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
@@ -11,9 +13,6 @@ target 'AppcuesReactNativeSdkExample' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false,
   )
-
-  # Have to manually add Appcues here until the Podspec is published so that `pod install` knows where to find it
-  pod 'Appcues', :path => '../../../appcues-ios-sdk/Appcues.podspec'
 
   pod 'appcues-react-native-sdk', :path => '../..'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
