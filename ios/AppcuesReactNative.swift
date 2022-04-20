@@ -1,7 +1,7 @@
 import AppcuesKit
 
-@objc(AppcuesReactNativeSdk)
-class AppcuesReactNativeSdk: NSObject {
+@objc(AppcuesReactNative)
+class AppcuesReactNative: NSObject {
     private var implementation: Appcues?
 
     @objc

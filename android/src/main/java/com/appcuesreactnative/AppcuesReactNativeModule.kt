@@ -1,4 +1,4 @@
-package com.appcuesreactnativesdk
+package com.appcuesreactnative
 
 import com.appcues.Appcues
 import com.facebook.react.bridge.ReactApplicationContext
@@ -9,14 +9,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AppcuesReactNativeSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
     private lateinit var implementation: Appcues
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
     override fun getName(): String {
-        return "AppcuesReactNativeSdk"
+        return "AppcuesReactNative"
     }
 
     @ReactMethod
