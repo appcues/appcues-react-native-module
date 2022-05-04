@@ -127,12 +127,9 @@ dependencies {
     api 'com.facebook.react:react-native:+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
 
     // Appcues
-    implementation ("com.appcues:appcues:0.1.0") {
-      // leave this flag to make it easier to work with SNAPSHOT versions
-      changing = true
-    }
+    implementation "com.appcues:appcues:0.1.0-alpha+404"
 }

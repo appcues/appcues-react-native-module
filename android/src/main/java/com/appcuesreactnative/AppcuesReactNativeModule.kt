@@ -24,7 +24,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
         val context = reactApplicationContextIfActiveOrWarn
         val activity = currentActivity
         if (context != null && activity != null) {
-            implementation = Appcues.Builder(context, accountID, applicationID).build()
+            implementation = Appcues(context, accountID, applicationID)
         }
     }
 
