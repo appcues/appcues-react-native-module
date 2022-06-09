@@ -1,5 +1,3 @@
-source 'ssh://git@github.com/appcues/cocoapods-specs'
-
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
@@ -14,6 +12,9 @@ target 'AppcuesReactNativeExample' do
     :hermes_enabled => false,
   )
 
+  # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
+  pod 'Appcues', '1.0.0-beta.2'
+  
   pod 'appcues-react-native-module', :path => '../..'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
