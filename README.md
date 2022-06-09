@@ -4,8 +4,6 @@ Native Module to bridge the native Appcues SDKs in a React Native application.
 
 ## Setup
 
-**NOTE:** The Podfile in `./example/ios` references the Appcues spec repo.
-
 Refer to https://reactnative.dev/docs/environment-setup for general React Native Setup. This project uses the React Native CLI (not Expo, which might work, but is untested)
 
 ```sh
