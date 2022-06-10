@@ -3,8 +3,8 @@
 buildscript {
     ext {
         minSdkVersion = 21
-        compileSdkVersion = 31
-        targetSdkVersion = 31
+        compileSdkVersion = 32
+        targetSdkVersion = 32
     }
     repositories {
         google()
@@ -12,7 +12,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:7.1.2')
+        classpath('com.android.tools.build:gradle:7.2.0')
 
       // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -36,13 +36,5 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url 'https://www.jitpack.io' }
-        maven {
-            // for Appcues Android SDK package via GitHub Package Registry
-            url = uri("https://maven.pkg.github.com/appcues/appcues-android-sdk")
-            credentials {
-                username = System.getenv("GPR_USERNAME")
-                password = System.getenv("GPR_TOKEN")
-            }
-        }
     }
 }
