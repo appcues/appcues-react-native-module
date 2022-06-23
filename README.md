@@ -1,47 +1,101 @@
-# appcues-react-native-module
+# Appcues React Native Module
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/appcues/appcues-react-native-module/blob/main/LICENSE)
 
 Native Module to bridge the native Appcues SDKs in a React Native application.
 
-## Setup
+- [Appcues React Native Module](#appcues-react-native-module)
+  - [🚀 Getting Started](#-getting-started)
+    - [Installation](#installation)
+    - [One Time Setup](#one-time-setup)
+      - [Initializing the SDK](#initializing-the-sdk)
+      - [Supporting Debugging and Experience Previewing](#supporting-debugging-and-experience-previewing)
+    - [Identifying Users](#identifying-users)
+    - [Tracking Screens and Events](#tracking-screens-and-events)
+  - [🛠 Customization](#-customization)
+  - [📝 Documentation](#-documentation)
+  - [🎬 Examples](#-examples)
+  - [👷 Contributing](#-contributing)
+  - [📄 License](#-license)
 
-Refer to https://reactnative.dev/docs/environment-setup for general React Native Setup. This project uses the React Native CLI (not Expo, which might work, but is untested)
+## 🚀 Getting Started
 
-```sh
-# need node, watchman, yarn, cocoapods
-brew install node
-brew install watchman
-npm install -g yarn
-gem install cocoapods
+### Installation
+
+1. In your app's root directory, install the Appcues React Native Module
+   ```sh
+   npm install --save appcues-react-native
+   # OR
+   yarn add appcues-react-native
+   ```
+2. Under your application's `ios` folder, run
+   ```sh
+   pod install
+   ```
+
+Note: You do not need to manually update your Podfile to add Appcues.
+
+### One Time Setup
+
+#### Initializing the SDK
+
+An instance of the Appcues SDK should be initialized when your app launches.
+
+```js
+import * as Appcues from 'appcues-react-native'
+
+Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID')
 ```
 
-```sh
-yarn install
+Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account).
 
-cd ./example
-yarn install
+#### Supporting Debugging and Experience Previewing
 
-cd ./iOS
-pod install
+Supporting debugging and experience previewing is not required for the Appcues React Native Module to function, but it is necessary for the optimal Appcues builder experience.
+
+### Identifying Users
+
+In order to target content to the right users at the right time, you need to identify users and send Appcues data about them. A user is identified with a unique ID.
+
+```js
+// Identify a user
+Appcues.identify('my-user-id')
+// Identify a user with property
+Appcues.identify('my-user-id', {'Company': 'Appcues'})
 ```
 
-## Running
+### Tracking Screens and Events
 
-### iOS
+Events are the “actions” your users take in your application, which can be anything from clicking a certain button to viewing a specific screen. Once you’ve installed and initialized the Appcues React Native Module, you can start tracking screens and events using the following methods:
 
-Page views and events are tracked.
+```js
+// Track event
+Appcues.track('Sent Message')
+// Track event with property
+Appcues.track('Deleted Contact', {'ID': 123 })
 
+// Track screen
+Appcues.screen('Contact List')
+// Track screen with property
+Appcues.screen('Contact Details', {'Contact Reference': 'abc'})
 ```
-open ./example/ios/AppcuesReactNativeExample.xcworkspace
-```
 
-## Modifying
+## 🛠 Customization
 
-If you're changing the plugin, you need to `yarn install` to sync plugin changes to the test app (React Native doesnt support symlinked modules).
+Customizing and extending the Appcues SDK can be done at the native Kotlin/Swift level. Refer to the [Android SDK Extending Guide](https://github.com/appcues/appcues-android-sdk/blob/main/docs/Extending.md) and [iOS SDK Extending Guide](https://github.com/appcues/appcues-ios-sdk/blob/main/Sources/AppcuesKit/AppcuesKit.docc/Extending.md) for details.
 
-## Contributing
+## 📝 Documentation
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+Full documentation is available at https://docs.appcues.com/
 
-## License
+## 🎬 Examples
 
-MIT
+The `example` directory in this repository contains full example iOS/Android app to providing references for correct installation and usage of the Appcues API.
+
+## 👷 Contributing
+
+See the [contributing guide](https://github.com/appcues/appcues-react-native-module/blob/main/CONTRIBUTING.md) to learn how to get set up for development and how to contribute to the project.
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](https://github.com/appcues/appcues-react-native-module/blob/main/LICENSE) for more information.
