@@ -2,6 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/appcues/appcues-react-native-module/blob/main/LICENSE)
 
+>NOTE: This is a pre-release project for testing as a part of our mobile beta program. If you are interested in learning more about our mobile product and testing it before it is officially released, please [visit our site](https://www.appcues.com/mobile) and request early access.  
+>
+>If you have been contacted to be a part of our mobile beta program, we encourage you to try out this library and  provide feedback via Github issues and pull requests. Please note this library will not operate if you are not part of the mobile beta program.
+
+
 Native Module to bridge the native Appcues SDKs in a React Native application.
 
 - [Appcues React Native Module](#appcues-react-native-module)
@@ -28,12 +33,15 @@ Native Module to bridge the native Appcues SDKs in a React Native application.
    # OR
    yarn add appcues-react-native
    ```
-2. Under your application's `ios` folder, run
+2. **[⚠️ BETA ONLY]** Add the pod to your ios projects Podfile
+    ```rb
+    # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
+    pod 'Appcues', '1.0.0-beta.2'
+    ```
+3. Under your application's `ios` folder, run
    ```sh
    pod install
    ```
-
-Note: You do not need to manually update your Podfile to add Appcues.
 
 ### One Time Setup
 
