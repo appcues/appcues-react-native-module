@@ -21,7 +21,7 @@ export default function App() {
   const [initComplete, setInitComplete] = useState(false)
 
   useEffect(() => {
-    Appcues.setup('ACCOUNT_ID', 'APP_ID')
+    Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID')
     setInitComplete(true)
   }, []);
 
