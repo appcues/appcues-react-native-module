@@ -8,11 +8,32 @@ class AppcuesReactNative: NSObject {
     static func requiresMainQueueSetup() -> Bool { false }
 
     @objc
-    func setup(_ accountID: String, applicationID: String) {
+    func setup(_ accountID: String, applicationID: String, _ options: [String: Any]) {
         // Fast refreshing can result in this being called multiple times which gets weird. `guard` is a quick way to shortcut that.
         guard implementation == nil else { return }
 
-        let config = Appcues.Config(accountID: accountID, applicationID: applicationID).logging(true)
+        let config = Appcues.Config(accountID: accountID, applicationID: applicationID)
+
+        if let logging = options["logging"] as? Bool {
+            config.logging(logging)
+        }
+
+        if let apiHost = options["apiHost"] as? String, let url = URL(string: apiHost) {
+            config.apiHost(url)
+        }
+
+        if let sessionTimeout = options["sessionTimeout"] as? UInt {
+            config.sessionTimeout(sessionTimeout)
+        }
+
+        if let activityStorageMaxSize = options["activityStorageMaxSize"] as? UInt {
+            config.activityStorageMaxSize(activityStorageMaxSize)
+        }
+
+        if let activityStorageMaxAge = options["activityStorageMaxAge"] as? UInt {
+            config.activityStorageMaxAge(activityStorageMaxAge)
+        }
+
         implementation = Appcues(config: config)
     }
 

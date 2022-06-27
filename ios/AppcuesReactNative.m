@@ -2,7 +2,7 @@
 
 @interface RCT_EXTERN_MODULE(AppcuesReactNative, NSObject)
 
-RCT_EXTERN_METHOD(setup:(NSString *)accountID applicationID:(NSString *))
+RCT_EXTERN_METHOD(setup:(NSString *)accountID applicationID:(NSString *) options:(NSDictionary *))
 
 RCT_EXTERN_METHOD(identify:(NSString *)userID properties:(NSDictionary *))
 
