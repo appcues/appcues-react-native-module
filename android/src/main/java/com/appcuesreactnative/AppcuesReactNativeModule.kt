@@ -20,11 +20,39 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     }
 
     @ReactMethod
-    fun setup(accountID: String, applicationID: String) {
+    fun setup(accountID: String, applicationID: String, options: ReadableMap? = null) {
         val context = reactApplicationContextIfActiveOrWarn
         val activity = currentActivity
         if (context != null && activity != null) {
-            implementation = Appcues(context, accountID, applicationID)
+            implementation = Appcues(context, accountID, applicationID) {
+                options?.toHashMap()?.let {
+
+                    val logging = it["logging"] as? Boolean
+                    if (logging != null) {
+                        this.loggingLevel = if (logging) LoggingLevel.INFO else LoggingLevel.NONE
+                    }
+
+                    val apiHost = it["apiHost"] as? String
+                    if (apiHost != null) {
+                        this.apiBasePath = apiHost
+                    }
+
+                    val sessionTimeout = it["sessionTimeout"] as? Double
+                    if (sessionTimeout != null) {
+                        this.sessionTimeout = sessionTimeout.toInt()
+                    }
+
+                    val activityStorageMaxSize = it["activityStorageMaxSize"] as? Double
+                    if (activityStorageMaxSize != null) {
+                        this.activityStorageMaxSize = activityStorageMaxSize.toInt()
+                    }
+
+                    val activityStorageMaxAge = it["activityStorageMaxAge"] as? Double
+                    if (activityStorageMaxAge != null) {
+                        this.activityStorageMaxAge = activityStorageMaxAge.toInt()
+                    }
+                }
+            }
         }
     }
 
