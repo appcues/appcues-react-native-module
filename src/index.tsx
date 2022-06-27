@@ -1,5 +1,13 @@
 import { NativeModules, Platform } from 'react-native';
 
+interface ReactNativeOptions {
+  logging?: boolean;
+  apiHost?: string;
+  sessionTimeout?: number;
+  activityStorageMaxSize?: number;
+  activityStorageMaxAge?: number;
+}
+
 const LINKING_ERROR =
   `The package 'appcues-react-native' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
@@ -17,8 +25,8 @@ const AppcuesReactNative = NativeModules.AppcuesReactNative
       }
     );
 
-export function setup(accountID: string, applicationID: string) {
-  AppcuesReactNative.setup(accountID, applicationID)
+export function setup(accountID: string, applicationID: string, options?: ReactNativeOptions) {
+  AppcuesReactNative.setup(accountID, applicationID, options)
 }
 
 export function identify(userID: string, properties?: object) {
