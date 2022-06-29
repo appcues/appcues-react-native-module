@@ -1,6 +1,7 @@
 package com.appcuesreactnative
 
 import com.appcues.Appcues
+import com.appcues.LoggingLevel
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
