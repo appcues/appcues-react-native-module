@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Linking } from "react-native";
 import * as Appcues from 'appcues-react-native'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -60,3 +61,11 @@ function RootView() {
     </NavigationContainer>
   );
 }
+
+Linking.addEventListener('url', async ({ url }) => {
+  const appcuesDidHandleURL = await Appcues.didHandleURL(url);
+
+  if (!appcuesDidHandleURL) {
+    // Handle a non-Appcues URL
+  }
+});
