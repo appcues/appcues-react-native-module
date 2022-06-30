@@ -78,4 +78,14 @@ class AppcuesReactNative: NSObject {
             self.implementation?.debug()
         }
     }
+
+    @objc
+    func didHandleURL(_ url: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        guard let url = URL(string: url) else { return resolve(false) }
+        guard let implementation = implementation else { return resolve(false) }
+
+        DispatchQueue.main.async {
+            resolve(implementation.didHandleURL(url))
+        }
+    }
 }

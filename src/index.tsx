@@ -60,3 +60,7 @@ export function show(experienceID: string) {
 export function debug() {
   AppcuesReactNative.debug()
 }
+
+export async function didHandleURL(url: string): Promise<boolean> {
+  return await AppcuesReactNative.didHandleURL(url);
+}

@@ -20,4 +20,6 @@ RCT_EXTERN_METHOD(show:(NSString *)experienceID)
 
 RCT_EXTERN_METHOD(debug)
 
+RCT_EXTERN_METHOD(didHandleURL:(NSString *)url resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
 @end
