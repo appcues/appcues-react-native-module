@@ -1,7 +1,10 @@
 package com.appcuesreactnative
 
+import android.content.Intent
+import android.net.Uri
 import com.appcues.Appcues
 import com.appcues.LoggingLevel
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
@@ -97,7 +100,24 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     @ReactMethod
     fun debug() {
         currentActivity?.let {
-          implementation.debug(it)
+            mainScope.launch {
+                implementation.debug(it)
+            }
+        }
+    }
+
+    @ReactMethod
+    fun didHandleURL(url: String, promise: Promise) {
+        val activity = currentActivity
+        val uri = Uri.parse(url)
+        if (activity != null) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = uri
+            mainScope.launch {
+                promise.resolve(implementation.onNewIntent(activity, intent))
+            }
+        } else {
+            promise.reject("no-activity", "unable to handle the URL, no current running Activity found")
         }
     }
 }
