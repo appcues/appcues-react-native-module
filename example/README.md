@@ -22,7 +22,7 @@ pod install
 This example app requires you to fill in an Appcues Account ID and an Appcues Application ID in `App.js`. You can enter your own values found in [Appcues Studio](https://studio.appcues.com), or use the following test values:
 ```
 APPCUES_ACCOUNT_ID=103523
-APPCUES_APPLICATION_ID=8bc9bdb8-6546-4781-95f8-75abee12fa7a
+APPCUES_APPLICATION_ID=ca73c634-1978-46b4-b73d-eb3367a66925
 ```
 
 ```sh
