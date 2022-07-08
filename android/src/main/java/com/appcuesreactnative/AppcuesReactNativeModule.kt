@@ -100,9 +100,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     @ReactMethod
     fun debug() {
         currentActivity?.let {
-            mainScope.launch {
-                implementation.debug(it)
-            }
+            implementation.debug(it)
         }
     }
 
@@ -113,9 +111,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
         if (activity != null) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri
-            mainScope.launch {
-                promise.resolve(implementation.onNewIntent(activity, intent))
-            }
+            promise.resolve(implementation.onNewIntent(activity, intent))
         } else {
             promise.reject("no-activity", "unable to handle the URL, no current running Activity found")
         }
