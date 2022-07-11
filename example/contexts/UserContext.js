@@ -1,8 +1,8 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 const UserContext = createContext({
   userID: null,
-  setUserID: (userID) => {}
+  setUserID: (userID) => {},
 });
 
 export default UserContext;

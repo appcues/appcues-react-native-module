@@ -25,40 +25,44 @@ const AppcuesReactNative = NativeModules.AppcuesReactNative
       }
     );
 
-export function setup(accountID: string, applicationID: string, options?: ReactNativeOptions) {
-  AppcuesReactNative.setup(accountID, applicationID, options)
+export function setup(
+  accountID: string,
+  applicationID: string,
+  options?: ReactNativeOptions
+) {
+  AppcuesReactNative.setup(accountID, applicationID, options);
 }
 
 export function identify(userID: string, properties?: object) {
-  AppcuesReactNative.identify(userID, properties)
+  AppcuesReactNative.identify(userID, properties);
 }
 
 export function reset() {
-  AppcuesReactNative.reset()
+  AppcuesReactNative.reset();
 }
 
 export function anonymous() {
-  AppcuesReactNative.anonymous()
+  AppcuesReactNative.anonymous();
 }
 
 export function group(groupID: string, properties?: object) {
-  AppcuesReactNative.group(groupID, properties)
+  AppcuesReactNative.group(groupID, properties);
 }
 
 export function screen(title: string, properties?: object) {
-  AppcuesReactNative.screen(title, properties)
+  AppcuesReactNative.screen(title, properties);
 }
 
 export function track(name: string, properties?: object) {
-  AppcuesReactNative.track(name, properties)
+  AppcuesReactNative.track(name, properties);
 }
 
 export function show(experienceID: string) {
-  AppcuesReactNative.show(experienceID)
+  AppcuesReactNative.show(experienceID);
 }
 
 export function debug() {
-  AppcuesReactNative.debug()
+  AppcuesReactNative.debug();
 }
 
 export async function didHandleURL(url: string): Promise<boolean> {
