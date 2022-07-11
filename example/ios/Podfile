@@ -13,7 +13,7 @@ target 'AppcuesReactNativeExample' do
   )
 
   # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
-  pod 'Appcues', '1.0.0-beta.2'
+  pod 'Appcues', '1.0.0-beta.3'
   
   # Enables Flipper.
   #
