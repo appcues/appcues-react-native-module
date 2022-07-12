@@ -30,7 +30,7 @@ platform :ios do
   end
 
   desc "Push example app to Testflight beta"
-  lane :beta_example do | options |
+  lane :deploy_example do | options |
     app_store_connect_api_key
 
     current_build = latest_testflight_build_number(

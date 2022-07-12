@@ -31,10 +31,10 @@ Sanity check to make sure the example app compiles
 
 Setup code signing
 
-### ios beta_example
+### ios deploy_example
 
 ```sh
-[bundle exec] fastlane ios beta_example
+[bundle exec] fastlane ios deploy_example
 ```
 
 Push example app to Testflight beta

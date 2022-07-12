@@ -4,7 +4,7 @@ version: 2.1
 #       PARAMETERS
 # -------------------------
 parameters:
-  deploy-beta:
+  deploy-example:
     type: boolean
     default: false
 
@@ -153,7 +153,7 @@ jobs:
       - setup_gems
       - run:
           name: Run beta build
-          command: bundle exec fastlane beta_example
+          command: bundle exec fastlane deploy_example
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -211,7 +211,7 @@ jobs:
 workflows:
   build-and-test:
     when:
-      not: << pipeline.parameters.deploy-beta >>
+      not: << pipeline.parameters.deploy-example >>
     jobs:
       - install-dependencies
       # js
@@ -237,7 +237,7 @@ workflows:
             - Appcues
 
   build-and-deploy:
-    when: << pipeline.parameters.deploy-beta >>
+    when: << pipeline.parameters.deploy-example >>
     jobs:
       - install-dependencies
       - deploy-ios-example:
