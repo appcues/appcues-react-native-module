@@ -1,20 +1,73 @@
 version: 2.1
 
+# -------------------------
+#       PARAMETERS
+# -------------------------
+parameters:
+  deploy-beta:
+    type: boolean
+    default: false
+
+# -------------------------
+#          ORBS
+# -------------------------
+orbs:
+  slack: circleci/slack@4.4.4
+
+# -------------------------
+#        EXECUTORS
+# -------------------------
 executors:
-  default:
+  js_compatible:
     docker:
       - image: cimg/node:18.4.0
     working_directory: ~/project
+  ios_compatible:
+    macos:
+      xcode: 13.0.0
+    working_directory: ~/project/example/ios
+    shell: /bin/bash --login -o pipefail
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
 
+# -------------------------
+#        REFERENCES
+# -------------------------
+references:
+  is_main: &is_main
+    matches:
+      pattern: '^main$'
+      value: << pipeline.git.branch >>
+
+# -------------------------
+#          COMMANDS
+# -------------------------
 commands:
   attach_project:
     steps:
       - attach_workspace:
           at: ~/project
+  setup_gems:
+    description: 'Install gem dependencies'
+    steps:
+      - restore_cache:
+          name: Restore gem cache
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Install gem dependencies
+          command: bundle check || bundle install --path vendor/bundle
+      - save_cache:
+          name: Save gem cache
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
 
+# -------------------------
+#          JOBS
+# -------------------------
 jobs:
   install-dependencies:
-    executor: default
+    executor: js_compatible
     steps:
       - checkout
       - attach_project
@@ -42,7 +95,7 @@ jobs:
           paths: .
 
   lint:
-    executor: default
+    executor: js_compatible
     steps:
       - attach_project
       - run:
@@ -51,7 +104,7 @@ jobs:
             yarn lint
 
   typescript:
-    executor: default
+    executor: js_compatible
     steps:
       - attach_project
       - run:
@@ -60,7 +113,7 @@ jobs:
             yarn typescript
 
   unit-tests:
-    executor: default
+    executor: js_compatible
     steps:
       - attach_project
       - run:
@@ -72,7 +125,7 @@ jobs:
           destination: coverage
 
   build-package:
-    executor: default
+    executor: js_compatible
     steps:
       - attach_project
       - run:
@@ -80,10 +133,26 @@ jobs:
           command: |
             yarn prepare
 
+  validate-ios:
+    executor: ios_compatible
+    steps:
+      - attach_project
+      - setup_gems
+      - run:
+          name: Run fastlane tests
+          command: bundle exec fastlane compile_example
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          channel: team-mobile-bots
+
+# -------------------------
+#        WORKFLOWS
+# -------------------------
 workflows:
   build-and-test:
     jobs:
-      - install-dependencies
+      - install-dependencies      # js
       - lint:
           requires:
             - install-dependencies
@@ -96,3 +165,11 @@ workflows:
       - build-package:
           requires:
             - install-dependencies
+      # android
+      # TODO
+      # ios
+      - validate-ios:
+          requires:
+            - install-dependencies
+          context:
+            - Appcues
