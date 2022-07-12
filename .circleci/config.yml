@@ -146,13 +146,75 @@ jobs:
           template: basic_fail_1
           channel: team-mobile-bots
 
+  deploy-ios-example:
+    executor: ios_compatible
+    steps:
+      - attach_project
+      - setup_gems
+      - run:
+          name: Run beta build
+          command: bundle exec fastlane beta_example
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          channel: team-mobile-bots
+      - slack/notify:
+          event: pass
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🚀 React Native iOS Sample App Deployed to TestFlight 📲",
+                    "emoji": true
+                  }
+                }
+              ],
+              "attachments": [
+                {
+                  "color": "#5C5CFF",
+                  "blocks": [
+                    {
+                      "type": "actions",
+                      "elements": [
+                        {
+                          "type": "button",
+                          "text": {
+                            "type": "plain_text",
+                            "text": "View Job",
+                            "emoji": true
+                          },
+                          "url": "$CIRCLE_BUILD_URL"
+                        },
+                        {
+                          "type": "button",
+                          "text": {
+                            "type": "plain_text",
+                            "text": "View on App Store Connect",
+                            "emoji": true
+                          },
+                          "url": "https://appstoreconnect.apple.com/apps/1610171155/testflight/ios"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          channel: team-mobile-bots
+
 # -------------------------
 #        WORKFLOWS
 # -------------------------
 workflows:
   build-and-test:
+    when:
+      not: << pipeline.parameters.deploy-beta >>
     jobs:
-      - install-dependencies      # js
+      - install-dependencies
+      # js
       - lint:
           requires:
             - install-dependencies
@@ -169,6 +231,16 @@ workflows:
       # TODO
       # ios
       - validate-ios:
+          requires:
+            - install-dependencies
+          context:
+            - Appcues
+
+  build-and-deploy:
+    when: << pipeline.parameters.deploy-beta >>
+    jobs:
+      - install-dependencies
+      - deploy-ios-example:
           requires:
             - install-dependencies
           context:
