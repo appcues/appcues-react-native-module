@@ -15,13 +15,21 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android validate_code
+### android compile_example
 
 ```sh
-[bundle exec] fastlane android validate_code
+[bundle exec] fastlane android compile_example
 ```
 
-Validate the code in the SDK repo works properly
+Sanity check to make sure the example app compiles
+
+### android deploy_example
+
+```sh
+[bundle exec] fastlane android deploy_example
+```
+
+Deploy a new version to Google Play internal test
 
 ----
 

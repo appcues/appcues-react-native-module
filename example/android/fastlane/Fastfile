@@ -7,4 +7,32 @@ platform :android do
     gradle(task: 'assemble')
   end
 
+  desc "Deploy a new version to Google Play internal test"
+  lane :deploy_example do
+    sh("sh", "./replace-placeholders.sh", ENV["EX_APPCUES_ACCOUNT_ID"], ENV["EX_APPCUES_APPLICATION_ID"])
+
+    keystorePath = File.join(Dir.pwd, "..", "appcues.keystore")
+
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => keystorePath,
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["KEYSTORE_ALIAS"],
+        "android.injected.signing.key.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.version.code" => ENV["CIRCLE_BUILD_NUM"].to_i,
+        "android.injected.version.name" => "1.0.0-#{ENV["CIRCLE_BUILD_NUM"]}",
+      }
+    )
+
+    upload_to_play_store(
+      track: 'internal', 
+      skip_upload_apk: true, 
+      json_key_data: ENV["PLAY_STORE_API_KEY"],
+      rollout: '1'
+    )    
+  end
+
 end
