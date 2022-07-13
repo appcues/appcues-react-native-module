@@ -13,6 +13,7 @@ parameters:
 # -------------------------
 orbs:
   slack: circleci/slack@4.4.4
+  android: circleci/android@2.0.3
 
 # -------------------------
 #        EXECUTORS
@@ -29,6 +30,11 @@ executors:
     shell: /bin/bash --login -o pipefail
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
+  android_compatible:
+    machine: 
+      image: android:2022.04.1
+    resource_class: large
+    working_directory: ~/project/example/android
 
 # -------------------------
 #        REFERENCES
@@ -139,8 +145,22 @@ jobs:
       - attach_project
       - setup_gems
       - run:
-          name: Run fastlane tests
+          name: Run fastlane validate code
           command: bundle exec fastlane compile_example
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          channel: team-mobile-bots
+
+  validate-android:
+    executor: android_compatible
+    steps:
+      - attach_project
+      - setup_gems
+      - run:
+          name: Run fastlane validate_code
+          command: bundle exec fastlane compile_example
+      # - save_gradle_cache
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -228,7 +248,11 @@ workflows:
           requires:
             - install-dependencies
       # android
-      # TODO
+      - validate-android:
+          requires:
+            - install-dependencies
+          context:
+            - Appcues
       # ios
       - validate-ios:
           requires:
