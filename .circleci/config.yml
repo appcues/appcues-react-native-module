@@ -14,6 +14,7 @@ parameters:
 orbs:
   slack: circleci/slack@4.4.4
   android: circleci/android@2.0.3
+  aws-s3: circleci/aws-s3@3.0
 
 # -------------------------
 #        EXECUTORS
@@ -172,7 +173,7 @@ jobs:
       - attach_project
       - setup_gems
       - run:
-          name: Run beta build
+          name: Run example build
           command: bundle exec fastlane deploy_example
       - slack/notify:
           event: fail
@@ -225,6 +226,68 @@ jobs:
             }
           channel: team-mobile-bots
 
+  deploy-android-example:
+    executor: android_compatible
+    steps:
+      - attach_project
+      - setup_gems
+      - aws-s3/copy:
+          from: 's3://appcues-mobile-certs/appcues.keystore'
+          to: './'
+      - run:
+          name: Run example build
+          command: bundle exec fastlane deploy_example
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          channel: team-mobile-bots
+      - slack/notify:
+          event: pass
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🚀 React Native Android Sample App Deployed to Google Play :android:",
+                    "emoji": true
+                  }
+                }
+              ],
+              "attachments": [
+                {
+                  "color": "#5C5CFF",
+                  "blocks": [
+                    {
+                      "type": "actions",
+                      "elements": [
+                        {
+                          "type": "button",
+                          "text": {
+                            "type": "plain_text",
+                            "text": "View Job",
+                            "emoji": true
+                          },
+                          "url": "$CIRCLE_BUILD_URL"
+                        },
+                        {
+                          "type": "button",
+                          "text": {
+                            "type": "plain_text",
+                            "text": "View on Google Play",
+                            "emoji": true
+                          },
+                          "url": "https://play.google.com/store/apps/details?id=com.appcues.samples.reactnative"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          channel: team-mobile-bots
+
 # -------------------------
 #        WORKFLOWS
 # -------------------------
@@ -264,6 +327,11 @@ workflows:
     when: << pipeline.parameters.deploy-example >>
     jobs:
       - install-dependencies
+      - deploy-android-example:
+          requires:
+            - install-dependencies
+          context:
+            - Appcues
       - deploy-ios-example:
           requires:
             - install-dependencies
