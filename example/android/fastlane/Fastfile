@@ -1,0 +1,10 @@
+default_platform(:android)
+
+platform :android do
+
+  desc "Sanity check to make sure the example app compiles"
+  lane :compile_example do
+    gradle(task: 'assemble')
+  end
+
+end
