@@ -59,7 +59,7 @@ Initializing the SDK requires you to provide two values, an Appcues account ID, 
 
 #### Supporting Debugging and Experience Previewing
 
-Supporting debugging and experience previewing is not required for the Appcues React Native Module to function, but it is necessary for the optimal Appcues builder experience.
+Supporting debugging and experience previewing is not required for the Appcues React Native Module to function, but it is necessary for the optimal Appcues builder experience. Refer to the [URL Scheme Configuration Guide](https://github.com/appcues/appcues-react-native-module/blob/main/docs/URLSchemeConfiguring.md) for details on how to configure.
 
 ### Identifying Users
 
@@ -87,10 +87,6 @@ Appcues.screen('Contact List')
 // Track screen with property
 Appcues.screen('Contact Details', {'Contact Reference': 'abc'})
 ```
-
-## 🛠 Customization
-
-Customizing and extending the Appcues SDK can be done at the native Kotlin/Swift level. Refer to the [Android SDK Extending Guide](https://github.com/appcues/appcues-android-sdk/blob/main/docs/Extending.md) and [iOS SDK Extending Guide](https://github.com/appcues/appcues-ios-sdk/blob/main/Sources/AppcuesKit/AppcuesKit.docc/Extending.md) for details.
 
 ## 📝 Documentation
 
