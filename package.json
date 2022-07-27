@@ -1,5 +1,5 @@
 {
-  "name": "appcues-react-native",
+  "name": "@appcues/react-native",
   "version": "0.1.0",
   "description": "Appcues React Native Module",
   "main": "lib/commonjs/index",
