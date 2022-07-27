@@ -127,6 +127,7 @@ Commit messages should follow the pattern `:emoji: Imperative commit message`. S
 | Emoji | Shortcut | Meaning |
 | ------ | ------ | ------ |
 | 🔧 | `:wrench:` | Changing configuration/pipeline files |
+| 🗃 | `:card_file_box:` | Updating package.json |
 | 🎬 | `:clapper:` | Updating example app |
 | 💥 | `:boom:` | Introducing breaking changes |
 | ⬆️ | `:arrow_up:` | Upgrading dependencies |

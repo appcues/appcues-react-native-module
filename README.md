@@ -17,7 +17,6 @@ Native Module to bridge the native Appcues SDKs in a React Native application.
       - [Supporting Debugging and Experience Previewing](#supporting-debugging-and-experience-previewing)
     - [Identifying Users](#identifying-users)
     - [Tracking Screens and Events](#tracking-screens-and-events)
-  - [🛠 Customization](#-customization)
   - [📝 Documentation](#-documentation)
   - [🎬 Examples](#-examples)
   - [👷 Contributing](#-contributing)
@@ -29,14 +28,14 @@ Native Module to bridge the native Appcues SDKs in a React Native application.
 
 1. In your app's root directory, install the Appcues React Native Module
    ```sh
-   npm install --save appcues-react-native
+   npm install --save @appcues/react-native
    # OR
-   yarn add appcues-react-native
+   yarn add @appcues/react-native
    ```
 2. **[⚠️ BETA ONLY]** Add the pod to your ios projects Podfile
     ```rb
     # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
-    pod 'Appcues', '1.0.0-beta.2'
+    pod 'Appcues', '1.0.0-beta.4'
     ```
 3. Under your application's `ios` folder, run
    ```sh
