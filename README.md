@@ -49,7 +49,7 @@ Native Module to bridge the native Appcues SDKs in a React Native application.
 An instance of the Appcues SDK should be initialized when your app launches.
 
 ```js
-import * as Appcues from 'appcues-react-native'
+import * as Appcues from '@appcues/react-native'
 
 Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID')
 ```
