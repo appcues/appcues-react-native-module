@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
-import * as Appcues from 'appcues-react-native';
+import * as Appcues from '@appcues/react-native';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import UserContext from './contexts/UserContext';

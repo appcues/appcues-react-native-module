@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as Appcues from 'appcues-react-native';
+import * as Appcues from '@appcues/react-native';
 import { FilledButton } from '../../components/Button';
 import Text from '../../components/Text';
 import TextInput from '../../components/TextInput';
