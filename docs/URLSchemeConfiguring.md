@@ -23,6 +23,7 @@ URL's need to be handled with an event listener:
 
 ```js
 import { Linking } from "react-native";
+import * as Appcues from '@appcues/react-native';
 
 Linking.addEventListener('url', async ({ url }) => {
   const appcuesDidHandleURL = await Appcues.didHandleURL(url);

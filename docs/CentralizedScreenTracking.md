@@ -5,7 +5,7 @@ The `onStateChange` prop of `NavigationContainer` can be used to call `Appcues.s
 ```js
 import { useRef } from 'react';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import * as Appcues from 'appcues-react-native';
+import * as Appcues from '@appcues/react-native';
 
 export default () => {
   const navigationRef = useNavigationContainerRef();
