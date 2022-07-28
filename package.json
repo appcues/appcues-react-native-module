@@ -44,7 +44,8 @@
   },
   "homepage": "https://github.com/appcues/appcues-react-native-module#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
