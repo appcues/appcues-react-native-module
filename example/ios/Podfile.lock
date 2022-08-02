@@ -1,7 +1,7 @@
 PODS:
   - Appcues (1.0.0-beta.4)
   - appcues-react-native (1.0.0-beta.1):
-    - Appcues
+    - Appcues (= 1.0.0-beta.4)
     - React-Core
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
@@ -364,7 +364,6 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - Appcues (= 1.0.0-beta.4)
   - "appcues-react-native (from `../node_modules/@appcues/react-native`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -518,7 +517,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Appcues: b9656ff8a85985f3a3feaa5728c71f7ce7f164b5
-  appcues-react-native: 11ee1685a73b1a0373a7ca1ee0e26484079c28d3
+  appcues-react-native: 44ad06dba1d86098c4da4e425f04f56c5a4b06a3
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
@@ -569,6 +568,6 @@ SPEC CHECKSUMS:
   Yoga: 6671cf077f614314c22fd09ddf87d7abeee64e96
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 57c8cdf27feb51eafc005c4db7b35c73e23ce0cb
+PODFILE CHECKSUM: c52f44807b8deff86692733be551cd582cf7b712
 
 COCOAPODS: 1.11.3

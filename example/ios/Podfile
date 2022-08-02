@@ -11,9 +11,6 @@ target 'AppcuesReactNativeExample' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false,
   )
-
-  # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
-  pod 'Appcues', '1.0.0-beta.4'
   
   # Enables Flipper.
   #
