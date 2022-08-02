@@ -154,3 +154,11 @@ Commit messages should follow the pattern `:emoji: Imperative commit message`. S
 - Keep in mind that changes to more critical parts of `appcues-react-native-plugin` will be subjected to more review, and may require more testing and proof of its correctness than other changes.
 - The person who starts the discussion should be the person who resolves the discussion.
 - In order to pass review your PR will need approval from at least one maintainer.
+
+## Releasing
+
+You must be a repository admin and member of the Appcues npm organization. From a clean copy of the `main` branch:
+
+```sh
+npm run release 1.0.0
+```
