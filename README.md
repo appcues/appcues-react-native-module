@@ -32,15 +32,12 @@ Native Module to bridge the native Appcues SDKs in a React Native application.
    # OR
    yarn add @appcues/react-native
    ```
-2. **[⚠️ BETA ONLY]** Add the pod to your ios projects Podfile
-    ```rb
-    # needs to be explicitly included here until 1.0.0 is released to be able to find the prerelease versions.
-    pod 'Appcues', '1.0.0-beta.4'
-    ```
-3. Under your application's `ios` folder, run
+2. Under your application's `ios` folder, run
    ```sh
    pod install
    ```
+
+Note: You do not need to manually update your Podfile to add Appcues.
 
 ### One Time Setup
 
