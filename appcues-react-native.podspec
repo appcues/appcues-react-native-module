@@ -16,6 +16,5 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React-Core"
-  # NOTE: remove the specific version requirement once 1.0.0 is published
-  s.dependency "Appcues", "1.0.0-beta.4"
+  s.dependency "Appcues"
 end
