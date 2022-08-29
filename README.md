@@ -88,7 +88,7 @@ Appcues.screen('Contact Details', {'Contact Reference': 'abc'})
 
 ## 📝 Documentation
 
-Full documentation is available at https://docs.appcues.com/
+More technical documentation about this module (including instruction for usage with Expo Bare and Managed workflow apps) is available in the [`docs` directory](https://github.com/appcues/appcues-react-native-module/tree/main/docs). Full documentation is available at https://docs.appcues.com/
 
 ## 🎬 Examples
 
