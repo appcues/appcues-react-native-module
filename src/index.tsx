@@ -12,7 +12,8 @@ const LINKING_ERROR =
   `The package 'appcues-react-native' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
+  '- You are not using Expo managed workflow\n' +
+  'If you are using the Expo managed workflow, please refer to the Appcues React Native module documentation for Expo.';
 
 const AppcuesReactNative = NativeModules.AppcuesReactNative
   ? NativeModules.AppcuesReactNative
