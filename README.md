@@ -4,7 +4,9 @@
 [![npm](https://img.shields.io/npm/v/@appcues/react-native.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen)](https://www.npmjs.com/package/@appcues/react-native)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/appcues/appcues-react-native-module/blob/main/LICENSE)
 
-Native Module to bridge the native Appcues SDKs in a React Native application.
+Appcues React Native Module allows you to integrate Appcues experiences into your React Native apps for iOS and Android devices.
+
+This native module is a bridge between the native Appcues SDKs in a React Native application which sends user properties and events to the Appcues API and retrieves and renders Appcues content based on those properties and events.
 
 - [Appcues React Native Module](#appcues-react-native-module)
   - [🚀 Getting Started](#-getting-started)
