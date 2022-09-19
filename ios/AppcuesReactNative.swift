@@ -1,11 +1,15 @@
 import AppcuesKit
 
 @objc(AppcuesReactNative)
-class AppcuesReactNative: NSObject {
+class AppcuesReactNative: RCTEventEmitter {
+    private static let eventName = "analytics"
+
     private var implementation: Appcues?
 
+    private var hasListeners = false
+
     @objc
-    static func requiresMainQueueSetup() -> Bool { false }
+    override static func requiresMainQueueSetup() -> Bool { false }
 
     @objc
     func setup(_ accountID: String, applicationID: String, _ options: [String: Any]) {
@@ -35,6 +39,7 @@ class AppcuesReactNative: NSObject {
         }
 
         implementation = Appcues(config: config)
+        implementation?.analyticsDelegate = self
     }
 
     @objc
@@ -87,5 +92,33 @@ class AppcuesReactNative: NSObject {
         DispatchQueue.main.async {
             resolve(implementation.didHandleURL(url))
         }
+    }
+
+    // MARK: Event Emitting
+
+    override func supportedEvents() -> [String]! {
+        [Self.eventName]
+    }
+
+    override func startObserving() {
+        hasListeners = true
+    }
+
+    override func stopObserving() {
+        hasListeners = false
+    }
+}
+
+extension AppcuesReactNative: AppcuesAnalyticsDelegate {
+    func didTrack(analytic: AppcuesAnalytic, value: String?, properties: [String: Any]?, isInternal: Bool) {
+        guard hasListeners else { return }
+        sendEvent(
+            withName: Self.eventName,
+            body: [
+                "analytic": analytic.rawValue,
+                "value": value ?? "",
+                "properties": properties ?? [:],
+                "isInternal": isInternal
+            ])
     }
 }

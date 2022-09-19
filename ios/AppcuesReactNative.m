@@ -1,6 +1,7 @@
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface RCT_EXTERN_MODULE(AppcuesReactNative, NSObject)
+@interface RCT_EXTERN_MODULE(AppcuesReactNative, RCTEventEmitter)
 
 RCT_EXTERN_METHOD(setup:(NSString *)accountID applicationID:(NSString *) options:(NSDictionary *))
 
