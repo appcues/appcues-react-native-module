@@ -2,13 +2,12 @@ package com.appcuesreactnative
 
 import android.content.Intent
 import android.net.Uri
+import com.appcues.AnalyticType
+import com.appcues.AnalyticsListener
 import com.appcues.Appcues
 import com.appcues.LoggingLevel
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.*
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,8 +55,44 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
                         this.activityStorageMaxAge = activityStorageMaxAge.toInt()
                     }
                 }
+
+                this.analyticsListener = object: AnalyticsListener {
+                    override fun trackedAnalytic(type: AnalyticType, value: String?, properties: Map<String, Any>?, isInternal: Boolean) {
+                        val params = Arguments.createMap().apply {
+                            putString("analytic", type.name)
+                            putString("value", value ?: "")
+                            putMap("properties", writableMapOf(properties ?: emptyMap<String, Any>()))
+                            putBoolean("isInternal", isInternal)
+                        }
+
+                        reactApplicationContext
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            .emit("analytics", params)
+                    }
+                }
             }
         }
+    }
+
+    private fun writableMapOf(values: Map<*, *>): WritableMap {
+        val map = Arguments.createMap()
+        for ((anyKey, value) in values) {
+            val key = anyKey as? String ?: continue
+            when (value) {
+                null -> map.putNull(key)
+                is Boolean -> map.putBoolean(key, value)
+                is Double -> map.putDouble(key, value)
+                // The Android SDK passes dates as a Long Unix timestamp
+                is Long -> map.putDouble(key, value.toDouble())
+                is Int -> map.putInt(key, value)
+                is String -> map.putString(key, value)
+                is WritableMap -> map.putMap(key, value)
+                is WritableArray -> map.putArray(key, value)
+                is Map<*, *> -> map.putMap(key, writableMapOf(value))
+                else -> map.putNull(key)
+            }
+        }
+        return map
     }
 
     @ReactMethod
@@ -115,5 +150,15 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
         } else {
             promise.reject("no-activity", "unable to handle the URL, no current running Activity found")
         }
+    }
+
+    @ReactMethod
+    fun addListener(eventName: String) {
+        // Required for RN built in Event Emitter Calls.
+    }
+
+    @ReactMethod
+    fun removeListeners(count: Int) {
+        // Required for RN built in Event Emitter Calls.
     }
 }
