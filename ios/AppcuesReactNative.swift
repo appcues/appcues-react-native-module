@@ -112,13 +112,44 @@ class AppcuesReactNative: RCTEventEmitter {
 extension AppcuesReactNative: AppcuesAnalyticsDelegate {
     func didTrack(analytic: AppcuesAnalytic, value: String?, properties: [String: Any]?, isInternal: Bool) {
         guard hasListeners else { return }
+
+        let analyticName: String
+        switch analytic {
+        case .event:
+            analyticName = "EVENT"
+        case .screen:
+            analyticName = "SCREEN"
+        case .identify:
+            analyticName = "IDENTIFY"
+        case .group:
+            analyticName = "GROUP"
+        }
+
         sendEvent(
             withName: Self.eventName,
             body: [
-                "analytic": analytic.rawValue,
+                "analytic": analyticName,
                 "value": value ?? "",
-                "properties": properties ?? [:],
+                "properties": formatProperties(properties),
                 "isInternal": isInternal
             ])
+    }
+
+    /// Map any supported property types that `sendEvent` doesn't handle by default.
+    private func formatProperties( _ properties: [String: Any]?) -> [String: Any] {
+        guard var properties = properties else { return [:] }
+
+        properties.forEach { key, value in
+            switch value {
+            case let date as Date:
+                properties[key] = (date.timeIntervalSince1970 * 1000).rounded()
+            case let dict as [String: Any]:
+                properties[key] = formatProperties(dict)
+            default:
+                break
+            }
+        }
+
+        return properties
     }
 }
