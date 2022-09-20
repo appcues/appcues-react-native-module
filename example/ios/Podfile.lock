@@ -1,6 +1,6 @@
 PODS:
   - Appcues (1.0.0)
-  - appcues-react-native (1.0.0-beta.2):
+  - appcues-react-native (1.0.1):
     - Appcues
     - React-Core
   - boost (1.76.0)
@@ -517,7 +517,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Appcues: 39d82344747e19ef6dc71b818460e8caf7f21477
-  appcues-react-native: b8a24805c4f7b77d65dfa37a6d7d358f0c8074a7
+  appcues-react-native: 98a925441178bca7f909cd0f71fd941b6ca940c2
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
