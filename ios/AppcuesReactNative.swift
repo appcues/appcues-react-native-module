@@ -145,6 +145,27 @@ extension AppcuesReactNative: AppcuesAnalyticsDelegate {
                 properties[key] = (date.timeIntervalSince1970 * 1000).rounded()
             case let dict as [String: Any]:
                 properties[key] = formatProperties(dict)
+            case let arr as [Any]:
+                properties[key] = formatProperties(arr)
+            default:
+                break
+            }
+        }
+
+        return properties
+    }
+
+    private func formatProperties( _ properties: [Any]?) -> [Any] {
+        guard var properties = properties else { return [] }
+
+        properties.enumerated().forEach { index, value in
+            switch value {
+            case let date as Date:
+                properties[index] = (date.timeIntervalSince1970 * 1000).rounded()
+            case let dict as [String: Any]:
+                properties[index] = formatProperties(dict)
+            case let arr as [Any]:
+                properties[index] = formatProperties(arr)
             default:
                 break
             }
