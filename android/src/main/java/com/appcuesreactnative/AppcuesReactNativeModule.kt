@@ -89,10 +89,32 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
                 is WritableMap -> map.putMap(key, value)
                 is WritableArray -> map.putArray(key, value)
                 is Map<*, *> -> map.putMap(key, writableMapOf(value))
+                is List<*> -> map.putArray(key, writableArrayOf(value))
                 else -> map.putNull(key)
             }
         }
         return map
+    }
+
+    private fun writableArrayOf(values: List<*>): WritableArray {
+        val array = Arguments.createArray()
+        for (value in values) {
+            when (value) {
+                null -> array.pushNull()
+                is Boolean -> array.pushBoolean(value)
+                is Double -> array.pushDouble(value)
+                // The Android SDK passes dates as a Long Unix timestamp
+                is Long -> array.pushDouble(value.toDouble())
+                is Int -> array.pushInt(value)
+                is String -> array.pushString(value)
+                is WritableMap -> array.pushMap(value)
+                is WritableArray -> array.pushArray(value)
+                is Map<*, *> -> array.pushMap(writableMapOf(value))
+                is List<*> -> array.pushArray(writableArrayOf(value))
+                else -> array.pushNull()
+            }
+        }
+        return array
     }
 
     @ReactMethod
