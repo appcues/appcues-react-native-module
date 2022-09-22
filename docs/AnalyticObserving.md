@@ -31,7 +31,7 @@ eventListener.remove();
 
 There are four different possible values for `analytic` and two possible values for `isInternal`:
 
-| `analytic` | `isInternal` | SDK call              |
+| `analytic`     | `isInternal` | SDK call              |
 | -------------- | ------------ | --------------------- |
 | `EVENT`        | `true`       | N/A                   |
 | `EVENT`        | `false`      | `Appcues.track()`     |
