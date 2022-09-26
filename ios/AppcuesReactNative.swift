@@ -73,8 +73,10 @@ class AppcuesReactNative: RCTEventEmitter {
     }
 
     @objc
-    func show(_ experienceID: String) {
-        implementation?.show(experienceID: experienceID)
+    func show(_ experienceID: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+        implementation?.show(experienceID: experienceID) { success, _ in
+            resolve(success)
+        }
     }
 
     @objc
