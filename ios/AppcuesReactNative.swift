@@ -73,9 +73,13 @@ class AppcuesReactNative: RCTEventEmitter {
     }
 
     @objc
-    func show(_ experienceID: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
-        implementation?.show(experienceID: experienceID) { success, _ in
-            resolve(success)
+    func show(_ experienceID: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+        implementation?.show(experienceID: experienceID) { success, error in
+            if success {
+                resolve(nil)
+            } else {
+                reject("show-experience-failure", "unable to show experience \(experienceID)", error)
+            }
         }
     }
 
