@@ -58,14 +58,14 @@ export function track(name: string, properties?: object) {
   AppcuesReactNative.track(name, properties);
 }
 
-export async function show(experienceID: string): Promise<boolean> {
-  return await AppcuesReactNative.show(experienceID);
+export function show(experienceID: string): Promise<void> {
+  return AppcuesReactNative.show(experienceID);
 }
 
 export function debug() {
   AppcuesReactNative.debug();
 }
 
-export async function didHandleURL(url: string): Promise<boolean> {
-  return await AppcuesReactNative.didHandleURL(url);
+export function didHandleURL(url: string): Promise<boolean> {
+  return AppcuesReactNative.didHandleURL(url);
 }

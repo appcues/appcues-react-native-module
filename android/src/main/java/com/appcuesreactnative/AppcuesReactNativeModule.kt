@@ -150,7 +150,12 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     @ReactMethod
     fun show(experienceID: String, promise: Promise) {
         mainScope.launch {
-          promise.resolve(implementation.show(experienceID))
+            val success = implementation.show(experienceID)
+            if (success) {
+                promise.resolve(null)
+            } else {
+                promise.reject("show-experience-failure", "unable to show experience $experienceID")
+            }
         }
     }
 
