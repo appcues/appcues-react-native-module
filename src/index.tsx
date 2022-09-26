@@ -58,8 +58,8 @@ export function track(name: string, properties?: object) {
   AppcuesReactNative.track(name, properties);
 }
 
-export function show(experienceID: string) {
-  AppcuesReactNative.show(experienceID);
+export async function show(experienceID: string): Promise<boolean> {
+  return await AppcuesReactNative.show(experienceID);
 }
 
 export function debug() {

@@ -17,7 +17,7 @@ RCT_EXTERN_METHOD(screen:(NSString *)title properties:(NSDictionary *))
 
 RCT_EXTERN_METHOD(track:(NSString *)name properties:(NSDictionary *))
 
-RCT_EXTERN_METHOD(show:(NSString *)experienceID)
+RCT_EXTERN_METHOD(show:(NSString *)experienceID resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(debug)
 

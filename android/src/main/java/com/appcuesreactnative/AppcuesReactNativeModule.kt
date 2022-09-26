@@ -148,9 +148,9 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     }
 
     @ReactMethod
-    fun show(experienceID: String) {
+    fun show(experienceID: String, promise: Promise) {
         mainScope.launch {
-          implementation.show(experienceID)
+          promise.resolve(implementation.show(experienceID))
         }
     }
 
