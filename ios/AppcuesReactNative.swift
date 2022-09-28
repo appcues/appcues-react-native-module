@@ -58,7 +58,7 @@ class AppcuesReactNative: RCTEventEmitter {
     }
 
     @objc
-    func group(_ groupID: String, properties: [String: Any]) {
+    func group(_ groupID: String?, properties: [String: Any]) {
         implementation?.group(groupID: groupID, properties: properties)
     }
 

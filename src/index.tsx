@@ -46,7 +46,7 @@ export function anonymous() {
   AppcuesReactNative.anonymous();
 }
 
-export function group(groupID: string, properties?: object) {
+export function group(groupID?: string, properties?: object) {
   AppcuesReactNative.group(groupID, properties);
 }
 
