@@ -133,7 +133,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     }
 
     @ReactMethod
-    fun group(groupID: String, properties: ReadableMap? = null) {
+    fun group(groupID: String?, properties: ReadableMap? = null) {
         implementation.group(groupID, properties?.toHashMap())
     }
 
