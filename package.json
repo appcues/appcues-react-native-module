@@ -1,7 +1,7 @@
 {
   "name": "@appcues/react-native",
   "version": "1.0.1",
-  "description": "Appcues React Native Module",
+  "description": "Appcues React Native Module for Android and iOS mobile apps",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
