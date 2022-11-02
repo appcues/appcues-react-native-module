@@ -12,7 +12,7 @@ class AppcuesReactNative: RCTEventEmitter {
     override static func requiresMainQueueSetup() -> Bool { false }
 
     @objc
-    func setup(_ accountID: String, applicationID: String, _ options: [String: Any]) {
+    func setup(_ accountID: String, applicationID: String, _ options: [String: Any], _ additionalAutoProperties: [String: Any]) {
         // Fast refreshing can result in this being called multiple times which gets weird. `guard` is a quick way to shortcut that.
         guard implementation == nil else { return }
 
@@ -37,6 +37,8 @@ class AppcuesReactNative: RCTEventEmitter {
         if let activityStorageMaxAge = options["activityStorageMaxAge"] as? UInt {
             config.activityStorageMaxAge(activityStorageMaxAge)
         }
+
+        config.additionalAutoProperties(additionalAutoProperties)
 
         implementation = Appcues(config: config)
         implementation?.analyticsDelegate = self
@@ -136,47 +138,8 @@ extension AppcuesReactNative: AppcuesAnalyticsDelegate {
             body: [
                 "analytic": analyticName,
                 "value": value ?? "",
-                "properties": formatProperties(properties),
+                "properties": properties ?? [:],
                 "isInternal": isInternal
             ])
-    }
-
-    /// Map any supported property types that `sendEvent` doesn't handle by default.
-    private func formatProperties( _ properties: [String: Any]?) -> [String: Any] {
-        guard var properties = properties else { return [:] }
-
-        properties.forEach { key, value in
-            switch value {
-            case let date as Date:
-                properties[key] = (date.timeIntervalSince1970 * 1000).rounded()
-            case let dict as [String: Any]:
-                properties[key] = formatProperties(dict)
-            case let arr as [Any]:
-                properties[key] = formatProperties(arr)
-            default:
-                break
-            }
-        }
-
-        return properties
-    }
-
-    private func formatProperties( _ properties: [Any]?) -> [Any] {
-        guard var properties = properties else { return [] }
-
-        properties.enumerated().forEach { index, value in
-            switch value {
-            case let date as Date:
-                properties[index] = (date.timeIntervalSince1970 * 1000).rounded()
-            case let dict as [String: Any]:
-                properties[index] = formatProperties(dict)
-            case let arr as [Any]:
-                properties[index] = formatProperties(arr)
-            default:
-                break
-            }
-        }
-
-        return properties
     }
 }

@@ -26,7 +26,7 @@ executors:
     working_directory: ~/project
   ios_compatible:
     macos:
-      xcode: 13.0.0
+      xcode: 14.0.0
     working_directory: ~/project/example/ios
     shell: /bin/bash --login -o pipefail
     environment:
@@ -59,13 +59,13 @@ commands:
     steps:
       - restore_cache:
           name: Restore gem cache
-          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          key: 3-gems-{{ checksum "Gemfile.lock" }}
       - run:
           name: Install gem dependencies
-          command: bundle check || bundle install --path vendor/bundle
+          command: bundle check || bundle install --deployment --path vendor/bundle
       - save_cache:
           name: Save gem cache
-          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          key: 3-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
@@ -80,20 +80,20 @@ jobs:
       - attach_project
       - restore_cache:
           keys:
-            - dependencies-{{ checksum "package.json" }}
+            - 1-dependencies-{{ checksum "package.json" }}
       - restore_cache:
           keys:
-            - dependencies-example-{{ checksum "example/package.json" }}
+            - 2-dependencies-example-{{ checksum "example/package.json" }}
       - run:
           name: Install dependencies
           command: |
             yarn install --cwd example --frozen-lockfile
             yarn install --frozen-lockfile
       - save_cache:
-          key: dependencies-{{ checksum "package.json" }}
+          key: 1-dependencies-{{ checksum "package.json" }}
           paths: node_modules
       - save_cache:
-          key: dependencies-example-{{ checksum "example/package.json" }}
+          key: 2-dependencies-example-{{ checksum "example/package.json" }}
           paths: example/node_modules
       - persist_to_workspace:
           root: .

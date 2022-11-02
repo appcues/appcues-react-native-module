@@ -3,7 +3,7 @@
 
 @interface RCT_EXTERN_MODULE(AppcuesReactNative, RCTEventEmitter)
 
-RCT_EXTERN_METHOD(setup:(NSString *)accountID applicationID:(NSString *) options:(NSDictionary *))
+RCT_EXTERN_METHOD(setup:(NSString *)accountID applicationID:(NSString *) options:(NSDictionary *) additionalAutoProperties:(NSDictionary *))
 
 RCT_EXTERN_METHOD(identify:(NSString *)userID properties:(NSDictionary *))
 
