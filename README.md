@@ -23,6 +23,25 @@ This native module is a bridge between the native Appcues SDKs in a React Native
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+**Android** - your application's `build.gradle` must have a `compileSdkVersion` of 33+ and `minSdkVersion` of 21+
+```
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+}
+```
+
+**iOS** - your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content. Update the iOS project xcodeproj to set the deployment target, if needed - typically in `iOS/Runner.xcodeproj`. In the application's `Podfile`, include at least this minimum version.
+```rb
+# Podfile
+platform :ios, '11.0'
+```
+
 ### Installation
 
 1. In your app's root directory, install the Appcues React Native Module

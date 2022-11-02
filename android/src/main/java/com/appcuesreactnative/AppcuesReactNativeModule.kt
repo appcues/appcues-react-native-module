@@ -23,7 +23,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     }
 
     @ReactMethod
-    fun setup(accountID: String, applicationID: String, options: ReadableMap? = null) {
+    fun setup(accountID: String, applicationID: String, options: ReadableMap?, additionalAutoProperties: ReadableMap?) {
         val context = reactApplicationContextIfActiveOrWarn
         val activity = currentActivity
         if (context != null && activity != null) {
@@ -56,12 +56,14 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
                     }
                 }
 
+                this.additionalAutoProperties = additionalAutoProperties?.toHashMap() ?: emptyMap()
+
                 this.analyticsListener = object: AnalyticsListener {
                     override fun trackedAnalytic(type: AnalyticType, value: String?, properties: Map<String, Any>?, isInternal: Boolean) {
                         val params = Arguments.createMap().apply {
                             putString("analytic", type.name)
                             putString("value", value ?: "")
-                            putMap("properties", writableMapOf(properties ?: emptyMap<String, Any>()))
+                            putMap("properties", readableMapOf(properties ?: emptyMap<String, Any>()))
                             putBoolean("isInternal", isInternal)
                         }
 
@@ -74,7 +76,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
         }
     }
 
-    private fun writableMapOf(values: Map<*, *>): WritableMap {
+    private fun readableMapOf(values: Map<*, *>): ReadableMap {
         val map = Arguments.createMap()
         for ((anyKey, value) in values) {
             val key = anyKey as? String ?: continue
@@ -82,35 +84,31 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
                 null -> map.putNull(key)
                 is Boolean -> map.putBoolean(key, value)
                 is Double -> map.putDouble(key, value)
-                // The Android SDK passes dates as a Long Unix timestamp
-                is Long -> map.putDouble(key, value.toDouble())
                 is Int -> map.putInt(key, value)
                 is String -> map.putString(key, value)
                 is WritableMap -> map.putMap(key, value)
                 is WritableArray -> map.putArray(key, value)
-                is Map<*, *> -> map.putMap(key, writableMapOf(value))
-                is List<*> -> map.putArray(key, writableArrayOf(value))
+                is Map<*, *> -> map.putMap(key, readableMapOf(value))
+                is List<*> -> map.putArray(key, readableArrayOf(value))
                 else -> map.putNull(key)
             }
         }
         return map
     }
 
-    private fun writableArrayOf(values: List<*>): WritableArray {
+    private fun readableArrayOf(values: List<*>): ReadableArray {
         val array = Arguments.createArray()
         for (value in values) {
             when (value) {
                 null -> array.pushNull()
                 is Boolean -> array.pushBoolean(value)
                 is Double -> array.pushDouble(value)
-                // The Android SDK passes dates as a Long Unix timestamp
-                is Long -> array.pushDouble(value.toDouble())
                 is Int -> array.pushInt(value)
                 is String -> array.pushString(value)
                 is WritableMap -> array.pushMap(value)
                 is WritableArray -> array.pushArray(value)
-                is Map<*, *> -> array.pushMap(writableMapOf(value))
-                is List<*> -> array.pushArray(writableArrayOf(value))
+                is Map<*, *> -> array.pushMap(readableMapOf(value))
+                is List<*> -> array.pushArray(readableArrayOf(value))
                 else -> array.pushNull()
             }
         }

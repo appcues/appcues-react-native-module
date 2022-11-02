@@ -31,7 +31,10 @@ export function setup(
   applicationID: string,
   options?: ReactNativeOptions
 ) {
-  AppcuesReactNative.setup(accountID, applicationID, options);
+  AppcuesReactNative.setup(accountID, applicationID, options, {
+    _applicationFramework: 'react-native',
+    _applicationFrameworkVersion: require('react-native/package.json').version,
+  });
 }
 
 export function identify(userID: string, properties?: object) {
