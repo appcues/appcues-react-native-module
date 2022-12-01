@@ -32,7 +32,7 @@ const AppcuesWrapper = NativeModules.AppcuesReactNative ?? {
 };
 
 export function setup(accountID, applicationID, options) {
-  AppcuesWrapper.setup(accountID, applicationID, options);
+  AppcuesWrapper.setup(accountID, applicationID, options, { _applicationFramework: 'expo' });
 }
 
 export function identify(userID, properties) {
