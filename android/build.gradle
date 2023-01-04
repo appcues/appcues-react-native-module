@@ -131,5 +131,5 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
 
     // Appcues
-    implementation "com.appcues:appcues:1.1.2"
+    implementation "com.appcues:appcues:1.2.0"
 }
