@@ -69,7 +69,7 @@ import * as Appcues from '@appcues/react-native'
 await Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID')
 ```
 
-Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account). Refer to the help documentation on [Registering your mobile app in Studio](https://docs.appcues.com/article/848-registering-your-mobile-app-in-studio) for more information. Since the React Native bridge is asynchronous, the `setup` call should be awaited, before calling subsequent SDK functions.
+Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account). Refer to the help documentation on [Registering your mobile app in Studio](https://docs.appcues.com/article/848-registering-your-mobile-app-in-studio) for more information. Since the React Native bridge is asynchronous, the `setup` call should be resolved before calling subsequent SDK functions.
 
 #### Supporting Debugging and Experience Previewing
 
