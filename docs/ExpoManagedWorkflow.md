@@ -31,8 +31,8 @@ const AppcuesWrapper = NativeModules.AppcuesReactNative ?? {
   didHandleURL: (url) => { console.log(`Appcues.didHandleURL(${url})`); return false },
 };
 
-export function setup(accountID, applicationID, options) {
-  AppcuesWrapper.setup(accountID, applicationID, options, { _applicationFramework: 'expo' });
+export async function setup(accountID, applicationID, options) {
+  return AppcuesWrapper.setup(accountID, applicationID, options, { _applicationFramework: 'expo' });
 }
 
 export function identify(userID, properties) {
@@ -78,7 +78,7 @@ Instead of importing from `@appcues/react-native` directly, reference the `Appcu
 
 ```js
  import * as AppcuesWrapper from './AppcuesWrapper';
- AppcuesWrapper.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
+ await AppcuesWrapper.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
  
  AppcuesWrapper.identify('my-user-id');
  

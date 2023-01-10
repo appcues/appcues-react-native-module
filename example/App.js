@@ -21,8 +21,11 @@ export default function App() {
   const [initComplete, setInitComplete] = useState(false);
 
   useEffect(() => {
-    Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
-    setInitComplete(true);
+    const initializeSdk = async () => {
+      await Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
+      setInitComplete(true);
+    };
+    initializeSdk();
   }, []);
 
   return (
