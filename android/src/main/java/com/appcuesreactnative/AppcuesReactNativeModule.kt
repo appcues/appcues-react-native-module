@@ -26,7 +26,8 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     fun setup(
       accountID: String,
       applicationID: String,
-      options: ReadableMap?, additionalAutoProperties: ReadableMap?,
+      options: ReadableMap?,
+      additionalAutoProperties: ReadableMap?,
       promise: Promise
     ) {
         val context = reactApplicationContextIfActiveOrWarn
