@@ -12,7 +12,17 @@ class AppcuesReactNative: RCTEventEmitter {
     override static func requiresMainQueueSetup() -> Bool { false }
 
     @objc
-    func setup(_ accountID: String, applicationID: String, _ options: [String: Any], _ additionalAutoProperties: [String: Any]) {
+    func setup(_ accountID: String,
+               applicationID: String,
+               _ options: [String: Any],
+               _ additionalAutoProperties: [String: Any],
+               _ resolve: @escaping RCTPromiseResolveBlock,
+               _ reject: @escaping RCTPromiseRejectBlock) {
+
+        // since a native module makes native calls asynchronously, we use a Promise here to allow callers to
+        
+        defer { resolve(nil) }
+
         // Fast refreshing can result in this being called multiple times which gets weird. `guard` is a quick way to shortcut that.
         guard implementation == nil else { return }
 

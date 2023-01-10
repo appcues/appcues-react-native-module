@@ -23,57 +23,77 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     }
 
     @ReactMethod
-    fun setup(accountID: String, applicationID: String, options: ReadableMap?, additionalAutoProperties: ReadableMap?) {
+    fun setup(
+      accountID: String,
+      applicationID: String,
+      options: ReadableMap?, additionalAutoProperties: ReadableMap?,
+      promise: Promise
+    ) {
         val context = reactApplicationContextIfActiveOrWarn
+        if (context == null) {
+            promise.reject("no-context", "unable to initialize the SDK, no Application Context found")
+            return
+        }
         val activity = currentActivity
-        if (context != null && activity != null) {
-            implementation = Appcues(context, accountID, applicationID) {
-                options?.toHashMap()?.let {
+        if (activity == null) {
+            promise.reject("no-activity", "unable to initialize the SDK, no current running Activity found")
+            return
+        }
+        implementation = Appcues(context, accountID, applicationID) {
+            options?.toHashMap()?.let {
 
-                    val logging = it["logging"] as? Boolean
-                    if (logging != null) {
-                        this.loggingLevel = if (logging) LoggingLevel.INFO else LoggingLevel.NONE
-                    }
-
-                    val apiHost = it["apiHost"] as? String
-                    if (apiHost != null) {
-                        this.apiBasePath = apiHost
-                    }
-
-                    val sessionTimeout = it["sessionTimeout"] as? Double
-                    if (sessionTimeout != null) {
-                        this.sessionTimeout = sessionTimeout.toInt()
-                    }
-
-                    val activityStorageMaxSize = it["activityStorageMaxSize"] as? Double
-                    if (activityStorageMaxSize != null) {
-                        this.activityStorageMaxSize = activityStorageMaxSize.toInt()
-                    }
-
-                    val activityStorageMaxAge = it["activityStorageMaxAge"] as? Double
-                    if (activityStorageMaxAge != null) {
-                        this.activityStorageMaxAge = activityStorageMaxAge.toInt()
-                    }
+                val logging = it["logging"] as? Boolean
+                if (logging != null) {
+                    this.loggingLevel = if (logging) LoggingLevel.INFO else LoggingLevel.NONE
                 }
 
-                this.additionalAutoProperties = additionalAutoProperties?.toHashMap() ?: emptyMap()
+                val apiHost = it["apiHost"] as? String
+                if (apiHost != null) {
+                    this.apiBasePath = apiHost
+                }
 
-                this.analyticsListener = object: AnalyticsListener {
-                    override fun trackedAnalytic(type: AnalyticType, value: String?, properties: Map<String, Any>?, isInternal: Boolean) {
-                        val params = Arguments.createMap().apply {
-                            putString("analytic", type.name)
-                            putString("value", value ?: "")
-                            putMap("properties", readableMapOf(properties ?: emptyMap<String, Any>()))
-                            putBoolean("isInternal", isInternal)
-                        }
+                val sessionTimeout = it["sessionTimeout"] as? Double
+                if (sessionTimeout != null) {
+                    this.sessionTimeout = sessionTimeout.toInt()
+                }
 
-                        reactApplicationContext
-                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                            .emit("analytics", params)
+                val activityStorageMaxSize = it["activityStorageMaxSize"] as? Double
+                if (activityStorageMaxSize != null) {
+                    this.activityStorageMaxSize = activityStorageMaxSize.toInt()
+                }
+
+                val activityStorageMaxAge = it["activityStorageMaxAge"] as? Double
+                if (activityStorageMaxAge != null) {
+                    this.activityStorageMaxAge = activityStorageMaxAge.toInt()
+                }
+            }
+
+            this.additionalAutoProperties = additionalAutoProperties?.toHashMap() ?: emptyMap()
+
+            this.analyticsListener = object: AnalyticsListener {
+                override fun trackedAnalytic(
+                  type: AnalyticType,
+                  value: String?,
+                  properties: Map<String, Any>?,
+                  isInternal: Boolean
+                ) {
+                    val params = Arguments.createMap().apply {
+                        putString("analytic", type.name)
+                        putString("value", value ?: "")
+                        putMap("properties", readableMapOf(properties ?: emptyMap<String, Any>()))
+                        putBoolean("isInternal", isInternal)
                     }
+
+                    reactApplicationContext
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("analytics", params)
                 }
             }
         }
+
+        // since a native module makes native calls asynchronously, we use a Promise here to allow callers to
+        // be able to reliably know when initialization is complete and subsequent SDK calls can continue.
+        promise.resolve(null)
     }
 
     private fun readableMapOf(values: Map<*, *>): ReadableMap {

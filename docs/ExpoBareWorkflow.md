@@ -11,7 +11,7 @@ $ expo install @appcues/react-native
 ```js
 import * as Appcues from '@appcues/react-native';
 
-Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
+await Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
 
 Appcues.identify('my-user-id');
 

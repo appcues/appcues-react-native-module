@@ -1,5 +1,7 @@
 package com.appcues.samples.reactnative;
 
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -11,5 +13,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "AppcuesReactNativeExample";
+  }
+
+  // https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
   }
 }

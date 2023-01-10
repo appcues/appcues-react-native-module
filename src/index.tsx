@@ -30,8 +30,8 @@ export function setup(
   accountID: string,
   applicationID: string,
   options?: ReactNativeOptions
-) {
-  AppcuesReactNative.setup(accountID, applicationID, options, {
+): Promise<void> {
+  return AppcuesReactNative.setup(accountID, applicationID, options, {
     _applicationFramework: 'react-native',
     _applicationFrameworkVersion: require('react-native/package.json').version,
   });
