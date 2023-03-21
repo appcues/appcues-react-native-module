@@ -52,6 +52,10 @@ class AppcuesReactNative: RCTEventEmitter {
 
         implementation = Appcues(config: config)
         implementation?.analyticsDelegate = self
+
+        if #available(iOS 13.0, *) {
+            Appcues.elementTargeting = ReactNativeElementTargeting()
+        }
     }
 
     @objc
