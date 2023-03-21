@@ -1,5 +1,6 @@
 package com.appcuesreactnative
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import com.appcues.AnalyticType
@@ -17,6 +18,9 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     private var implementation: Appcues? = null
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
+
+    val activity: Activity?
+      get() = currentActivity
 
     override fun getName(): String {
         return "AppcuesReactNative"
@@ -91,6 +95,8 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
                 }
             }
         }
+
+        Appcues.elementTargeting = ReactNativeViewTargeting(this@AppcuesReactNativeModule)
 
         // since a native module makes native calls asynchronously, we use a Promise here to allow callers to
         // be able to reliably know when initialization is complete and subsequent SDK calls can continue.
