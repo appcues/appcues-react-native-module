@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
-    private lateinit var implementation: Appcues
+    private var implementation: Appcues? = null
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
@@ -138,38 +138,38 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
 
     @ReactMethod
     fun identify(userID: String, properties: ReadableMap? = null) {
-        implementation.identify(userID, properties?.toHashMap())
+        implementation?.identify(userID, properties?.toHashMap())
     }
 
     @ReactMethod
     fun reset() {
-        implementation.reset()
+        implementation?.reset()
     }
 
     @ReactMethod
     fun anonymous() {
-        implementation.anonymous()
+        implementation?.anonymous()
     }
 
     @ReactMethod
     fun group(groupID: String?, properties: ReadableMap? = null) {
-        implementation.group(groupID, properties?.toHashMap())
+        implementation?.group(groupID, properties?.toHashMap())
     }
 
     @ReactMethod
     fun screen(title: String, properties: ReadableMap? = null) {
-        implementation.screen(title, properties?.toHashMap())
+        implementation?.screen(title, properties?.toHashMap())
     }
 
     @ReactMethod
     fun track(name: String, properties: ReadableMap? = null) {
-        implementation.track(name, properties?.toHashMap())
+        implementation?.track(name, properties?.toHashMap())
     }
 
     @ReactMethod
     fun show(experienceID: String, promise: Promise) {
         mainScope.launch {
-            val success = implementation.show(experienceID)
+            val success = implementation?.show(experienceID) ?: false
             if (success) {
                 promise.resolve(null)
             } else {
@@ -181,7 +181,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
     @ReactMethod
     fun debug() {
         currentActivity?.let {
-            implementation.debug(it)
+            implementation?.debug(it)
         }
     }
 
@@ -192,7 +192,7 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
         if (activity != null) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri
-            promise.resolve(implementation.onNewIntent(activity, intent))
+            promise.resolve(implementation?.onNewIntent(activity, intent) ?: false)
         } else {
             promise.reject("no-activity", "unable to handle the URL, no current running Activity found")
         }
