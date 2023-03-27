@@ -20,6 +20,7 @@ class AppcuesReactNative: RCTEventEmitter {
                _ reject: @escaping RCTPromiseRejectBlock) {
 
         // since a native module makes native calls asynchronously, we use a Promise here to allow callers to
+        // be able to reliably know when initialization is complete and subsequent SDK calls can continue.
         defer { resolve(nil) }
 
         // Fast refreshing can result in this being called multiple times which gets weird. `guard` is a quick way to shortcut that.
