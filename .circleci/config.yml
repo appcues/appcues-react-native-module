@@ -84,7 +84,7 @@ jobs:
             - 1-dependencies-{{ checksum "package.json" }}
       - restore_cache:
           keys:
-            - 2-dependencies-example-{{ checksum "example/package.json" }}
+            - 3-dependencies-example-{{ checksum "example/package.json" }}
       - run:
           name: Install dependencies
           command: |
@@ -94,7 +94,7 @@ jobs:
           key: 1-dependencies-{{ checksum "package.json" }}
           paths: node_modules
       - save_cache:
-          key: 2-dependencies-example-{{ checksum "example/package.json" }}
+          key: 3-dependencies-example-{{ checksum "example/package.json" }}
           paths: example/node_modules
       - persist_to_workspace:
           root: .
