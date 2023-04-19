@@ -36,23 +36,26 @@ const ProfileView = () => {
         onChangeText={onChangeGivenName}
         placeholder="Given Name"
         value={givenName}
+        nativeID="txtGivenName"
       />
       <Text>Family Name</Text>
       <TextInput
         onChangeText={onChangeFamilyName}
         placeholder="Family Name"
         value={familyName}
+        nativeID="txtFamilyName"
       />
       <FilledButton
         title="Save"
         onPress={() => {
-          Appcues.identify(userID, {
-            givenName: givenName,
-            familyName: familyName,
-          });
+          Appcues.identify(
+            userID,
+            removeEmpty({ givenName: givenName, familyName: familyName })
+          );
           onChangeGivenName(null);
           onChangeFamilyName(null);
         }}
+        nativeID="btnSaveProfile"
       />
     </View>
   );
@@ -84,4 +87,8 @@ export default function ProfileScreen() {
       />
     </Stack.Navigator>
   );
+}
+
+function removeEmpty(obj) {
+  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 }

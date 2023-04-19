@@ -26,10 +26,12 @@ const EventsView = () => {
     >
       <TintedButton
         title="Trigger Event 1"
+        nativeID="btnEvent1"
         onPress={() => Appcues.track('event1')}
       />
       <TintedButton
         title="Trigger Event 2"
+        nativeID="btnEvent2"
         onPress={() => Appcues.track('event2')}
       />
     </View>

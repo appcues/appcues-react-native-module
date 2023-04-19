@@ -18,6 +18,7 @@ export default function TextInput(props) {
         marginTop: 8,
         fontSize: 14,
       }}
+      nativeID={props.nativeID}
     />
   );
 }
