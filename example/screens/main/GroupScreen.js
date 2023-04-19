@@ -33,6 +33,7 @@ const GroupView = () => {
         onChangeText={onChangeGroupID}
         placeholder="Group"
         value={groupID}
+        nativeID="txtGroup"
       />
       <FilledButton
         title="Save"
@@ -40,6 +41,7 @@ const GroupView = () => {
           Appcues.group(groupID, { test_user: true });
           onChangeGroupID(null);
         }}
+        nativeID="btnSaveGroup"
       />
     </View>
   );
