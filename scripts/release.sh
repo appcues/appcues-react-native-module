@@ -76,12 +76,6 @@ case "$response" in
 		;;
 esac
 
-# get the commits since the last release, filtering ones that aren't relevant.
-changelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬📸✅💡📝🗃]/d')
-tempFile=$(mktemp)
-# write changelog to temp file.
-echo "$changelog" >> $tempFile
-
 # update package.json version.
 npm version $newVersion -git-tag-version false
 # update example/package.json version.
@@ -90,6 +84,13 @@ npm version $newVersion -git-tag-version false
 # commit the version change.
 git commit -am "🗃 Update version to $newVersion"
 git push
+
+# get the commits since the last release, filtering ones that aren't relevant.
+changelog=$(git log --pretty=format:"- [%as] %s (%h)" $(git describe --tags --abbrev=0 @^)..@ --abbrev=7 | sed '/[🔧🎬📸✅💡📝]/d')
+tempFile=$(mktemp)
+# write changelog to temp file.
+echo "$changelog" >> $tempFile
+
 # gh release will make both the tag and the release itself.
 gh release create $newVersion -F $tempFile -t $newVersion
 
