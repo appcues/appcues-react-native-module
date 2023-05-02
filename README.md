@@ -1,6 +1,6 @@
 # Appcues React Native Module
 
-[![CircleCI](https://circleci.com/gh/appcues/appcues-react-native-module/tree/main.svg?style=shield)](https://circleci.com/gh/appcues/appcues-react-native-module/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/appcues/appcues-react-native-module/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/appcues/appcues-react-native-module/tree/main)
 [![npm](https://img.shields.io/npm/v/@appcues/react-native.svg?logo=npm&logoColor=fff&label=NPM+package&color=limegreen)](https://www.npmjs.com/package/@appcues/react-native)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/appcues/appcues-react-native-module/blob/main/LICENSE)
 
