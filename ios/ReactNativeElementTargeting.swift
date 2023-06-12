@@ -71,6 +71,7 @@ extension UIView {
             height: absolutePosition.height,
             type: "\(type(of: self))",
             selector: reactNativeSelector,
-            children: children.isEmpty ? nil : children)
+            children: children.isEmpty ? nil : children,
+            displayName: reactNativeSelector?.nativeID)
     }
 }

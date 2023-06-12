@@ -69,18 +69,22 @@ private fun View.asCaptureView(): ViewElement? {
         children = null
     }
 
+    val selector = selector()
+
     return ViewElement(
         x = actualPosition.left.toDp(density),
         y = actualPosition.top.toDp(density),
         width = actualPosition.width().toDp(density),
         height = actualPosition.height().toDp(density),
-        selector = selector(),
+        selector = selector,
+        displayName = selector?.nativeId,
         type = this.javaClass.name,
         children = children,
+
     )
 }
 
-internal fun View.selector(): ElementSelector? {
+internal fun View.selector(): ReactNativeViewSelector? {
     return getTag(R.id.view_tag_native_id)?.toString()?.let { ReactNativeViewSelector(it) }
 }
 
