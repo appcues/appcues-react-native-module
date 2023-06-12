@@ -28,6 +28,16 @@ internal class ReactNativeElementSelector: AppcuesElementSelector {
 
         return nativeID == target.nativeID ? 10_000 : 0
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case nativeID
+    }
+
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.nativeID, forKey: .nativeID)
+    }
 }
 
 @available(iOS 13.0, *)
