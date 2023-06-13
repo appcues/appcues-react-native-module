@@ -7,6 +7,7 @@ import androidx.core.view.children
 import com.appcues.ElementSelector
 import com.appcues.ElementTargetingStrategy
 import com.appcues.ViewElement
+import com.appcues.isAppcuesView
 import com.facebook.react.R
 
 internal data class ReactNativeViewSelector(var nativeId: String): ElementSelector {
@@ -50,11 +51,10 @@ private fun View.asCaptureView(): ViewElement? {
         return null
     }
 
-    // ignore the Appcues SDK content that has been injected into the view hierarchy
-    // NOTE: revisit this when Android SDK is updated to expose this function publicly
-    // if (this.isAppcuesView()) {
-    //     return null
-    // }
+     // ignore the Appcues SDK content that has been injected into the view hierarchy
+     if (this.isAppcuesView()) {
+         return null
+     }
 
     var children = (this as? ViewGroup)?.children?.mapNotNull {
         if (!it.isShown) {
