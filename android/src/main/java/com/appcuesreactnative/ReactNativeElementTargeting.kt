@@ -10,15 +10,38 @@ import com.appcues.ViewElement
 import com.appcues.isAppcuesView
 import com.facebook.react.R
 
-internal data class ReactNativeViewSelector(var nativeId: String): ElementSelector {
+internal data class ReactNativeViewSelector(var nativeId: String?, var testId: String?): ElementSelector {
+
+    val isValid: Boolean
+        get() = nativeId != null || testId != null
+
+    val displayName: String?
+        get() = when {
+            nativeId != null -> nativeId
+            testId != null -> testId
+            else -> null
+        }
 
     override fun toMap(): Map<String, String> =
-        mapOf("nativeID" to nativeId)
+        mapOf(
+            "nativeID" to nativeId,
+            "testID" to testId
+        ).filterValues { it != null }.mapValues { it.value as String }
 
     override fun evaluateMatch(target: ElementSelector): Int {
-        return (target as? ReactNativeViewSelector)?.let {
-            if (it.nativeId == nativeId) 10_000 else 0
-        } ?: 0
+        var weight = 0
+
+        (target as? ReactNativeViewSelector)?.let {
+            if (!it.nativeId.isNullOrEmpty() && it.nativeId == nativeId) {
+                weight += 1_000
+            }
+
+            if (!it.testId.isNullOrEmpty() && it.testId == testId) {
+                weight += 1_000
+            }
+        }
+
+        return weight
     }
 }
 
@@ -31,7 +54,10 @@ internal class ReactNativeViewTargeting(
     }
 
     override fun inflateSelectorFrom(properties: Map<String, String>): ElementSelector? {
-        return properties["nativeID"]?.let { ReactNativeViewSelector(it) }
+        return ReactNativeViewSelector(
+            nativeId = properties["nativeID"],
+            testId = properties["testID"]
+        ).let { if (it.isValid) it else null }
     }
 }
 
@@ -77,7 +103,7 @@ private fun View.asCaptureView(): ViewElement? {
         width = actualPosition.width().toDp(density),
         height = actualPosition.height().toDp(density),
         selector = selector,
-        displayName = selector?.nativeId,
+        displayName = selector?.displayName,
         type = this.javaClass.name,
         children = children,
 
@@ -85,7 +111,12 @@ private fun View.asCaptureView(): ViewElement? {
 }
 
 internal fun View.selector(): ReactNativeViewSelector? {
-    return getTag(R.id.view_tag_native_id)?.toString()?.let { ReactNativeViewSelector(it) }
+    return ReactNativeViewSelector(
+        nativeId = getTag(R.id.view_tag_native_id)?.toString(),
+        // a "testID" set on a react native view will come in to the Android View in the
+        // tag property
+        testId = tag as? String
+    ).let { if (it.isValid) it else null }
 }
 
 private fun Int.toDp(density: Float) =
