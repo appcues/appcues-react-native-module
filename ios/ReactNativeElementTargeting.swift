@@ -9,15 +9,27 @@ import AppcuesKit
 import UIKit
 
 internal class ReactNativeElementSelector: AppcuesElementSelector {
-    let nativeID: String
+    let nativeID: String?
+    let testID: String?
 
-    init?(nativeID: String?) {
+    var displayName: String? {
+        if let nativeID = nativeID {
+            return nativeID
+        } else if let testID = testID {
+            return testID
+        }
+
+        return nil
+    }
+
+    init?(nativeID: String?, testID: String?) {
         // must have at least one identifiable property to be a valid selector
-        guard let nativeID = nativeID else {
+        if nativeID == nil && testID == nil {
             return nil
         }
 
         self.nativeID = nativeID
+        self.testID = testID
         super.init()
     }
 
@@ -26,17 +38,34 @@ internal class ReactNativeElementSelector: AppcuesElementSelector {
             return 0
         }
 
-        return nativeID == target.nativeID ? 10_000 : 0
+        // weight the selector property matches by how distinct they are considered
+        var weight = 0
+
+        if nativeID != nil && nativeID == target.nativeID {
+            weight += 10_000
+        }
+
+        if testID != nil && testID == target.testID {
+            weight += 1_000
+        }
+
+        return weight
     }
 
     private enum CodingKeys: String, CodingKey {
         case nativeID
+        case testID
     }
 
     override func encode(to encoder: Encoder) throws {
         try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.nativeID, forKey: .nativeID)
+        if let nativeID = nativeID, !nativeID.isEmpty {
+            try container.encode(nativeID, forKey: .nativeID)
+        }
+        if let testID = testID, !testID.isEmpty {
+            try container.encode(testID, forKey: .testID)
+        }
     }
 }
 
@@ -47,14 +76,20 @@ internal class ReactNativeElementTargeting: AppcuesElementTargeting {
     }
 
     func inflateSelector(from properties: [String: String]) -> AppcuesElementSelector? {
-        return ReactNativeElementSelector(nativeID: properties["nativeID"])
+        return ReactNativeElementSelector(
+            nativeID: properties["nativeID"],
+            testID: properties["testID"]
+        )
     }
 }
 
 extension UIView {
     var reactNativeSelector: ReactNativeElementSelector? {
         return ReactNativeElementSelector(
-            nativeID: nativeID
+            nativeID: nativeID,
+            // on iOS, the "testID" set on a react native view comes in through
+            // the accessibilityIdentifier property on the UIView
+            testID: accessibilityIdentifier
         )
     }
 
@@ -82,6 +117,6 @@ extension UIView {
             type: "\(type(of: self))",
             selector: reactNativeSelector,
             children: children.isEmpty ? nil : children,
-            displayName: reactNativeSelector?.nativeID)
+            displayName: reactNativeSelector?.displayName)
     }
 }
