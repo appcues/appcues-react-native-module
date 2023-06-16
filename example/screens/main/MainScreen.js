@@ -29,17 +29,17 @@ export default function MainScreen() {
       <Tab.Screen
         name="Events"
         component={EventsScreen}
-        options={{ title: 'Events' }}
+        options={{ title: 'Events', tabBarTestID: 'tabEvents' }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ title: 'Profile' }}
+        options={{ title: 'Profile', tabBarTestID: 'tabProfile' }}
       />
       <Tab.Screen
         name="Group"
         component={GroupScreen}
-        options={{ title: 'Group' }}
+        options={{ title: 'Group', tabBarTestID: 'tabGroup' }}
       />
     </Tab.Navigator>
   );

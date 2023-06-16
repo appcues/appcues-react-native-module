@@ -19,6 +19,7 @@ export default function TextInput(props) {
         fontSize: 14,
       }}
       nativeID={props.nativeID}
+      testID={props.testID}
     />
   );
 }
