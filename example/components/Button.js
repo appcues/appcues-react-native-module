@@ -7,6 +7,7 @@ function Button(props) {
       onPress={props.onPress}
       style={props.style.container}
       nativeID={props.nativeID}
+      testID={props.testID}
     >
       <Text style={props.style.buttonText}>{props.title}</Text>
     </TouchableOpacity>
