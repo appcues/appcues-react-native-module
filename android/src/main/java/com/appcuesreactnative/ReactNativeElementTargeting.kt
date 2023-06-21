@@ -1,8 +1,11 @@
 package com.appcuesreactnative
 
+import android.app.Activity
 import android.graphics.Rect
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.inspector.WindowInspector
 import androidx.core.view.children
 import com.appcues.ElementSelector
 import com.appcues.ElementTargetingStrategy
@@ -45,12 +48,20 @@ internal data class ReactNativeViewSelector(var nativeId: String?, var testId: S
     }
 }
 
+internal fun Activity.getParentView(): ViewGroup {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        return WindowInspector.getGlobalWindowViews().last().rootView as ViewGroup
+    }
+
+    return window.decorView.rootView as ViewGroup
+}
+
 internal class ReactNativeViewTargeting(
     private val module: AppcuesReactNativeModule
 ): ElementTargetingStrategy {
 
     override fun captureLayout(): ViewElement? {
-        return module.activity?.window?.decorView?.rootView?.asCaptureView()
+        return module.activity?.getParentView()?.asCaptureView()
     }
 
     override fun inflateSelectorFrom(properties: Map<String, String>): ElementSelector? {
