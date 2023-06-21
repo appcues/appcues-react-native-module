@@ -12,6 +12,7 @@ import com.appcues.ElementTargetingStrategy
 import com.appcues.ViewElement
 import com.appcues.isAppcuesView
 import com.facebook.react.R
+import java.lang.reflect.Method
 
 internal data class ReactNativeViewSelector(var nativeId: String?, var testId: String?): ElementSelector {
 
@@ -49,11 +50,33 @@ internal data class ReactNativeViewSelector(var nativeId: String?, var testId: S
 }
 
 internal fun Activity.getParentView(): ViewGroup {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        return WindowInspector.getGlobalWindowViews().last().rootView as ViewGroup
+
+    // try to find the most applicable topmost decorView to capture layout. Typically there is just a single
+    // decorView on the Activity window. However, if something like a dialog modal has been shown, this can add another
+    // window with another decorView on top of the Activity. If we want to support showing content above that layer, we need
+    // to find the topmost decorView like below.
+
+    val decorView = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        // this is the preferred method on API 29+ with the new WindowInspector function
+        WindowInspector.getGlobalWindowViews().last()
+    } else {
+        @Suppress("SwallowedException", "TooGenericExceptionCaught")
+        try {
+            // this is the less desirable method for API 21-28, using reflection to try to get the root views
+            val windowManagerClass = Class.forName("android.view.WindowManagerGlobal")
+            val windowManager = windowManagerClass.getMethod("getInstance").invoke(null)
+            val getViewRootNames: Method = windowManagerClass.getMethod("getViewRootNames")
+            val getRootView: Method = windowManagerClass.getMethod("getRootView", String::class.java)
+            val rootViewNames = getViewRootNames.invoke(windowManager) as Array<Any?>
+            val rootViews = rootViewNames.map { getRootView(windowManager, it) as View }
+            rootViews.last()
+        } catch (e: Exception) {
+            // if all else fails, use the decorView on the window, which is typically the only one
+            window.decorView
+        }
     }
 
-    return window.decorView.rootView as ViewGroup
+    return decorView.rootView as ViewGroup
 }
 
 internal class ReactNativeViewTargeting(
