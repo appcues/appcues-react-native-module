@@ -84,7 +84,11 @@ internal class ReactNativeViewTargeting(
 ): ElementTargetingStrategy {
 
     override fun captureLayout(): ViewElement? {
-        return module.activity?.getParentView()?.asCaptureView()
+        return module.activity?.getParentView()?.let {
+            val screenBounds = Rect()
+            it.getGlobalVisibleRect(screenBounds)
+            it.asCaptureView(screenBounds)
+        }
     }
 
     override fun inflateSelectorFrom(properties: Map<String, String>): ElementSelector? {
@@ -95,7 +99,7 @@ internal class ReactNativeViewTargeting(
     }
 }
 
-private fun View.asCaptureView(): ViewElement? {
+private fun View.asCaptureView(screenBounds: Rect): ViewElement? {
     val displayMetrics = context.resources.displayMetrics
     val density = displayMetrics.density
 
@@ -103,25 +107,22 @@ private fun View.asCaptureView(): ViewElement? {
     val actualPosition = Rect()
     getGlobalVisibleRect(actualPosition)
 
-    // the bounds of the screen
-    val screenRect = Rect(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
-
     // if the view is not currently in the screenshot image (scrolled away), ignore
-    if (Rect.intersects(actualPosition, screenRect).not()) {
+    if (Rect.intersects(actualPosition, screenBounds).not()) {
         return null
     }
 
-     // ignore the Appcues SDK content that has been injected into the view hierarchy
-     if (this.isAppcuesView()) {
-         return null
-     }
+    // ignore the Appcues SDK content that has been injected into the view hierarchy
+    if (this.isAppcuesView()) {
+        return null
+    }
 
     var children = (this as? ViewGroup)?.children?.mapNotNull {
         if (!it.isShown) {
             // discard hidden views and subviews within
             null
         } else {
-            it.asCaptureView()
+            it.asCaptureView(screenBounds)
         }
     }?.toList()
 
@@ -140,7 +141,6 @@ private fun View.asCaptureView(): ViewElement? {
         displayName = selector?.displayName,
         type = this.javaClass.name,
         children = children,
-
     )
 }
 
