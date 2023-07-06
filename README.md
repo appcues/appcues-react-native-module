@@ -16,6 +16,7 @@ This native module is a bridge between the native Appcues SDKs in a React Native
       - [Supporting Debugging and Experience Previewing](#supporting-debugging-and-experience-previewing)
     - [Identifying Users](#identifying-users)
     - [Tracking Screens and Events](#tracking-screens-and-events)
+    - [Anchored Tooltips](#anchored-tooltips)
   - [📝 Documentation](#-documentation)
   - [🎬 Examples](#-examples)
   - [👷 Contributing](#-contributing)
@@ -101,6 +102,10 @@ Appcues.screen('Contact List')
 // Track screen with property
 Appcues.screen('Contact Details', {'Contact Reference': 'abc'})
 ```
+
+### Anchored Tooltips
+
+Anchored tooltips use element targeting to point directly at specific views in your application. For more information about how to configure your application's views for element targeting, refer to the [Anchored Tooltips Guide](https://github.com/appcues/appcues-react-native-module/blob/main/docs/AnchoredTooltips.md).
 
 ## 📝 Documentation
 
