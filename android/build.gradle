@@ -9,7 +9,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:7.1.3'
+    classpath 'com.android.tools.build:gradle:7.4.2'
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
@@ -27,6 +27,7 @@ def getExtOrIntegerDefault(name) {
 }
 
 android {
+  namespace "com.appcuesreactnative"
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
   defaultConfig {
     minSdkVersion 21
