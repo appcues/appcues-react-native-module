@@ -13,6 +13,16 @@ platform :android do
 
     keystorePath = File.join(Dir.pwd, "..", "appcues.keystore")
 
+    increment_version_code(
+      gradle_file_path: "./app/build.gradle",
+      version_code: ENV["CIRCLE_BUILD_NUM"].to_i
+    )
+
+    increment_version_name(
+      gradle_file_path: "./app/build.gradle",
+      version_name: "1.0.0-#{ENV["CIRCLE_BUILD_NUM"]}"
+    )
+
     gradle(
       task: 'bundle',
       build_type: 'Release',
@@ -21,9 +31,7 @@ platform :android do
         "android.injected.signing.store.file" => keystorePath,
         "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias" => ENV["KEYSTORE_ALIAS"],
-        "android.injected.signing.key.password" => ENV["KEYSTORE_PASSWORD"],
-        "android.injected.version.code" => ENV["CIRCLE_BUILD_NUM"].to_i,
-        "android.injected.version.name" => "1.0.0-#{ENV["CIRCLE_BUILD_NUM"]}",
+        "android.injected.signing.key.password" => ENV["KEYSTORE_PASSWORD"]
       }
     )
 
