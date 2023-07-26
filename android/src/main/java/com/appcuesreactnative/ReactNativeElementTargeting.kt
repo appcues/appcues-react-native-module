@@ -147,9 +147,9 @@ private fun View.asCaptureView(screenBounds: Rect): ViewElement? {
 internal fun View.selector(): ReactNativeViewSelector? {
     return ReactNativeViewSelector(
         // captures "nativeID" property set on a react native View
-        nativeId = getTag(R.id.view_tag_native_id)?.toString(),
+        nativeId = getTag(R.id.view_tag_native_id)?.toString()?.ifEmpty { null },
         // captures "testID" property set on a react native View
-        testId = getTag(R.id.react_test_id)?.toString(),
+        testId = getTag(R.id.react_test_id)?.toString()?.ifEmpty { null },
     ).let { if (it.isValid) it else null }
 }
 

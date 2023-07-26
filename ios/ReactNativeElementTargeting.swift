@@ -86,10 +86,10 @@ internal class ReactNativeElementTargeting: AppcuesElementTargeting {
 extension UIView {
     var reactNativeSelector: ReactNativeElementSelector? {
         return ReactNativeElementSelector(
-            nativeID: nativeID,
+            nativeID: nativeID.flatMap { $0.isEmpty ? nil : $0 },
             // on iOS, the "testID" set on a react native view comes in through
             // the accessibilityIdentifier property on the UIView
-            testID: accessibilityIdentifier
+            testID: accessibilityIdentifier.flatMap { $0.isEmpty ? nil : $0 }
         )
     }
 
