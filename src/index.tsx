@@ -1,4 +1,10 @@
-import { NativeModules, Platform } from 'react-native';
+import {
+  requireNativeComponent,
+  NativeModules,
+  Platform,
+  UIManager,
+  type ViewStyle,
+} from 'react-native';
 
 interface ReactNativeOptions {
   logging?: boolean;
@@ -73,3 +79,18 @@ export function debug() {
 export function didHandleURL(url: string): Promise<boolean> {
   return AppcuesReactNative.didHandleURL(url);
 }
+
+const ComponentName = 'AppcuesFrameView';
+
+type AppcuesFrameProps = {
+  frameID: string;
+  fixedSize: boolean;
+  style: ViewStyle;
+};
+
+export const AppcuesFrameView =
+  UIManager.getViewManagerConfig(ComponentName) != null
+    ? requireNativeComponent<AppcuesFrameProps>(ComponentName)
+    : () => {
+        throw new Error(LINKING_ERROR);
+      };
