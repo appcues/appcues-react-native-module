@@ -4,7 +4,7 @@ import AppcuesKit
 class AppcuesReactNative: RCTEventEmitter {
     private static let eventName = "analytics"
 
-    private var implementation: Appcues?
+    static var implementation: Appcues?
 
     private var hasListeners = false
 
@@ -24,7 +24,7 @@ class AppcuesReactNative: RCTEventEmitter {
         defer { resolve(nil) }
 
         // Fast refreshing can result in this being called multiple times which gets weird. `guard` is a quick way to shortcut that.
-        guard implementation == nil else { return }
+        guard AppcuesReactNative.implementation == nil else { return }
 
         let config = Appcues.Config(accountID: accountID, applicationID: applicationID)
 
@@ -50,8 +50,8 @@ class AppcuesReactNative: RCTEventEmitter {
 
         config.additionalAutoProperties(additionalAutoProperties)
 
-        implementation = Appcues(config: config)
-        implementation?.analyticsDelegate = self
+        AppcuesReactNative.implementation = Appcues(config: config)
+        AppcuesReactNative.implementation?.analyticsDelegate = self
 
         if #available(iOS 13.0, *) {
             Appcues.elementTargeting = ReactNativeElementTargeting()
@@ -60,37 +60,37 @@ class AppcuesReactNative: RCTEventEmitter {
 
     @objc
     func identify(_ userID: String, properties: [String: Any]) {
-        implementation?.identify(userID: userID, properties: properties)
+        AppcuesReactNative.implementation?.identify(userID: userID, properties: properties)
     }
 
     @objc
     func reset() {
-        implementation?.reset()
+        AppcuesReactNative.implementation?.reset()
     }
 
     @objc
     func anonymous() {
-        implementation?.anonymous()
+        AppcuesReactNative.implementation?.anonymous()
     }
 
     @objc
     func group(_ groupID: String?, properties: [String: Any]) {
-        implementation?.group(groupID: groupID, properties: properties)
+        AppcuesReactNative.implementation?.group(groupID: groupID, properties: properties)
     }
 
     @objc
     func screen(_ title: String, properties: [String: Any]) {
-        implementation?.screen(title: title, properties: properties)
+        AppcuesReactNative.implementation?.screen(title: title, properties: properties)
     }
 
     @objc
     func track(_ name: String, properties: [String: Any]) {
-        implementation?.track(name: name, properties: properties)
+        AppcuesReactNative.implementation?.track(name: name, properties: properties)
     }
 
     @objc
     func show(_ experienceID: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-        implementation?.show(experienceID: experienceID) { success, error in
+        AppcuesReactNative.implementation?.show(experienceID: experienceID) { success, error in
             if success {
                 resolve(nil)
             } else {
@@ -102,14 +102,14 @@ class AppcuesReactNative: RCTEventEmitter {
     @objc
     func debug() {
         DispatchQueue.main.async {
-            self.implementation?.debug()
+            AppcuesReactNative.implementation?.debug()
         }
     }
 
     @objc
     func didHandleURL(_ url: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
         guard let url = URL(string: url) else { return resolve(false) }
-        guard let implementation = implementation else { return resolve(false) }
+        guard let implementation = AppcuesReactNative.implementation else { return resolve(false) }
 
         DispatchQueue.main.async {
             resolve(implementation.didHandleURL(url))
