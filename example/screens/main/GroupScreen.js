@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from '@appcues/react-native';
@@ -19,15 +19,7 @@ const GroupView = () => {
   const [groupID, onChangeGroupID] = React.useState(null);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'stretch',
-        paddingTop: 35,
-        paddingLeft: 40,
-        paddingRight: 40,
-      }}
-    >
+    <View style={styles.container}>
       <Text>Group</Text>
       <TextInput
         onChangeText={onChangeGroupID}
@@ -61,3 +53,13 @@ export default function GroupScreen() {
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'stretch',
+    paddingTop: 35,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+});

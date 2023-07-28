@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EventsScreen from './EventsScreen';
 import ProfileScreen from './ProfileScreen';
 import GroupScreen from './GroupScreen';
+import EmbedScreen from './EmbedScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,8 @@ export default function MainScreen() {
             iconName = 'person-outline';
           } else if (route.name === 'Group') {
             iconName = 'people-outline';
+          } else if (route.name === 'Embed') {
+            iconName = 'reader-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -40,6 +43,11 @@ export default function MainScreen() {
         name="Group"
         component={GroupScreen}
         options={{ title: 'Group', tabBarTestID: 'tabGroup' }}
+      />
+      <Tab.Screen
+        name="Embed"
+        component={EmbedScreen}
+        options={{ title: 'Embed', tabBarTestID: 'tabEmbed' }}
       />
     </Tab.Navigator>
   );
