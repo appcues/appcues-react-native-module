@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as Appcues from '@appcues/react-native';
 import UserContext from '../../contexts/UserContext';
@@ -18,16 +18,8 @@ export default function SignInScreen() {
   );
 
   return (
-    <View style={{ flex: 1 }}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'stretch',
-          paddingTop: 35,
-          paddingLeft: 40,
-          paddingRight: 40,
-        }}
-      >
+    <View style={styles.root}>
+      <View style={styles.container}>
         <Text>User ID</Text>
         <TextInput
           onChangeText={setUserID}
@@ -43,7 +35,7 @@ export default function SignInScreen() {
           }}
         />
       </View>
-      <View style={{ paddingBottom: 35 }}>
+      <View style={styles.anonymousButtonWrapper}>
         <PlainButton
           title="Anonymous User"
           onPress={() => {
@@ -55,3 +47,21 @@ export default function SignInScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+
+  container: {
+    flex: 1,
+    alignItems: 'stretch',
+    paddingTop: 35,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+
+  anonymousButtonWrapper: {
+    paddingBottom: 35,
+  },
+});

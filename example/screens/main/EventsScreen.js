@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from '@appcues/react-native';
@@ -15,15 +15,7 @@ const EventsView = () => {
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'stretch',
-        paddingTop: 35,
-        paddingLeft: 25,
-        paddingRight: 25,
-      }}
-    >
+    <View style={styles.container}>
       <TintedButton
         title="Trigger Event 1"
         nativeID="btnEvent1"
@@ -55,3 +47,13 @@ export default function EventsScreen() {
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'stretch',
+    paddingTop: 35,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+});

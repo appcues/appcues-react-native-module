@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from '@appcues/react-native';
@@ -22,15 +22,7 @@ const ProfileView = () => {
   const { userID } = useContext(UserContext);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'stretch',
-        paddingTop: 35,
-        paddingLeft: 40,
-        paddingRight: 40,
-      }}
-    >
+    <View style={styles.container}>
       <Text>Given Name</Text>
       <TextInput
         onChangeText={onChangeGivenName}
@@ -92,3 +84,13 @@ export default function ProfileScreen() {
 function removeEmpty(obj) {
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'stretch',
+    paddingTop: 35,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+});
