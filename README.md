@@ -13,7 +13,7 @@ This native module is a bridge between the native Appcues SDKs in a React Native
     - [Installation](#installation)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
-      - [Supporting Debugging and Experience Previewing](#supporting-debugging-and-experience-previewing)
+      - [Supporting Builder Preview and Screen Capture](#supporting-builder-preview-and-screen-capture)
     - [Identifying Users](#identifying-users)
     - [Tracking Screens and Events](#tracking-screens-and-events)
     - [Anchored Tooltips](#anchored-tooltips)
@@ -72,9 +72,9 @@ await Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID')
 
 Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account). Refer to the help documentation on [Registering your mobile app in Studio](https://docs.appcues.com/article/848-registering-your-mobile-app-in-studio) for more information. Since the React Native bridge is asynchronous, the `setup` call should be resolved before calling subsequent SDK functions.
 
-#### Supporting Debugging and Experience Previewing
+#### Supporting Builder Preview and Screen Capture
 
-Supporting debugging and experience previewing is not required for the Appcues React Native Module to function, but it is necessary for the optimal Appcues builder experience. Refer to the [URL Scheme Configuration Guide](https://github.com/appcues/appcues-react-native-module/blob/main/docs/URLSchemeConfiguring.md) for details on how to configure.
+During installation, follow the steps outlined in [Configuring the Appcues URL Scheme](https://github.com/appcues/appcues-react-native-module/blob/main/docs/URLSchemeConfiguring.md). This is necessary for the complete Appcues builder experience, supporting experience preview, screen capture and debugging.
 
 ### Identifying Users
 
