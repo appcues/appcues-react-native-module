@@ -84,7 +84,6 @@ const ComponentName = 'AppcuesFrameView';
 
 type AppcuesFrameProps = {
   frameID: string;
-  fixedSize: boolean;
   style: ViewStyle;
 };
 
