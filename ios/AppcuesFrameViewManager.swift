@@ -13,19 +13,10 @@ class AppcuesFrameViewManager: RCTViewManager {
 }
 
 class WrapperView: UIView {
-    weak var uiManager: RCTUIManager?
-
     @objc var frameID: String? = nil
-    @objc var fixedSize: Bool = false {
-        didSet {
-            if let fixedSizeConstraint = fixedSizeConstraint {
-                fixedSizeConstraint.isActive = fixedSize
-            }
-        }
-    }
 
-    private var frameView: AppcuesFrameView?
-    private var fixedSizeConstraint: NSLayoutConstraint?
+    private weak var uiManager: RCTUIManager?
+    private weak var frameViewController: AppcuesFrameVC?
 
     init(uiManager: RCTUIManager) {
         self.uiManager = uiManager
@@ -40,38 +31,80 @@ class WrapperView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        // One-time setup once all the required info is available
-        if frameView == nil,
-           let frameID = frameID,
-           let appcues = AppcuesReactNative.implementation,
-           let parentViewController = parentViewController {
-            let view = AppcuesFrameView()
-            view.translatesAutoresizingMaskIntoConstraints = false
+        if let frameViewController = frameViewController {
+            frameViewController.view.frame = bounds
+        } else {
+            setupFrame()
+        }
+    }
 
-            addSubview(view)
-            var constraints = [
-                view.topAnchor.constraint(equalTo: topAnchor),
-                view.leadingAnchor.constraint(equalTo: leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: trailingAnchor),
-            ]
+    private func setupFrame() {
+        guard let parentVC = parentViewController,
+              let frameID = frameID,
+              let appcues = AppcuesReactNative.implementation else {
+            return
+        }
 
-            // Create the constraint, but only activate it when needed. The didSet for `fixedSize` will toggle so that the setting is dynamic.
-            let constraint = view.bottomAnchor.constraint(equalTo: bottomAnchor)
-            fixedSizeConstraint = constraint
+        let frameVC = AppcuesFrameVC(parentView: self)
+        parentVC.addChild(frameVC)
+        addSubview(frameVC.view)
+        frameVC.view.frame = bounds
+        frameVC.didMove(toParent: parentVC)
+        self.frameViewController = frameVC
 
-            if fixedSize {
-                constraints.append(constraint)
+        appcues.register(frameID: frameID, for: frameVC.frameView, on: frameVC)
+    }
+
+    func setIntrinsicSize(preferredContentSize: CGSize, isHidden: Bool) {
+        let size: CGSize
+
+        if isHidden {
+            // When the frame is hidden, size this WrapperView to 0.
+            size = .zero
+        } else {
+            if preferredContentSize == .zero {
+                // When the frame is NOT hidden and the current size is 0, set a non-zero height,
+                // which allows the content to start its layout algorithm and determine the required size.
+                size = CGSize(width: 0, height: 1)
+            } else {
+                // When the frame is NOT hidden use the size calculated by the content.
+                size = preferredContentSize
             }
-
-            NSLayoutConstraint.activate(constraints)
-
-            appcues.register(frameID: frameID, for: view, on: parentViewController)
-            frameView = view
         }
 
-        if !fixedSize, let bounds = frameView?.bounds {
-            uiManager?.setIntrinsicContentSize(bounds.size, for: self)
-        }
+        uiManager?.setIntrinsicContentSize(size, for: self)
+    }
+}
+
+class AppcuesFrameVC: UIViewController {
+    lazy var frameView = AppcuesFrameView()
+
+    weak var parentView: WrapperView?
+
+    init(parentView: WrapperView) {
+        self.parentView = parentView
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func loadView() {
+        view = frameView
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        parentView?.setIntrinsicSize(preferredContentSize: preferredContentSize, isHidden: frameView.isHidden)
+    }
+
+    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        super.preferredContentSizeDidChange(forChildContentContainer: container)
+        preferredContentSize = container.preferredContentSize
+
+        parentView?.setIntrinsicSize(preferredContentSize: preferredContentSize, isHidden: frameView.isHidden)
     }
 }
 
