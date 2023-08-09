@@ -7,15 +7,26 @@ import com.appcues.AnalyticType
 import com.appcues.AnalyticsListener
 import com.appcues.Appcues
 import com.appcues.LoggingLevel
-import com.facebook.react.bridge.*
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableArray
+import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
+    : ReactContextBaseJavaModule(reactContext) {
 
-    private var implementation: Appcues? = null
+    companion object {
+        var implementation: Appcues? = null
+    }
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
@@ -28,11 +39,11 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
 
     @ReactMethod
     fun setup(
-      accountID: String,
-      applicationID: String,
-      options: ReadableMap?,
-      additionalAutoProperties: ReadableMap?,
-      promise: Promise
+        accountID: String,
+        applicationID: String,
+        options: ReadableMap?,
+        additionalAutoProperties: ReadableMap?,
+        promise: Promise
     ) {
         val context = reactApplicationContextIfActiveOrWarn
         if (context == null) {
