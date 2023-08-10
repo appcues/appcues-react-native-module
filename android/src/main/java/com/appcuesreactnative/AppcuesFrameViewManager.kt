@@ -1,7 +1,6 @@
 package com.appcuesreactnative
 
 import android.content.Context
-import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.children
 import com.appcues.AppcuesFrameView
@@ -20,26 +19,21 @@ internal class AppcuesFrameViewManager: ViewGroupManager<AppcuesWrapperView>() {
     }
 
     override fun createViewInstance(context: ThemedReactContext): AppcuesWrapperView {
-        val wrapperView = AppcuesWrapperView(context)
-        val frameView = AppcuesFrameView(context)
-        wrapperView.contentView = frameView
-        return wrapperView
+        return AppcuesWrapperView(context)
     }
 
     @ReactProp(name = "frameID")
     fun setFrameId(view: AppcuesWrapperView, frameId: String) {
-        (view.contentView as? AppcuesFrameView)?.let {
-            AppcuesReactNativeModule.implementation?.registerEmbed(frameId, it)
-        }
+        AppcuesReactNativeModule.implementation?.registerEmbed(frameId, view.contentView)
     }
 }
 
 internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
-    var contentView: View? = null
-        set(view) {
-            field = view
-            addView(contentView)
-        }
+    val contentView: AppcuesFrameView = AppcuesFrameView(context)
+
+    init {
+        addView(contentView)
+    }
 
     override fun requestLayout() {
         super.requestLayout()
