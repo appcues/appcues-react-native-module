@@ -13,7 +13,14 @@ class AppcuesFrameViewManager: RCTViewManager {
 }
 
 class WrapperView: UIView {
-    @objc var frameID: String? = nil
+    @objc var frameID: String? = nil {
+        didSet {
+            // Handle a change in value after setup
+            if let frameID = frameID, let frameVC = frameViewController {
+                AppcuesReactNative.implementation?.register(frameID: frameID, for: frameVC.frameView, on: frameVC)
+            }
+        }
+    }
 
     private weak var uiManager: RCTUIManager?
     private weak var frameViewController: AppcuesFrameVC?
