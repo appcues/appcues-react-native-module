@@ -63,22 +63,7 @@ class WrapperView: UIView {
     }
 
     func setIntrinsicSize(preferredContentSize: CGSize, isHidden: Bool) {
-        let size: CGSize
-
-        if isHidden {
-            // When the frame is hidden, size this WrapperView to 0.
-            size = .zero
-        } else {
-            if preferredContentSize == .zero {
-                // When the frame is NOT hidden and the current size is 0, set a non-zero height,
-                // which allows the content to start its layout algorithm and determine the required size.
-                size = CGSize(width: 0, height: 1)
-            } else {
-                // When the frame is NOT hidden use the size calculated by the content.
-                size = preferredContentSize
-            }
-        }
-
+        let size = isHidden ? .zero : preferredContentSize
         uiManager?.setIntrinsicContentSize(size, for: self)
     }
 }
