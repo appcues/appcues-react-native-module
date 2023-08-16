@@ -15,7 +15,7 @@ To allow your project to continue to work with the Expo Go app, create a wrapper
 Create a file `AppcuesWrapper.js` that wraps the `NativeModule`:
 
 ```js
-import { NativeModules, View } from 'react-native';
+import { NativeModules, UIManager, View } from 'react-native';
 
 // Get native module or use fallback object
 const AppcuesWrapper = NativeModules.AppcuesReactNative ?? {
@@ -29,7 +29,6 @@ const AppcuesWrapper = NativeModules.AppcuesReactNative ?? {
   show: (experienceID) => { console.log(`Appcues.show(${experienceID})`) },
   debug: () => { console.log(`Appcues.debug()`) },
   didHandleURL: (url) => { console.log(`Appcues.didHandleURL(${url})`); return false },
-  AppcuesFrameView: View,
 };
 
 export async function setup(accountID, applicationID, options) {
@@ -72,7 +71,12 @@ export async function didHandleURL(url) {
   return await AppcuesWrapper.didHandleURL(url);
 }
 
-export const AppcuesFrameView = AppcuesWrapper.AppcuesFrameView
+const PlaceholderFrameView = (props) => <View style={props.style} />;
+
+export const WrappedAppcuesFrameView =
+  UIManager.getViewManagerConfig('AppcuesFrameView') != null
+    ? require('@appcues/react-native').AppcuesFrameView
+    : PlaceholderFrameView;
 ```
 
 ### Usage
@@ -82,11 +86,19 @@ Instead of importing from `@appcues/react-native` directly, reference the `Appcu
 ```js
  import * as AppcuesWrapper from './AppcuesWrapper';
  await AppcuesWrapper.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
- 
+
  AppcuesWrapper.identify('my-user-id');
- 
+
  AppcuesWrapper.screen('My Screen Name');
+
+ <AppcuesWrapper.WrappedAppcuesFrameView frameID="frame-id" />
  ```
+
+ > Tip: For more concise usage of a frame view, use a named import instead of a namespace import.
+ > ```js
+ > import { WrappedAppcuesFrameView } from './AppcuesWrapper';
+ > <WrappedAppcuesFrameView frameID="frame-id" />
+ > ```
 
 ### Create a Development Build
 
@@ -94,16 +106,16 @@ A development build is necessary to use actually use the real Appcues SDK functi
 
 ```sh
  $ expo install expo-dev-client
- 
+
  # ios
  $ eas device:create # register test devices onto ad hoc provisioning profile
  $ eas build --profile development --platform ios
- 
+
  # android
  eas build --profile development --platform android
- 
+
  # Install the build on a device, then:
  $ expo start --dev-client
- 
+
  # Then scan the QR code to open on the device
  ```
