@@ -15,6 +15,7 @@ To allow your project to continue to work with the Expo Go app, create a wrapper
 Create a file `AppcuesWrapper.js` that wraps the `NativeModule`:
 
 ```js
+import React from 'react';
 import { NativeModules, UIManager, View } from 'react-native';
 
 // Get native module or use fallback object
