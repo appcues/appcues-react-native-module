@@ -6,6 +6,7 @@ interface ReactNativeOptions {
   sessionTimeout?: number;
   activityStorageMaxSize?: number;
   activityStorageMaxAge?: number;
+  additionalAutoProperties?: any;
 }
 
 const LINKING_ERROR =

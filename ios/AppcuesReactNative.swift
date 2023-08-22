@@ -48,7 +48,11 @@ class AppcuesReactNative: RCTEventEmitter {
             config.activityStorageMaxAge(activityStorageMaxAge)
         }
 
-        config.additionalAutoProperties(additionalAutoProperties)
+        // take any auto properties provided from the calling application, and merge with our internal
+        // auto properties passed in an additional argument.
+        let autoPropsFromOptions = options["additionalAutoProperties"] as? [String: Any] ?? [:]
+        let mergedAutoProperties = autoPropsFromOptions.merging(additionalAutoProperties) { _, new in new }
+        config.additionalAutoProperties(mergedAutoProperties)
 
         implementation = Appcues(config: config)
         implementation?.analyticsDelegate = self
