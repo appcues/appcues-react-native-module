@@ -45,6 +45,8 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
             return
         }
         implementation = Appcues(context, accountID, applicationID) {
+            val autoProps = hashMapOf<String, Any>()
+
             options?.toHashMap()?.let {
 
                 val logging = it["logging"] as? Boolean
@@ -71,9 +73,17 @@ class AppcuesReactNativeModule(reactContext: ReactApplicationContext) : ReactCon
                 if (activityStorageMaxAge != null) {
                     this.activityStorageMaxAge = activityStorageMaxAge.toInt()
                 }
+
+                val autoPropsFromOptions = it["additionalAutoProperties"] as? HashMap<String, Any>
+                if (autoPropsFromOptions != null) {
+                    autoProps.putAll(autoPropsFromOptions)
+                }
             }
 
-            this.additionalAutoProperties = additionalAutoProperties?.toHashMap() ?: emptyMap()
+            // take any auto properties provided from the calling application, and merge with our internal
+            // auto properties passed in an additional argument.
+            autoProps.putAll(additionalAutoProperties?.toHashMap() ?: emptyMap())
+            this.additionalAutoProperties = autoProps
 
             this.analyticsListener = object: AnalyticsListener {
                 override fun trackedAnalytic(
