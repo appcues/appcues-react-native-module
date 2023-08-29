@@ -15,7 +15,7 @@ cd ./example
 yarn install
 
 # Install cocoapods
-cd ./iOS
+cd ./ios
 pod install
 ```
 
