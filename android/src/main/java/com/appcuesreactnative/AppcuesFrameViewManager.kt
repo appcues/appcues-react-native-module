@@ -1,8 +1,14 @@
 package com.appcuesreactnative
 
 import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.appcues.AppcuesFrameView
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerModule
@@ -28,16 +34,42 @@ internal class AppcuesFrameViewManager: ViewGroupManager<AppcuesWrapperView>() {
     }
 }
 
+internal class AppcuesWrapperFragment(private var frame: AppcuesFrameView) : Fragment() {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+        return frame
+    }
+}
+
 internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
     val contentView: AppcuesFrameView = AppcuesFrameView(context)
 
-    init {
-        addView(contentView)
+    private var fragmentCreated = false
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        post(addFragment)
     }
 
     override fun requestLayout() {
         super.requestLayout()
         post(measureAndLayout)
+    }
+
+    private val addFragment = Runnable {
+        if (!fragmentCreated) {
+            val wrapperFragment = AppcuesWrapperFragment(contentView)
+            val activity = (context as? ThemedReactContext)?.currentActivity as FragmentActivity
+            activity.supportFragmentManager
+                .beginTransaction()
+                // the id value here is the react native view id that
+                // has been assigned by the view manager system for this view instance
+                .replace(id, wrapperFragment, id.toString())
+                .commit()
+
+            fragmentCreated = true
+        }
     }
 
     private val measureAndLayout = Runnable {
@@ -49,15 +81,24 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+
+        // wait until the fragment has been embedded into the view and the
+        // children are ready to measure - else it will give a (0,0) size and
+        // not layout correctly
+        if (children.count() == 0) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+            return
+        }
+
         var maxWidth = 0
         var maxHeight = 0
+        
         children.forEach {
-            if (it.visibility != GONE) {
-                it.measure(widthMeasureSpec, MeasureSpec.UNSPECIFIED)
-                maxWidth = maxWidth.coerceAtLeast(it.measuredWidth)
-                maxHeight = maxHeight.coerceAtLeast(it.measuredHeight)
-            }
+            it.measure(widthMeasureSpec, MeasureSpec.UNSPECIFIED)
+            maxWidth = maxWidth.coerceAtLeast(it.measuredWidth)
+            maxHeight = maxHeight.coerceAtLeast(it.measuredHeight)
         }
+
         val finalWidth = maxWidth.coerceAtLeast(suggestedMinimumWidth)
         val finalHeight = maxHeight.coerceAtLeast(suggestedMinimumHeight)
         setMeasuredDimension(finalWidth, finalHeight)
