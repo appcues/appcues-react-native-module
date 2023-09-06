@@ -5,7 +5,7 @@ The Appcues React Native module can be easily integrated into an app using the E
 ## Installation and Setup
 
 ```sh
-$ expo install @appcues/react-native
+$ npx expo install @appcues/react-native
 ```
 
 ```js
