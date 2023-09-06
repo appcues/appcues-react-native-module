@@ -5,7 +5,7 @@ The Appcues React Native module can be integrated into an app using the Expo Man
 ## Installation and Setup
 
 ```sh
-$ expo install @appcues/react-native
+$ npx expo install @appcues/react-native
 ```
 
 ### Wrapping the Appcues SDK
@@ -106,7 +106,7 @@ Instead of importing from `@appcues/react-native` directly, reference the `Appcu
 A development build is necessary to use actually use the real Appcues SDK functionality. The [Getting Started](https://docs.expo.dev/development/getting-started) guide provided by Expo is a comprehensive reference, but the minimal steps are described here:
 
 ```sh
- $ expo install expo-dev-client
+ $ npx expo install expo-dev-client
 
  # ios
  $ eas device:create # register test devices onto ad hoc provisioning profile
@@ -116,7 +116,7 @@ A development build is necessary to use actually use the real Appcues SDK functi
  eas build --profile development --platform android
 
  # Install the build on a device, then:
- $ expo start --dev-client
+ $ npx expo start --dev-client
 
  # Then scan the QR code to open on the device
  ```
