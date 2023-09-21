@@ -1,7 +1,7 @@
 PODS:
-  - Appcues (3.0.0)
-  - appcues-react-native (2.1.3):
-    - Appcues (~> 3.0.0)
+  - Appcues (3.1.0)
+  - appcues-react-native (3.0.0):
+    - Appcues (~> 3.1.0)
     - React-Core
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
@@ -361,7 +361,7 @@ PODS:
     - React-RCTImage
   - RNVectorIcons (9.1.0):
     - React-Core
-  - SocketRocket (0.6.0)
+  - SocketRocket (0.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -521,8 +521,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Appcues: 9d87b7992702107e176a66bdfd55ebcf8470324e
-  appcues-react-native: 7d9c3d4d6e0f041cafb28da4b7e20c5f9a874f8d
+  Appcues: d0a3f4ec32a1d1ff78ee3a593de732d2e58b68e8
+  appcues-react-native: db56383243ada5314809d1f2ca5eea7899a45a20
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -570,7 +570,7 @@ SPEC CHECKSUMS:
   ReactCommon: fac40473e2c4117522384027ab33ad0cb6717dc5
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
-  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 7a4d48cfb35dfa542151e615fa73c1a0d88caf21
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
