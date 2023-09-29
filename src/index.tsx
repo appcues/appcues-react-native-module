@@ -13,6 +13,8 @@ interface ReactNativeOptions {
   activityStorageMaxSize?: number;
   activityStorageMaxAge?: number;
   additionalAutoProperties?: any;
+  iosFontsPath?: string;
+  androidFontsPath?: string;
 }
 
 const LINKING_ERROR =

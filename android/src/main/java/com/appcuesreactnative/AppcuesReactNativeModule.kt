@@ -57,6 +57,7 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
         }
         implementation = Appcues(context, accountID, applicationID) {
             val autoProps = hashMapOf<String, Any>()
+            var fontAssetPath: String? = null
 
             options?.toHashMap()?.let {
 
@@ -85,11 +86,16 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
                     this.activityStorageMaxAge = activityStorageMaxAge.toInt()
                 }
 
+                fontAssetPath = it["androidFontsPath"] as? String
+
                 val autoPropsFromOptions = it["additionalAutoProperties"] as? HashMap<String, Any>
                 if (autoPropsFromOptions != null) {
                     autoProps.putAll(autoPropsFromOptions)
                 }
             }
+
+            // check in the assets root, by default, unless alternative specified
+            this.fontAssetPath = fontAssetPath ?: ""
 
             // take any auto properties provided from the calling application, and merge with our internal
             // auto properties passed in an additional argument.

@@ -101,6 +101,17 @@ Instead of importing from `@appcues/react-native` directly, reference the `Appcu
  > <WrappedAppcuesFrameView frameID="frame-id" />
  > ```
 
+### Custom Fonts
+
+If your application uses custom fonts, optionally supply initialization options declaring where those font files can be found at runtime, for usage in Appcues experiences. These paths are platform specific, and the default values used by Expo are shown below. The iOS path refers to the path where font assets can be found in the app bundle. The Android path refers to the path within the application assets where fonts can be found, by default, the at the root level (empty string). If you are using the default path, you do not need to specify any init option value - these will already be used by default.
+
+```js
+await AppcuesWrapper.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', {
+  iosFontsPath: '/assets/assets/fonts',
+  androidFontsPath: '',
+});
+```
+
 ### Create a Development Build
 
 A development build is necessary to use actually use the real Appcues SDK functionality. The [Getting Started](https://docs.expo.dev/development/getting-started) guide provided by Expo is a comprehensive reference, but the minimal steps are described here:

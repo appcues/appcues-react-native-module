@@ -48,6 +48,11 @@ class AppcuesReactNative: RCTEventEmitter {
             config.activityStorageMaxAge(activityStorageMaxAge)
         }
 
+        // check in "/assets/assets/fonts" by default, unless alternative specified
+        let bundleFontsPath = (options["iosFontsPath"] as? String) ?? "/assets/assets/fonts"
+        config.bundleFontsPath(bundleFontsPath)
+
+
         // take any auto properties provided from the calling application, and merge with our internal
         // auto properties passed in an additional argument.
         let autoPropsFromOptions = options["additionalAutoProperties"] as? [String: Any] ?? [:]
