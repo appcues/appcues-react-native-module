@@ -27,10 +27,10 @@ This native module is a bridge between the native Appcues SDKs in a React Native
 
 ### Prerequisites
 
-**Android** - your application's `build.gradle` must have a `compileSdkVersion` of 33+ and `minSdkVersion` of 21+
+**Android** - your application's `build.gradle` must have a `compileSdkVersion` of 34+ and `minSdkVersion` of 21+
 ```
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 21
