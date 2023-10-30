@@ -52,3 +52,16 @@ For apps using Expo, the `AppcuesUniversalLinkHostAllowList` value can be added 
   }
 }
 ```
+
+The above example configurations for `AppcuesUniversalLinkHostAllowList` result in the following link-handling behavior:
+
+```
+// Will be sent to your app to handle as a deep link:
+https://my-domain.com/home
+https://my-domain.com/detail/page/123?param=abc
+
+// Will be handled by the Appcues SDK and open in a browser:
+https://subdomain.my-domain.com/home
+https://www.google.com
+https://www.appcues.com/mobile
+```
