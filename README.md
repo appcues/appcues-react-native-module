@@ -10,6 +10,7 @@ This native module is a bridge between the native Appcues SDKs in a React Native
 
 - [Appcues React Native Module](#appcues-react-native-module)
   - [🚀 Getting Started](#-getting-started)
+    - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
@@ -87,6 +88,15 @@ Appcues.identify('my-user-id')
 // Identify a user with property
 Appcues.identify('my-user-id', {'Company': 'Appcues'})
 ```
+
+After identifying a user, you can optionally associate that user with group.
+
+```js
+// Associate a user with a group, optionally including group properties
+Appcues.group('group-id', {'Plan Tier': 'standard'})
+```
+
+To ensure the most accurate content targeting based upon group information, it's recommended to supply the group information immediately after a new user is identified.
 
 ### Tracking Screens and Events
 
