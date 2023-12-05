@@ -12,6 +12,8 @@ This native module is a bridge between the native Appcues SDKs in a React Native
   - [🚀 Getting Started](#-getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+      - [Standard](#standard-installation)
+      - [Segment](#segment)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
       - [Supporting Builder Preview and Screen Capture](#supporting-builder-preview-and-screen-capture)
@@ -47,6 +49,10 @@ platform :ios, '11.0'
 
 ### Installation
 
+Add the Appcues React Native Module dependency to your application. There are options for a standard installation, or for usage through a Segment plugin.
+
+#### Standard Installation
+
 1. In your app's root directory, install the Appcues React Native Module
    ```sh
    npm install --save @appcues/react-native
@@ -59,6 +65,10 @@ platform :ios, '11.0'
    ```
 
 Note: You do not need to manually update your Podfile to add Appcues.
+
+#### Segment
+
+Appcues supports integration with Segment's [analytics-react-native](https://github.com/segmentio/analytics-react-native) package.  To install with Segment, you'll  use the [Segment Appcues plugin](https://github.com/appcues/segment-appcues-react-native).
 
 ### One Time Setup
 
