@@ -84,7 +84,7 @@ const ComponentName = 'AppcuesFrameView';
 
 type AppcuesFrameProps = {
   frameID: string;
-  style: ViewStyle;
+  style?: ViewStyle;
 };
 
 export const AppcuesFrameView =
