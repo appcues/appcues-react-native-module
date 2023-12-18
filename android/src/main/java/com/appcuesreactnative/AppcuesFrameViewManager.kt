@@ -49,27 +49,29 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        post(addFragment)
+
+        if (!fragmentCreated) {
+          try {
+            val wrapperFragment = AppcuesWrapperFragment(contentView)
+            val activity = (context as? ThemedReactContext)?.currentActivity as FragmentActivity
+            activity.supportFragmentManager
+              .beginTransaction()
+              // the id value here is the react native view id that
+              // has been assigned by the view manager system for this view instance
+              .replace(id, wrapperFragment, id.toString())
+              .commit()
+
+            fragmentCreated = true
+          } catch (_: Exception) {
+            // should not get any exceptions here, but in case the transaction fails to put the fragment in place
+            // we rather exit silent instead of crashing the app.
+          }
+        }
     }
 
     override fun requestLayout() {
         super.requestLayout()
         post(measureAndLayout)
-    }
-
-    private val addFragment = Runnable {
-        if (!fragmentCreated) {
-            val wrapperFragment = AppcuesWrapperFragment(contentView)
-            val activity = (context as? ThemedReactContext)?.currentActivity as FragmentActivity
-            activity.supportFragmentManager
-                .beginTransaction()
-                // the id value here is the react native view id that
-                // has been assigned by the view manager system for this view instance
-                .replace(id, wrapperFragment, id.toString())
-                .commit()
-
-            fragmentCreated = true
-        }
     }
 
     private val measureAndLayout = Runnable {
@@ -92,7 +94,7 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
 
         var maxWidth = 0
         var maxHeight = 0
-        
+
         children.forEach {
             it.measure(widthMeasureSpec, MeasureSpec.UNSPECIFIED)
             maxWidth = maxWidth.coerceAtLeast(it.measuredWidth)
@@ -108,6 +110,5 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
                     ?.updateNodeSize(id, finalWidth, finalHeight)
             }
         }
-
     }
 }
