@@ -94,29 +94,50 @@ extension UIView {
     }
 
     func captureLayout() -> AppcuesViewElement? {
-        return self.asCaptureView(in: self.bounds)
+        return self.asCaptureView(in: self.bounds, safeAreaInsets: self.safeAreaInsets)
     }
 
-    private func asCaptureView(in bounds: CGRect) -> AppcuesViewElement? {
+    private func asCaptureView(in bounds: CGRect, safeAreaInsets: UIEdgeInsets) -> AppcuesViewElement? {
         let absolutePosition = self.convert(self.bounds, to: nil)
 
         // discard views that are not visible in the screenshot image
         guard absolutePosition.intersects(bounds) else { return nil }
 
+        let childInsets = UIEdgeInsets(
+            top: max(safeAreaInsets.top, self.safeAreaInsets.top),
+            left: max(safeAreaInsets.left, self.safeAreaInsets.left),
+            bottom: max(safeAreaInsets.bottom, self.safeAreaInsets.bottom),
+            right: max(safeAreaInsets.right, self.safeAreaInsets.right)
+        )
+
         let children: [AppcuesViewElement] = self.subviews.compactMap {
             // discard hidden views and subviews within
             guard !$0.isHidden else { return nil }
-            return $0.asCaptureView(in: bounds)
+            return $0.asCaptureView(in: bounds, safeAreaInsets: childInsets)
         }
 
+        // find the rect of the visible area of the view within the safe area
+        let safeBounds = bounds.inset(by: safeAreaInsets)
+        let visibleRect = safeBounds.intersection(absolutePosition)
+
+        // if there is no visible rect, fall back to the absolute position, but we will
+        // not generate any selector for non-visible item below. Do not skip the item entirely
+        // since it could have children that are within the visible range (out of bounds of parent)
+        let locationRect = visibleRect.isNull ? absolutePosition : visibleRect
+
+        // only create a selector for elements that have at least the center point
+        // visible in the current screen bounds, inset by any safe area adjustments
+        let centerPointVisible = safeBounds.contains(CGPoint(x: absolutePosition.midX, y: absolutePosition.midY))
+        let selector = centerPointVisible ? reactNativeSelector : nil
+
         return AppcuesViewElement(
-            x: absolutePosition.origin.x,
-            y: absolutePosition.origin.y,
-            width: absolutePosition.width,
-            height: absolutePosition.height,
+            x: locationRect.origin.x,
+            y: locationRect.origin.y,
+            width: locationRect.width,
+            height: locationRect.height,
             type: "\(type(of: self))",
-            selector: reactNativeSelector,
+            selector: selector,
             children: children.isEmpty ? nil : children,
-            displayName: reactNativeSelector?.displayName)
+            displayName: selector?.displayName)
     }
 }
