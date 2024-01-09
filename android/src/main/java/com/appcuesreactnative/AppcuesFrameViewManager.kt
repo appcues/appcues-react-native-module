@@ -59,7 +59,7 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
               // the id value here is the react native view id that
               // has been assigned by the view manager system for this view instance
               .replace(id, wrapperFragment, id.toString())
-              .commit()
+              .commitNow()
 
             fragmentCreated = true
           } catch (_: Exception) {
