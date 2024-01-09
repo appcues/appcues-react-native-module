@@ -50,11 +50,6 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
             promise.reject("no-context", "unable to initialize the SDK, no Application Context found")
             return
         }
-        val activity = currentActivity
-        if (activity == null) {
-            promise.reject("no-activity", "unable to initialize the SDK, no current running Activity found")
-            return
-        }
         implementation = Appcues(context, accountID, applicationID) {
             val autoProps = hashMapOf<String, Any>()
 
