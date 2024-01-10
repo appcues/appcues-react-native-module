@@ -49,7 +49,10 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        post(addFragment)
+    }
 
+    private val addFragment = Runnable {
         if (!fragmentCreated) {
           try {
             val wrapperFragment = AppcuesWrapperFragment(contentView)
