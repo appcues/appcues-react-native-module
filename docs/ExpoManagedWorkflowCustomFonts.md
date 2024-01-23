@@ -1,8 +1,16 @@
 # Registering Custom Fonts with the Expo Managed Workflow
 
-[Expo Font](https://docs.expo.dev/versions/latest/sdk/font) is a library that allows loading fonts at runtime and using them in React Native components. However, by default, fonts loaded using Expo Font are not configured or registered with the mobile OS and so are unavailable to the Appcues React Native module for usage in your flows.
+[Expo Font](https://docs.expo.dev/versions/latest/sdk/font) is a library that allows loading fonts at runtime and using them in React Native components.
 
 This guide shows how to set up fonts in your Expo project to work in the Appcues React Native module.
+
+- [Registering Custom Fonts with the Expo Managed Workflow](#registering-custom-fonts-with-the-expo-managed-workflow)
+  - [Naming Font Files](#naming-font-files)
+  - [Expo SDK 50 and above](#expo-sdk-50-and-above)
+  - [Expo SDK 49 and below](#expo-sdk-49-and-below)
+    - [Configuring the Native Projects](#configuring-the-native-projects)
+    - [Registering Custom fonts with iOS](#registering-custom-fonts-with-ios)
+    - [Summary](#summary)
 
 ## Naming Font Files
 
@@ -11,7 +19,36 @@ This is because in native Android apps, fonts are referenced by their resource n
 
 On macOS, you can find the PostScript name of a font by opening it with the Font Book app and selecting the Font Info tab.
 
-## Configuring the Native Projects
+## Expo SDK 50 and above
+
+We recommend using the Expo Font config plugin to directly embed your fonts in your native project.
+
+```json
+// app.json
+{
+  "expo": {
+    ...
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Mulish-Regular.ttf"
+          ]
+        }
+      ]
+    ]
+  }
+}
+```
+
+Refer to the [Expo Font documentation](https://docs.expo.dev/develop/user-interface/fonts/#embed-the-font-in-your-native-project) for more details.
+
+## Expo SDK 49 and below
+
+For Expo SDK 49 and below, Expo Font only supports runtime font loading which is incompatible with the Appcues React Native module because these fonts are not configured or registered with the mobile OS making them inaccessible to for usage in your Appcues flows. The following steps configure a custom post-install script to give the same result as the configuration above.
+
+### Configuring the Native Projects
 
 For an Android build, the font files need to be copied to the expected directory. For an iOS build, the font files need to be added to the Xcode project[^3]. To do this while maintaining support for the Expo managed workflow and builds with EAS, update your package.json file with a `eas-build-post-install` hook[^4] that utilizes two custom scripts:
 
@@ -74,7 +111,7 @@ project.save
 
 > Note: these scripts assume your font files are located in `assets/fonts` in your expo project. If this is not the case, update the paths in the scripts (`cp ./<path>/*.ttf "$_"` and `Dir['<path>/*.ttf']`).
 
-## Registering Custom fonts with iOS
+### Registering Custom fonts with iOS
 
 After adding the font file to your project, you need to let iOS know about the font. This is done by adding a key `UIAppFonts` to the iOS projects Info.plist. The value is an array value with the name of the font file as an item of the array. Be sure to include the file extension as part of the name.
 
@@ -97,7 +134,7 @@ To set the Info.plist value in your Expo project, add an array of your font file
 }
 ```
 
-## Summary
+### Summary
 
 Your project should look like this:
 
