@@ -48,6 +48,9 @@ class AppcuesReactNative: RCTEventEmitter {
             config.activityStorageMaxAge(activityStorageMaxAge)
         }
 
+        // Enable text scaling by default because the React Native Text component has scaling enabled by default.
+        config.enableTextScaling(options["enableTextScaling"] as? Bool ?? true)
+
         // take any auto properties provided from the calling application, and merge with our internal
         // auto properties passed in an additional argument.
         let autoPropsFromOptions = options["additionalAutoProperties"] as? [String: Any] ?? [:]
