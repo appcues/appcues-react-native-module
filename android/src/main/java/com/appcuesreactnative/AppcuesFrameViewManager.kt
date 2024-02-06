@@ -86,11 +86,13 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-
         // wait until the fragment has been embedded into the view and the
         // children are ready to measure - else it will give a (0,0) size and
-        // not layout correctly
-        if (children.count() == 0) {
+        // not layout correctly.
+        //
+        // Also in case fragment is not created, as a safe-guard, we should 
+        // skip the proper measuring of the view. 
+        if (children.count() == 0 || !fragmentCreated) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             return
         }
