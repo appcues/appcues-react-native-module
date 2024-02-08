@@ -30,7 +30,9 @@ This native module is a bridge between the native Appcues SDKs in a React Native
 
 ### Prerequisites
 
-**Android** - your application's `build.gradle` must have a `compileSdkVersion` of 34+ and `minSdkVersion` of 21+
+**React Native** - your application should use React Native version 0.72.4 or above.
+
+**Android** - your application's `build.gradle` must have a `compileSdkVersion` of 34+ and `minSdkVersion` of 21+. Your project should use the Android Gradle Plugin (AGP) version 7.4.2 or above.
 ```
 android {
     compileSdkVersion 34
