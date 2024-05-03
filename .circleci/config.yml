@@ -26,15 +26,15 @@ executors:
     working_directory: ~/project
   ios_compatible:
     macos:
-      xcode: 14.3.0
-    resource_class: macos.x86.medium.gen2
+      xcode: 15.1.0
+    resource_class: macos.m1.medium.gen1
     working_directory: ~/project/example/ios
     shell: /bin/bash --login -o pipefail
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
   android_compatible:
     machine: 
-      image: android:2022.04.1
+      image: android:default
     resource_class: large
     working_directory: ~/project/example/android
 
