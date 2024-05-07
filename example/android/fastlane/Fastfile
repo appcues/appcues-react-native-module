@@ -9,7 +9,7 @@ platform :android do
 
   desc "Deploy a new version to Google Play internal test"
   lane :deploy_example do
-    sh("sh", "./replace-placeholders.sh", ENV["EX_APPCUES_ACCOUNT_ID"], ENV["EX_APPCUES_APPLICATION_ID"])
+    sh("sh", "./replace-placeholders.sh", ENV["EX_APPCUES_ACCOUNT_ID"], ENV["EX_APPCUES_APPLICATION_ID"], ENV["EX_GOOGLE_SERVICES_KEY"])
 
     keystorePath = File.join(Dir.pwd, "..", "appcues.keystore")
 
@@ -36,11 +36,11 @@ platform :android do
     )
 
     upload_to_play_store(
-      track: 'internal', 
-      skip_upload_apk: true, 
+      track: 'internal',
+      skip_upload_apk: true,
       json_key_data: ENV["PLAY_STORE_API_KEY"],
       rollout: '1'
-    )    
+    )
   end
 
 end
