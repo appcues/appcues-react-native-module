@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "465384230434",
+    "project_id": "appcues-react-native",
+    "storage_bucket": "appcues-react-native.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465384230434:android:752f8f819bea6f37fe447b",
+        "android_client_info": {
+          "package_name": "com.appcues.samples.reactnative"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "GOOGLE_SERVICES_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
