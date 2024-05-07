@@ -25,6 +25,7 @@ platform :ios do
       s3_access_key: ENV["AWS_ACCESS_KEY_ID"],
       s3_secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
       type: "appstore",
+      app_identifier: [CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier), "com.appcues.sdk-example-react-native.NotificationServiceExtension"],
       team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
       verbose: true)
   end
@@ -50,7 +51,7 @@ platform :ios do
       s3_access_key: ENV["AWS_ACCESS_KEY_ID"],
       s3_secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
       type: "appstore",
-      app_identifier: CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier),
+      app_identifier: [CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier), "com.appcues.sdk-example-react-native.NotificationServiceExtension"],
       team_id: CredentialsManager::AppfileConfig.try_fetch_value(:team_id),
       readonly: true,
       verbose: true)
@@ -59,7 +60,17 @@ platform :ios do
       use_automatic_signing: false,
       code_sign_identity: "iPhone Distribution",
       team_id: ENV["sigh_#{CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)}_appstore_team-id"],
+      targets: ["AppcuesReactNativeExample"],
+      bundle_identifier: CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier),
       profile_uuid: ENV["sigh_#{CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)}_appstore"])
+
+      update_code_signing_settings(
+        use_automatic_signing: false,
+        code_sign_identity: "iPhone Distribution",
+        team_id: ENV["sigh_#{CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)}_appstore_team-id"],
+        targets: ["NotificationServiceExtension"],
+        bundle_identifier: "com.appcues.sdk-example-react-native.NotificationServiceExtension",
+        profile_uuid: ENV["sigh_com.appcues.sdk-example-react-native.NotificationServiceExtension_appstore"])
 
     build_app(
       export_method: "app-store")
