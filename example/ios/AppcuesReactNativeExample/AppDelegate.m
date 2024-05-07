@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+@import AppcuesKit;
+
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -49,6 +51,9 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  [Appcues enableAutomaticPushConfig];
+
   return YES;
 }
 
