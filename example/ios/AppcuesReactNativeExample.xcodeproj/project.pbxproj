@@ -26,6 +26,7 @@
 		2B71ED67F31C2251A3D1E864 /* libPods-AppcuesReactNativeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppcuesReactNativeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47F7ED3B7971BE374F7B8635 /* Pods-AppcuesReactNativeExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppcuesReactNativeExample.debug.xcconfig"; path = "Target Support Files/Pods-AppcuesReactNativeExample/Pods-AppcuesReactNativeExample.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AppcuesReactNativeExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C931A5472BE9742F003E041F /* AppcuesReactNativeExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AppcuesReactNativeExample.entitlements; path = AppcuesReactNativeExample/AppcuesReactNativeExample.entitlements; sourceTree = "<group>"; };
 		E00ACF0FDA8BF921659E2F9A /* Pods-AppcuesReactNativeExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppcuesReactNativeExample.release.xcconfig"; path = "Target Support Files/Pods-AppcuesReactNativeExample/Pods-AppcuesReactNativeExample.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -45,6 +46,7 @@
 		13B07FAE1A68108700A75B9A /* AppcuesReactNativeExample */ = {
 			isa = PBXGroup;
 			children = (
+				C931A5472BE9742F003E041F /* AppcuesReactNativeExample.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -333,6 +335,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = AppcuesReactNativeExample/AppcuesReactNativeExample.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
@@ -361,6 +364,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = AppcuesReactNativeExample/AppcuesReactNativeExample.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AppcuesReactNativeExample/Info.plist;
