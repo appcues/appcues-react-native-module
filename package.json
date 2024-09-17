@@ -1,6 +1,6 @@
 {
   "name": "@appcues/react-native",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0",
   "description": "Appcues React Native Module for Android and iOS mobile apps",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
