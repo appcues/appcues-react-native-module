@@ -133,5 +133,5 @@ dependencies {
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2"
 
   // Appcues
-  api "com.appcues:appcues:4.0.3"
+  api "com.appcues:appcues:4.1.0"
 }
