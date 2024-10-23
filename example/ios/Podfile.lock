@@ -1,9 +1,9 @@
 PODS:
-  - Appcues (4.1.0)
-  - appcues-react-native (4.0.1):
-    - Appcues (~> 4.1.0)
+  - Appcues (4.2.0)
+  - appcues-react-native (4.1.1):
+    - Appcues (~> 4.2.0)
     - React-Core
-  - AppcuesNotificationService (4.1.0)
+  - AppcuesNotificationService (4.2.0)
   - boost (1.83.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.74.1)
@@ -1200,7 +1200,7 @@ PODS:
 
 DEPENDENCIES:
   - appcues-react-native (from `../..`)
-  - AppcuesNotificationService (= 4.1.0)
+  - AppcuesNotificationService (= 4.2.0)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -1387,9 +1387,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Appcues: 0adcc199cf6f18123517571e28dd8041799f7bf2
-  appcues-react-native: 648847b831081aaf6fdea8e448363a4f4a7a8847
-  AppcuesNotificationService: 48d7fe7e7f626a73d0003c3f483d897c82869a54
+  Appcues: 0d2ccd7577dbf1b5e6c65d33630d6058abf1640e
+  appcues-react-native: a522d22029f0416b5274247fd430b91ad9f36f61
+  AppcuesNotificationService: 0cebce4f4417b31881ee21e080a39d1a30fd3126
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   FBLazyVector: 898d14d17bf19e2435cafd9ea2a1033efe445709
@@ -1449,6 +1449,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 348f8b538c3ed4423eb58a8e5730feec50bce372
 
-PODFILE CHECKSUM: 23a2745c3fbf5da81611e6515d63d56cbacd803f
+PODFILE CHECKSUM: 8faee9ec10de413e8aeb9006608647770177d754
 
 COCOAPODS: 1.15.2
