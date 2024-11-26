@@ -35,5 +35,5 @@ target 'AppcuesReactNativeExample' do
 end
 
 target 'NotificationServiceExtension' do
-    pod 'AppcuesNotificationService', '4.3.0'
+    pod 'AppcuesNotificationService', '4.3.2'
 end
