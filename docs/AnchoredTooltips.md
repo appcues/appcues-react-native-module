@@ -25,25 +25,25 @@ The `nativeID` or `testID` value must be unique on the screen where an anchored 
 
 ### Bottom Tab Navigation
 
-A common use case for anchored tooltips is bottom tab navigation elements. For typical tab layouts using the Bottom Tabs Navigation from the React Navigation library, use the [`tabBarTestID`](https://reactnavigation.org/docs/bottom-tab-navigator/#tabbartestid) option on the tab items to ensure the normal `testID` selector is set for the resulting view.
+A common use case for anchored tooltips is bottom tab navigation elements. For typical tab layouts using the Bottom Tabs Navigation from the React Navigation library (version 7.x), use the [`tabBarButtonTestID`](https://reactnavigation.org/docs/bottom-tab-navigator/#tabbarbuttontestid) option on the tab items to ensure the normal `testID` selector is set for the resulting view (note the property is called [`tabBarTestID`](https://reactnavigation.org/docs/6.x/bottom-tab-navigator#tabbartestid) in previous versions).
 
-In the example below, three main tabs are defined and provide the `tabBarTestID` for anchored tooltip targeting.
+In the example below, three main tabs are defined and provide the `tabBarButtonTestID` for anchored tooltip targeting.
 ```js
 <Tab.Navigator>
     <Tab.Screen
     name="Events"
     component={EventsScreen}
-    options={{ title: 'Events', tabBarTestID: 'tabEvents' }}
+    options={{ title: 'Events', tabBarButtonTestID: 'tabEvents' }}
     />
     <Tab.Screen
     name="Profile"
     component={ProfileScreen}
-    options={{ title: 'Profile', tabBarTestID: 'tabProfile' }}
+    options={{ title: 'Profile', tabBarButtonTestID: 'tabProfile' }}
     />
     <Tab.Screen
     name="Group"
     component={GroupScreen}
-    options={{ title: 'Group', tabBarTestID: 'tabGroup' }}
+    options={{ title: 'Group', tabBarButtonTestID: 'tabGroup' }}
     />
 </Tab.Navigator>
 ```
