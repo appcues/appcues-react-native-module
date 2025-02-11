@@ -10,29 +10,11 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.appcues.AppcuesFrameView
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.uimanager.StateWrapper
 import com.facebook.react.uimanager.ThemedReactContext
+import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.UIManagerModule
-import com.facebook.react.uimanager.ViewGroupManager
-import com.facebook.react.uimanager.annotations.ReactProp
-
-
-internal class AppcuesFrameViewManager: ViewGroupManager<AppcuesWrapperView>() {
-
-    override fun getName() = REACT_CLASS
-
-    companion object {
-        const val REACT_CLASS = "AppcuesFrameView"
-    }
-
-    override fun createViewInstance(context: ThemedReactContext): AppcuesWrapperView {
-        return AppcuesWrapperView(context)
-    }
-
-    @ReactProp(name = "frameID")
-    fun setFrameId(view: AppcuesWrapperView, frameId: String) {
-        AppcuesReactNativeModule.implementation?.registerEmbed(frameId, view.contentView)
-    }
-}
 
 internal class AppcuesWrapperFragment(private var frame: AppcuesFrameView) : Fragment() {
 
@@ -42,9 +24,10 @@ internal class AppcuesWrapperFragment(private var frame: AppcuesFrameView) : Fra
     }
 }
 
-internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
+class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
     val contentView: AppcuesFrameView = AppcuesFrameView(context)
 
+    private var stateWrapper: StateWrapper? = null
     private var fragmentCreated = false
 
     override fun onAttachedToWindow() {
@@ -85,13 +68,17 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
         layout(left, top, right, bottom)
     }
 
+    fun setStateWrapper(stateWrapper: StateWrapper?) {
+        this.stateWrapper = stateWrapper
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         // wait until the fragment has been embedded into the view and the
         // children are ready to measure - else it will give a (0,0) size and
         // not layout correctly.
         //
-        // Also in case fragment is not created, as a safe-guard, we should 
-        // skip the proper measuring of the view. 
+        // Also in case fragment is not created, as a safe-guard, we should
+        // skip the proper measuring of the view.
         if (children.count() == 0 || !fragmentCreated) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             return
@@ -109,11 +96,27 @@ internal class AppcuesWrapperView(context: Context) : FrameLayout(context) {
         val finalWidth = maxWidth.coerceAtLeast(suggestedMinimumWidth)
         val finalHeight = maxHeight.coerceAtLeast(suggestedMinimumHeight)
         setMeasuredDimension(finalWidth, finalHeight)
-        (context as? ThemedReactContext)?.let { themedReactContext ->
-            themedReactContext.runOnNativeModulesQueueThread {
-                themedReactContext.getNativeModule(UIManagerModule::class.java)
+
+        stateWrapper?.let {
+            // New Arch
+            it.updateState(Arguments.createMap().apply {
+                putDouble("frameWidth", finalWidth.pxToDp())
+                putDouble("frameHeight", finalHeight.pxToDp())
+            })
+        }
+        ?: run {
+            // Old Arch
+            (context as? ThemedReactContext)?.let { themedReactContext ->
+                themedReactContext.runOnNativeModulesQueueThread {
+                    themedReactContext.getNativeModule(UIManagerModule::class.java)
                     ?.updateNodeSize(id, finalWidth, finalHeight)
+                }
             }
         }
+    }
+
+    // PixelUtil.pxToDp is only available in RN 0.76+
+    private fun Int.pxToDp(): Double {
+        return PixelUtil.toDIPFromPixel(this.toFloat()).toDouble()
     }
 }

@@ -1,31 +1,29 @@
+import UIKit
 import AppcuesKit
 
-@objc(AppcuesFrameViewManager)
-class AppcuesFrameViewManager: RCTViewManager {
-
-    override func view() -> WrapperView {
-        return WrapperView(uiManager: bridge.uiManager)
-    }
-
-    @objc override static func requiresMainQueueSetup() -> Bool {
-        return false
-    }
+@objc
+public protocol WrapperSizeDelegate {
+    func setSize(to size: CGSize)
 }
 
-class WrapperView: UIView {
-    @objc var frameID: String? = nil {
+@objc(AppcuesFrameWrapperView)
+public class AppcuesFrameWrapperView: UIView {
+    @objc public var frameID: String? = nil {
         didSet {
             // Handle a change in value after setup
             if let frameID = frameID, let frameVC = frameViewController {
-                AppcuesReactNative.implementation?.register(frameID: frameID, for: frameVC.frameView, on: frameVC)
+                Implementation.implementation?.register(frameID: frameID, for: frameVC.frameView, on: frameVC)
             }
         }
     }
 
+    @objc
+    public weak var delegate: WrapperSizeDelegate?
     private weak var uiManager: RCTUIManager?
     private weak var frameViewController: AppcuesFrameVC?
 
-    init(uiManager: RCTUIManager) {
+    @objc
+    public init(uiManager: RCTUIManager?) {
         self.uiManager = uiManager
         super.init(frame: .zero)
     }
@@ -35,7 +33,7 @@ class WrapperView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
 
         if let frameViewController = frameViewController {
@@ -48,7 +46,7 @@ class WrapperView: UIView {
     private func setupFrame() {
         guard let parentVC = parentViewController,
               let frameID = frameID,
-              let appcues = AppcuesReactNative.implementation else {
+              let appcues = Implementation.implementation else {
             return
         }
 
@@ -64,6 +62,11 @@ class WrapperView: UIView {
 
     func setIntrinsicSize(preferredContentSize: CGSize, isHidden: Bool) {
         let size = isHidden ? .zero : preferredContentSize
+
+        // New Arch
+        delegate?.setSize(to: size)
+
+        // Old Arch
         uiManager?.setIntrinsicContentSize(size, for: self)
     }
 }
@@ -71,9 +74,9 @@ class WrapperView: UIView {
 class AppcuesFrameVC: UIViewController {
     lazy var frameView = AppcuesFrameView()
 
-    weak var parentView: WrapperView?
+    weak var parentView: AppcuesFrameWrapperView?
 
-    init(parentView: WrapperView) {
+    init(parentView: AppcuesFrameWrapperView) {
         self.parentView = parentView
         super.init(nibName: nil, bundle: nil)
     }

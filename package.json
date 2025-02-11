@@ -124,6 +124,7 @@
     "source": "src",
     "output": "lib",
     "targets": [
+      "codegen",
       "commonjs",
       "module",
       [
@@ -133,6 +134,19 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "AppcuesReactNativeSpec",
+    "type": "all",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.appcuesreactnative"
+    },
+    "outputDir": {
+      "ios": "ios/generated/react/renderer/components",
+      "android": "android/generated"
+    },
+    "includesGeneratedCode": true
   },
   "create-react-native-library": {
     "type": "turbo-module",
