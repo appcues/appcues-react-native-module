@@ -1,17 +1,36 @@
 package com.appcuesreactnative
 
-import com.facebook.react.ReactPackage
+import com.facebook.react.BaseReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.module.model.ReactModuleInfo
+import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.uimanager.ViewManager
 
+class AppcuesReactNativePackage : BaseReactPackage() {
 
-internal class AppcuesReactNativePackage : ReactPackage {
-    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-        return listOf(AppcuesReactNativeModule(reactContext))
+    override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
+        return if (name == AppcuesReactNativeModule.NAME) {
+            AppcuesReactNativeModule(reactContext)
+        } else {
+            null
+        }
+    }
+
+    override fun getReactModuleInfoProvider() = ReactModuleInfoProvider {
+        mapOf(
+            AppcuesReactNativeModule.NAME to ReactModuleInfo(
+                _name = AppcuesReactNativeModule.NAME,
+                _className = AppcuesReactNativeModule.NAME,
+                _canOverrideExistingModule = false,
+                _needsEagerInit = false,
+                isCxxModule = false,
+                isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+            )
+        )
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-        return listOf(AppcuesFrameViewManager())
+        return listOf(AppcuesFrameViewManager(reactContext))
     }
 }

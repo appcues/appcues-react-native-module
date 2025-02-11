@@ -10,7 +10,6 @@ import com.appcues.LoggingLevel
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -21,10 +20,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
-    : ReactContextBaseJavaModule(reactContext) {
+class AppcuesReactNativeModule internal constructor(private val reactContext: ReactApplicationContext) :
+    AppcuesReactNativeSpec(reactContext) {
 
     companion object {
+        const val NAME = "AppcuesReactNative"
         var implementation: Appcues? = null
     }
 
@@ -34,15 +34,14 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
       get() = currentActivity
 
     override fun getName(): String {
-        return "AppcuesReactNative"
+        return NAME
     }
 
     @ReactMethod
-    fun setup(
+    override fun setup(
         accountID: String,
         applicationID: String,
         options: ReadableMap?,
-        additionalAutoProperties: ReadableMap?,
         promise: Promise
     ) {
         val context = reactApplicationContextIfActiveOrWarn
@@ -51,8 +50,6 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
             return
         }
         implementation = Appcues(context, accountID, applicationID) {
-            val autoProps = hashMapOf<String, Any>()
-
             options?.toHashMap()?.let {
 
                 val logging = it["logging"] as? Boolean
@@ -82,14 +79,9 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
 
                 val autoPropsFromOptions = it["additionalAutoProperties"] as? HashMap<String, Any>
                 if (autoPropsFromOptions != null) {
-                    autoProps.putAll(autoPropsFromOptions)
+                    this.additionalAutoProperties = autoPropsFromOptions
                 }
             }
-
-            // take any auto properties provided from the calling application, and merge with our internal
-            // auto properties passed in an additional argument.
-            autoProps.putAll(toMap(additionalAutoProperties) ?: emptyMap())
-            this.additionalAutoProperties = autoProps
 
             this.analyticsListener = object: AnalyticsListener {
                 override fun trackedAnalytic(
@@ -159,37 +151,37 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
     }
 
     @ReactMethod
-    fun identify(userID: String, properties: ReadableMap? = null) {
+    override fun identify(userID: String, properties: ReadableMap?) {
         implementation?.identify(userID, toMap(properties))
     }
 
     @ReactMethod
-    fun reset() {
+    override fun reset() {
         implementation?.reset()
     }
 
     @ReactMethod
-    fun anonymous() {
+    override fun anonymous() {
         implementation?.anonymous()
     }
 
     @ReactMethod
-    fun group(groupID: String?, properties: ReadableMap? = null) {
+    override fun group(groupID: String?, properties: ReadableMap?) {
         implementation?.group(groupID, toMap(properties))
     }
 
     @ReactMethod
-    fun screen(title: String, properties: ReadableMap? = null) {
+    override fun screen(title: String, properties: ReadableMap?) {
         implementation?.screen(title, toMap(properties))
     }
 
     @ReactMethod
-    fun track(name: String, properties: ReadableMap? = null) {
+    override fun track(name: String, properties: ReadableMap?) {
         implementation?.track(name, toMap(properties))
     }
 
     @ReactMethod
-    fun show(experienceID: String, promise: Promise) {
+    override fun show(experienceID: String, promise: Promise) {
         mainScope.launch {
             val success = implementation?.show(experienceID) ?: false
             if (success) {
@@ -201,14 +193,14 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
     }
 
     @ReactMethod
-    fun debug() {
+    override fun debug() {
         currentActivity?.let {
             implementation?.debug(it)
         }
     }
 
     @ReactMethod
-    fun didHandleURL(url: String, promise: Promise) {
+    override fun didHandleURL(url: String, promise: Promise) {
         val activity = currentActivity
         val uri = Uri.parse(url)
         if (activity != null) {
@@ -221,12 +213,12 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
     }
 
     @ReactMethod
-    fun addListener(eventName: String) {
+    override fun addListener(eventName: String) {
         // Required for RN built in Event Emitter Calls.
     }
 
     @ReactMethod
-    fun removeListeners(count: Int) {
+    override fun removeListeners(count: Double) {
         // Required for RN built in Event Emitter Calls.
     }
 

@@ -1,10 +1,4 @@
-import {
-  requireNativeComponent,
-  NativeModules,
-  Platform,
-  UIManager,
-  type ViewStyle,
-} from 'react-native';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
 interface ReactNativeOptions {
   logging?: boolean;
@@ -12,19 +6,21 @@ interface ReactNativeOptions {
   sessionTimeout?: number;
   activityStorageMaxSize?: number;
   activityStorageMaxAge?: number;
-  additionalAutoProperties?: any;
+  additionalAutoProperties?: object;
   enableTextScaling?: boolean;
 }
 
-const LINKING_ERROR =
-  `The package 'appcues-react-native' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n' +
-  'If you are using the Expo managed workflow, please refer to the Appcues React Native module documentation for Expo.';
+const LINKING_ERROR = `The package '@appcues/react-native' doesn't seem to be linked.`;
 
-const AppcuesReactNative = NativeModules.AppcuesReactNative
-  ? NativeModules.AppcuesReactNative
+// @ts-expect-error
+const isTurboModuleEnabled = global.__turboModuleProxy != null;
+
+const Module = isTurboModuleEnabled
+  ? require('./NativeAppcuesReactNative').default
+  : NativeModules.AppcuesReactNative;
+
+const AppcuesReactNative = Module
+  ? Module
   : new Proxy(
       {},
       {
@@ -39,10 +35,16 @@ export function setup(
   applicationID: string,
   options?: ReactNativeOptions
 ): Promise<void> {
-  return AppcuesReactNative.setup(accountID, applicationID, options, {
-    _applicationFramework: 'react-native',
-    _applicationFrameworkVersion: require('react-native/package.json').version,
-  });
+  const rnVersion = require('react-native/package.json').version;
+  const augmentedOptions = {
+    ...options,
+    additionalAutoProperties: {
+      ...options?.additionalAutoProperties,
+      _applicationFramework: 'react-native',
+      _applicationFrameworkVersion: rnVersion,
+    },
+  };
+  return AppcuesReactNative.setup(accountID, applicationID, augmentedOptions);
 }
 
 export function identify(userID: string, properties?: object) {
@@ -81,16 +83,7 @@ export function didHandleURL(url: string): Promise<boolean> {
   return AppcuesReactNative.didHandleURL(url);
 }
 
-const ComponentName = 'AppcuesFrameView';
+export const analyticsEventEmitter = new NativeEventEmitter(Module);
 
-type AppcuesFrameProps = {
-  frameID: string;
-  style?: ViewStyle;
-};
-
-export const AppcuesFrameView =
-  UIManager.getViewManagerConfig(ComponentName) != null
-    ? requireNativeComponent<AppcuesFrameProps>(ComponentName)
-    : () => {
-        throw new Error(LINKING_ERROR);
-      };
+export { default as AppcuesFrameView } from './AppcuesFrameViewNativeComponent';
+export * from './AppcuesFrameViewNativeComponent';
