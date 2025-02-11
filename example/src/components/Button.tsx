@@ -1,12 +1,21 @@
-import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import {
+  Button as RNButton,
+  type ButtonProps,
+  TouchableOpacity,
+  Text,
+  type ViewStyle,
+  type TextStyle,
+} from 'react-native';
 
-function Button(props) {
+function Button(
+  props: ButtonProps & {
+    style: { container?: ViewStyle; buttonText?: TextStyle };
+  }
+) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
       style={props.style.container}
-      nativeID={props.nativeID}
       testID={props.testID}
     >
       <Text style={props.style.buttonText}>{props.title}</Text>
@@ -14,7 +23,7 @@ function Button(props) {
   );
 }
 
-export function FilledButton(props) {
+export function FilledButton(props: ButtonProps) {
   return (
     <Button
       style={{
@@ -36,7 +45,7 @@ export function FilledButton(props) {
   );
 }
 
-export function PlainButton(props) {
+export function PlainButton(props: ButtonProps) {
   return (
     <Button
       style={{
@@ -51,7 +60,7 @@ export function PlainButton(props) {
   );
 }
 
-export function TintedButton(props) {
+export function TintedButton(props: ButtonProps) {
   return (
     <Button
       style={{
@@ -71,4 +80,8 @@ export function TintedButton(props) {
       {...props}
     />
   );
+}
+
+export function TabBarButton(props: ButtonProps) {
+  return <RNButton color="#1EB5C4" {...props} />;
 }

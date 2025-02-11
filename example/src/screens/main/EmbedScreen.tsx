@@ -1,16 +1,13 @@
-import React from 'react';
+import { useCallback } from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from '@appcues/react-native';
 import { AppcuesFrameView } from '@appcues/react-native';
 import Text from '../../components/Text';
 
-const Stack = createNativeStackNavigator();
-
-const EmbedView = () => {
+export const EmbedView = () => {
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       Appcues.screen('Embed Container');
     }, [])
   );
@@ -20,7 +17,7 @@ const EmbedView = () => {
       <ScrollView>
         <AppcuesFrameView frameID="frame1" />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>
+          <Text>
             Embedded Experiences, or Embeds for short, are experiences that are
             injected inline with the customer application views, rather than
             overlaid on top. Embeds can contain a variety of content. Any type
@@ -67,21 +64,6 @@ const EmbedView = () => {
     </SafeAreaView>
   );
 };
-
-export default function EmbedScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Embed Experiences"
-        component={EmbedView}
-        options={{
-          headerShadowVisible: false,
-          headerTitleStyle: { fontWeight: '600' },
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
 
 const styles = StyleSheet.create({
   textContainer: {
