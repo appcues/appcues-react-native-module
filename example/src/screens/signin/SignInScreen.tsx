@@ -1,21 +1,43 @@
-import React, { useContext } from 'react';
+import { useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  type ParamListBase,
+} from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Appcues from '@appcues/react-native';
-import UserContext from '../../contexts/UserContext';
-import { FilledButton, PlainButton } from '../../components/Button';
+import { useUserContext } from '../../contexts/UserContext';
+import {
+  FilledButton,
+  PlainButton,
+  TabBarButton,
+} from '../../components/Button';
 import Text from '../../components/Text';
 import TextInput from '../../components/TextInput';
 
 export default function SignInScreen() {
-  const { userID, setUserID } = useContext(UserContext);
-  const navigation = useNavigation();
+  const { userID, setUserID } = useUserContext();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       Appcues.screen('Sign In');
     }, [])
   );
+  useEffect(() => {
+    navigation.setOptions({
+      // eslint-disable-next-line react/no-unstable-nested-components
+      headerRight: () => (
+        <TabBarButton
+          title="Skip"
+          onPress={() => {
+            navigation.navigate('Main');
+          }}
+        />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.root}>
@@ -29,9 +51,11 @@ export default function SignInScreen() {
         <FilledButton
           title="Sign In"
           onPress={() => {
-            Appcues.identify(userID);
-            setUserID(userID);
-            navigation.navigate('Main');
+            if (userID) {
+              Appcues.identify(userID);
+              setUserID(userID);
+              navigation.navigate('Main');
+            }
           }}
         />
       </View>

@@ -1,22 +1,19 @@
-import React from 'react';
+import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Appcues from '@appcues/react-native';
 import { FilledButton } from '../../components/Button';
 import Text from '../../components/Text';
 import TextInput from '../../components/TextInput';
 
-const Stack = createNativeStackNavigator();
+export const GroupView = () => {
+  const [groupID, onChangeGroupID] = useState('');
 
-const GroupView = () => {
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       Appcues.screen('Update Group');
     }, [])
   );
-
-  const [groupID, onChangeGroupID] = React.useState(null);
 
   return (
     <View style={styles.container}>
@@ -31,28 +28,13 @@ const GroupView = () => {
         title="Save"
         onPress={() => {
           Appcues.group(groupID, { test_user: true });
-          onChangeGroupID(null);
+          onChangeGroupID('');
         }}
-        nativeID="btnSaveGroup"
+        testID="btnSaveGroup"
       />
     </View>
   );
 };
-
-export default function GroupScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Update Group"
-        component={GroupView}
-        options={{
-          headerShadowVisible: false,
-          headerTitleStyle: { fontWeight: '600' },
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {

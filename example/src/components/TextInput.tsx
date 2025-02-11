@@ -1,7 +1,7 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
 import { TextInput as ReactTextInput } from 'react-native';
 
-export default function TextInput(props) {
+export default function TextInput(props: ReactTextInput['props']) {
   const { value, onChangeText } = props;
 
   return (

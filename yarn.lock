@@ -15,17 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@appcues/react-native@file:..::locator=appcues-react-native-example%40workspace%3Aexample":
-  version: 4.3.2
-  resolution: "@appcues/react-native@file:..#..::hash=8d7a91&locator=appcues-react-native-example%40workspace%3Aexample"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 9cbc56e23311de4a35a20e26cdcd7790324fefca8869a8afe6bd0ece2660682fe45e317ce4f9d309a9252108df00db35c85bbb93d5ee6f98385bdfa76851c5f8
-  languageName: node
-  linkType: hard
-
-"@appcues/react-native@workspace:.":
+"@appcues/react-native@workspace:., @appcues/react-native@workspace:^":
   version: 0.0.0-use.local
   resolution: "@appcues/react-native@workspace:."
   dependencies:
@@ -3260,7 +3250,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "appcues-react-native-example@workspace:example"
   dependencies:
-    "@appcues/react-native": "file:.."
+    "@appcues/react-native": "workspace:^"
     "@babel/core": ^7.25.2
     "@babel/preset-env": ^7.25.3
     "@babel/runtime": ^7.25.0

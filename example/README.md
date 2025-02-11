@@ -16,7 +16,8 @@ yarn install
 
 # Install cocoapods
 cd ./ios
-pod install
+bundle install # One time only
+bundle exec pod install
 ```
 
 This example app requires you to fill in an Appcues Account ID and an Appcues Application ID in `App.js`. You can enter your own values found in [Appcues Studio](https://studio.appcues.com), or use the following test values:
