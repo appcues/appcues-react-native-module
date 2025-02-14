@@ -11,10 +11,9 @@
 		0C80B921A6F3F58F76C31292 /* libPods-AppcuesReactNativeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-AppcuesReactNativeExample.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		C9EBCBE12D5B977B00D38F9D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EBCBE02D5B977B00D38F9D /* main.m */; };
 		C9EBCBE92D5BC2E700D38F9D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EBCBE82D5BC2E700D38F9D /* NotificationService.swift */; };
 		C9EBCBED2D5BC2E700D38F9D /* NotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C9EBCBE62D5BC2E700D38F9D /* NotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		C9EBCBF62D5BC95700D38F9D /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9EBCBF52D5BC95700D38F9D /* AppDelegate.mm */; };
+		C9EBCBF82D5BEC1300D38F9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EBCBF72D5BEC1200D38F9D /* AppDelegate.swift */; };
 		FD85BE65FBC03EC0FAE97896 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -54,13 +53,11 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-AppcuesReactNativeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppcuesReactNativeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AppcuesReactNativeExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A683ABC4D04756079BB49854 /* Pods-NotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-NotificationServiceExtension/Pods-NotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
-		C9EBCBDF2D5B974F00D38F9D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AppcuesReactNativeExample/AppDelegate.h; sourceTree = "<group>"; };
-		C9EBCBE02D5B977B00D38F9D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AppcuesReactNativeExample/main.m; sourceTree = "<group>"; };
 		C9EBCBE62D5BC2E700D38F9D /* NotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9EBCBE82D5BC2E700D38F9D /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		C9EBCBEA2D5BC2E700D38F9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9EBCBF22D5BC34E00D38F9D /* AppcuesReactNativeExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AppcuesReactNativeExample.entitlements; path = AppcuesReactNativeExample/AppcuesReactNativeExample.entitlements; sourceTree = "<group>"; };
-		C9EBCBF52D5BC95700D38F9D /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AppcuesReactNativeExample/AppDelegate.mm; sourceTree = "<group>"; };
+		C9EBCBF72D5BEC1200D38F9D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = AppcuesReactNativeExample/AppDelegate.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -88,12 +85,10 @@
 			isa = PBXGroup;
 			children = (
 				C9EBCBF22D5BC34E00D38F9D /* AppcuesReactNativeExample.entitlements */,
-				C9EBCBDF2D5B974F00D38F9D /* AppDelegate.h */,
-				C9EBCBF52D5BC95700D38F9D /* AppDelegate.mm */,
+				C9EBCBF72D5BEC1200D38F9D /* AppDelegate.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				C9EBCBE02D5B977B00D38F9D /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 			);
 			name = AppcuesReactNativeExample;
@@ -362,8 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9EBCBF62D5BC95700D38F9D /* AppDelegate.mm in Sources */,
-				C9EBCBE12D5B977B00D38F9D /* main.m in Sources */,
+				C9EBCBF82D5BEC1300D38F9D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
