@@ -20,12 +20,12 @@ class AppcuesReactNativePackage : BaseReactPackage() {
     override fun getReactModuleInfoProvider() = ReactModuleInfoProvider {
         mapOf(
             AppcuesReactNativeModule.NAME to ReactModuleInfo(
-                _name = AppcuesReactNativeModule.NAME,
-                _className = AppcuesReactNativeModule.NAME,
-                _canOverrideExistingModule = false,
-                _needsEagerInit = false,
-                isCxxModule = false,
-                isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+                AppcuesReactNativeModule.NAME,
+                AppcuesReactNativeModule.NAME,
+                false,
+                false,
+                false,
+                BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
             )
         )
     }
