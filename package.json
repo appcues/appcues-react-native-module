@@ -124,7 +124,6 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "codegen",
       "commonjs",
       "module",
       [
@@ -146,12 +145,7 @@
       "componentProvider": {
         "AppcuesFrameView": "AppcuesFrameView"
       }
-    },
-    "outputDir": {
-      "ios": "ios/generated/react/renderer/components",
-      "android": "android/generated"
-    },
-    "includesGeneratedCode": true
+    }
   },
   "create-react-native-library": {
     "type": "turbo-module",

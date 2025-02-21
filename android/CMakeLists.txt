@@ -4,7 +4,7 @@ project(AppcuesReactNative)
 set(CMAKE_VERBOSE_MAKEFILE on)
 
 file(GLOB_RECURSE cpp_SRCS CONFIGURE_DEPENDS ../cpp/*.cpp)
-file(GLOB_RECURSE react_codegen_SRCS CONFIGURE_DEPENDS ./generated/jni/*.cpp)
+file(GLOB_RECURSE react_codegen_SRCS CONFIGURE_DEPENDS ./build/generated/source/codegen/jni/*.cpp)
 
 add_library(
   react_codegen_AppcuesReactNativeSpec
@@ -14,7 +14,7 @@ add_library(
 )
 
 target_include_directories(react_codegen_AppcuesReactNativeSpec PUBLIC ../cpp)
-target_include_directories(react_codegen_AppcuesReactNativeSpec PUBLIC ./generated/jni)
+target_include_directories(react_codegen_AppcuesReactNativeSpec PUBLIC ./build/generated/source/codegen/jni)
 
 target_link_libraries(
   react_codegen_AppcuesReactNativeSpec

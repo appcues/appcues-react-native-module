@@ -25,10 +25,10 @@ target 'AppcuesReactNativeExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-
-  pre_install do |installer|
-    system("cd ../../ && npx bob build --target codegen")
-  end
+  # Removed because we're not including generated code in our package
+  # pre_install do |installer|
+  #   system("cd ../../ && npx bob build --target codegen")
+  # end
 
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
