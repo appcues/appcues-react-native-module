@@ -126,6 +126,8 @@ def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
 }
 
+// Removed because we're not including generated code in our package
+/*
 if (isNewArchitectureEnabled()) {
     // Since our library doesn't invoke codegen automatically we need to do it here.
     tasks.register('invokeLibraryCodegen', Exec) {
@@ -140,6 +142,7 @@ if (isNewArchitectureEnabled()) {
     }
     preBuild.dependsOn invokeLibraryCodegen
 }
+*/
 
 project.ext.vectoricons = [
   iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
