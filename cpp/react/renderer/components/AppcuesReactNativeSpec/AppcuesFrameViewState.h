@@ -22,6 +22,11 @@ public:
   folly::dynamic getDynamic() const {
     return {};
   };
+
+  // Required for RN 0.74
+  MapBuffer getMapBuffer() const {
+    return MapBufferBuilder::EMPTY();
+  };
 #endif
 
   const Size frameSize;
