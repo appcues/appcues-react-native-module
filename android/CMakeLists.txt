@@ -16,14 +16,41 @@ add_library(
 target_include_directories(react_codegen_AppcuesReactNativeSpec PUBLIC ../cpp)
 target_include_directories(react_codegen_AppcuesReactNativeSpec PUBLIC ./build/generated/source/codegen/jni)
 
-target_link_libraries(
-  react_codegen_AppcuesReactNativeSpec
-  fbjni
-  jsi
-  # We need to link different libraries based on whether we are building rncore or not, that's necessary
-  # because we want to break a circular dependency between react_codegen_rncore and reactnative
-  reactnative
-)
+# https://github.com/react-native-community/discussions-and-proposals/discussions/816
+# This if-then-else can be removed once this library does not support version below 0.76
+# https://github.com/facebook/react-native/blob/68453a1f90b4a21b3f48cba07ab3c820fda32dac/packages/react-native-codegen/src/generators/modules/GenerateModuleJniH.js#L91-L104
+if(ReactAndroid_VERSION_MINOR GREATER_EQUAL 76)
+  target_link_libraries(
+    react_codegen_AppcuesReactNativeSpec
+    fbjni
+    jsi
+    # We need to link different libraries based on whether we are building rncore or not, that's necessary
+    # because we want to break a circular dependency between react_codegen_rncore and reactnative
+    reactnative
+  )
+else()
+  target_link_libraries(
+    react_codegen_AppcuesReactNativeSpec
+    fbjni
+    folly_runtime
+    glog
+    jsi
+    react_codegen_rncore
+    react_debug
+    react_nativemodule_core
+    react_render_componentregistry
+    react_render_core
+    react_render_debug
+    react_render_graphics
+    react_render_imagemanager
+    react_render_mapbuffer
+    react_utils
+    rrc_image
+    rrc_view
+    turbomodulejsijni
+    yoga
+  )
+endif()
 
 target_compile_options(
   react_codegen_AppcuesReactNativeSpec
