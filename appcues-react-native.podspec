@@ -14,13 +14,18 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "11.0" }
   s.source       = { :git => "https://github.com/appcues/appcues-react-native-module.git", :tag => "#{s.version}" }
 
-  # Do not include the headers in the C++ sources, to prevent Xcode from trying to compile the C++
-  s.source_files = "ios/*.{h,m,mm,swift}", "cpp/**/*.{cpp}"
+  # RN 0.73 with the old arch fails because the cpp files have unresolved headers, so the easy solution is just to never include them unless the new arch is enabled.
+  if ENV['RCT_NEW_ARCH_ENABLED'] == '1'
+    # Do not include the headers in the C++ sources, to prevent Xcode from trying to compile the C++
+    s.source_files = "ios/*.{h,m,mm,swift}", "cpp/**/*.{cpp}"
 
-  s.pod_target_xcconfig = {
-    # Do include the C++ source headers at compile time so they'll link properly
-    "HEADER_SEARCH_PATHS" => "\"$(PODS_TARGET_SRCROOT)/cpp/\"/** "
-  }
+    s.pod_target_xcconfig = {
+      # Do include the C++ source headers at compile time so they'll link properly
+      "HEADER_SEARCH_PATHS" => "\"$(PODS_TARGET_SRCROOT)/cpp/\"/** "
+    }
+  else
+    s.source_files = "ios/*.{h,m,mm,swift}"
+  end
 
   s.dependency "Appcues", "~> 4.3.5"
 
