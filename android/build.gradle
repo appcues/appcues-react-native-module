@@ -20,6 +20,41 @@ def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
 }
 
+// Start RN version resolution
+// https://github.com/software-mansion/react-native-reanimated/blob/c288e54a248bc7f487b71243c0cbdc5e7a73a737/packages/react-native-reanimated/android/build.gradle
+
+def safeAppExtGet(prop, fallback) {
+  def appProject = rootProject.allprojects.find { it.plugins.hasPlugin('com.android.application') }
+  appProject?.ext?.has(prop) ? appProject.ext.get(prop) : fallback
+}
+
+def resolveReactNativeDirectory() {
+  def reactNativeLocation = safeAppExtGet("REACT_NATIVE_NODE_MODULES_DIR", null)
+  if (reactNativeLocation != null) {
+    return file(reactNativeLocation)
+  }
+
+  // Fallback to node resolver for custom directory structures like monorepos.
+  def reactNativePackage = file(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim())
+  if(reactNativePackage.exists()) {
+    return reactNativePackage.parentFile
+  }
+
+  throw new GradleException(
+    "[Appcues] Unable to resolve react-native location in node_modules. You should project extension property (in `app/build.gradle`) `REACT_NATIVE_NODE_MODULES_DIR` with path to react-native."
+  )
+}
+
+def reactNativeRootDir = resolveReactNativeDirectory()
+
+def reactProperties = new Properties()
+file("$reactNativeRootDir/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
+
+def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME")
+def REACT_NATIVE_MINOR_VERSION = REACT_NATIVE_VERSION.startsWith("0.0.0-") ? 1000 : REACT_NATIVE_VERSION.split("\\.")[1].toInteger()
+
+// End RN version resolution
+
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
@@ -63,11 +98,11 @@ android {
 
   sourceSets {
     main {
-      if (isNewArchitectureEnabled()) {
-        java.srcDirs += ["src/newarch"]
-      } else {
-        java.srcDirs += ["src/oldarch"]
-      }
+      java.srcDirs += [
+        isNewArchitectureEnabled() ? "src/newarch" : "src/oldarch",
+        // Support for RN 0.73 which needs TurboReactPackage
+        REACT_NATIVE_MINOR_VERSION <= 73 ? "src/package/73" : "src/package/latest"
+      ]
     }
   }
 }

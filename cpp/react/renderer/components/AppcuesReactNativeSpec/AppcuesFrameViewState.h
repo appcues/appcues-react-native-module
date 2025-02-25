@@ -29,7 +29,7 @@ public:
   };
 #endif
 
-  const Size frameSize;
+  const Size frameSize{};
 
 };
 
