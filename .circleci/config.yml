@@ -22,7 +22,7 @@ orbs:
 executors:
   js_compatible:
     docker:
-      - image: cimg/node:18.4.0
+      - image: cimg/node:20.18.2
     working_directory: ~/project
   ios_compatible:
     macos:
@@ -33,7 +33,7 @@ executors:
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
   android_compatible:
-    machine: 
+    machine:
       image: android:default
     resource_class: large
     working_directory: ~/project/example/android
@@ -60,15 +60,15 @@ commands:
     steps:
       - restore_cache:
           name: Restore gem cache
-          key: 3-gems-{{ checksum "Gemfile.lock" }}
+          key: 1-gems-{{ arch }}-{{ checksum "../Gemfile.lock" }}
       - run:
           name: Install gem dependencies
           command: bundle check || bundle install --deployment --path vendor/bundle
       - save_cache:
           name: Save gem cache
-          key: 3-gems-{{ checksum "Gemfile.lock" }}
+          key: 1-gems-{{ arch }}-{{ checksum "../Gemfile.lock" }}
           paths:
-            - vendor/bundle
+            - ../vendor/bundle
 
 # -------------------------
 #          JOBS
@@ -103,14 +103,14 @@ jobs:
           command: |
             yarn lint
 
-  typescript:
+  typecheck:
     executor: js_compatible
     steps:
       - attach_project
       - run:
           name: Typecheck files
           command: |
-            yarn typescript
+            yarn typecheck
 
   unit-tests:
     executor: js_compatible
@@ -294,7 +294,7 @@ workflows:
       - lint:
           requires:
             - install-dependencies
-      - typescript:
+      - typecheck:
           requires:
             - install-dependencies
       - unit-tests:
