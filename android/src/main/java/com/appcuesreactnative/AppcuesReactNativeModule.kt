@@ -88,7 +88,7 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
 
             // take any auto properties provided from the calling application, and merge with our internal
             // auto properties passed in an additional argument.
-            autoProps.putAll(additionalAutoProperties?.toHashMap() ?: emptyMap())
+            autoProps.putAll(toMap(additionalAutoProperties) ?: emptyMap())
             this.additionalAutoProperties = autoProps
 
             this.analyticsListener = object: AnalyticsListener {
@@ -160,7 +160,7 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
 
     @ReactMethod
     fun identify(userID: String, properties: ReadableMap? = null) {
-        implementation?.identify(userID, properties?.toHashMap())
+        implementation?.identify(userID, toMap(properties))
     }
 
     @ReactMethod
@@ -175,17 +175,17 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
 
     @ReactMethod
     fun group(groupID: String?, properties: ReadableMap? = null) {
-        implementation?.group(groupID, properties?.toHashMap())
+        implementation?.group(groupID, toMap(properties))
     }
 
     @ReactMethod
     fun screen(title: String, properties: ReadableMap? = null) {
-        implementation?.screen(title, properties?.toHashMap())
+        implementation?.screen(title, toMap(properties))
     }
 
     @ReactMethod
     fun track(name: String, properties: ReadableMap? = null) {
-        implementation?.track(name, properties?.toHashMap())
+        implementation?.track(name, toMap(properties))
     }
 
     @ReactMethod
@@ -228,5 +228,13 @@ internal class AppcuesReactNativeModule(reactContext: ReactApplicationContext)
     @ReactMethod
     fun removeListeners(count: Int) {
         // Required for RN built in Event Emitter Calls.
+    }
+
+    private fun toMap(readableMap: ReadableMap?): Map<String, Any>? {
+        // RN 0.77 .toHashMap() now returns HashMap<String, Any?>
+        return readableMap
+            ?.toHashMap()
+            ?.filterValues { it != null }
+            ?.mapValues { it.value as Any }
     }
 }
