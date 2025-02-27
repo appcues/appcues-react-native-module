@@ -12,7 +12,7 @@ This native module is a bridge between the native Appcues SDKs in a React Native
   - [🚀 Getting Started](#-getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
-      - [Standard](#standard-installation)
+      - [Standard Installation](#standard-installation)
       - [Segment](#segment)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
@@ -31,7 +31,7 @@ This native module is a bridge between the native Appcues SDKs in a React Native
 
 ### Prerequisites
 
-**React Native** - your application should use React Native version 0.73 or above. Applications using Expo should use version 50 or above.
+**React Native** - your application should use React Native version 0.73 or above. Applications using Expo should use version 50 or above. The New Architecture is fully supported starting with version 4.4.0.
 
 **Android** - your application's `build.gradle` must have a `compileSdkVersion` of 34+ and `minSdkVersion` of 21+. Your project should use the Android Gradle Plugin (AGP) version 8 or above.
 ```
@@ -141,7 +141,7 @@ Add `AppcuesFrameView` instances in your application layouts to support embedded
 
 ## 📝 Documentation
 
-More technical documentation about this module (including instruction for usage with Expo Bare and Managed workflow apps) is available in the [`docs` directory](https://github.com/appcues/appcues-react-native-module/tree/main/docs). Full documentation is available at https://docs.appcues.com/
+More technical documentation about this module is available in the [`docs` directory](https://github.com/appcues/appcues-react-native-module/tree/main/docs). Full documentation is available at https://docs.appcues.com/
 
 ## 🎬 Examples
 
