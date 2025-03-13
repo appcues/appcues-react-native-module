@@ -1,7 +1,7 @@
 PODS:
-  - Appcues (4.3.5)
-  - appcues-react-native (4.3.3):
-    - Appcues (~> 4.3.5)
+  - Appcues (4.3.6)
+  - appcues-react-native (4.4.0):
+    - Appcues (~> 4.3.6)
     - DoubleConversion
     - glog
     - hermes-engine
@@ -22,7 +22,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - AppcuesNotificationService (4.3.5)
+  - AppcuesNotificationService (4.3.6)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
@@ -1660,7 +1660,7 @@ PODS:
 
 DEPENDENCIES:
   - appcues-react-native (from `../..`)
-  - AppcuesNotificationService (= 4.3.5)
+  - AppcuesNotificationService (= 4.3.6)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
@@ -1883,9 +1883,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Appcues: 108ab5e4caba89ebe386ebb961d25ebd88f9b96b
-  appcues-react-native: 8076dab582370a9d0557507bc8956eb704224efe
-  AppcuesNotificationService: 3a333b0924176464f66d5cfa81e5dd438ae8b307
+  Appcues: 758c68c206d5329da909f93e79039c1a6332467e
+  appcues-react-native: cf48a899d82958a83f44ee4f7b99a604f55515f8
+  AppcuesNotificationService: fa70b5f904e22f499281235a2511c85ded97c6d0
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
@@ -1957,6 +1957,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 78d74e245ed67bb94275a1316cdc170b9b7fe884
 
-PODFILE CHECKSUM: 0a1c431859136b96508cf83f4b6ec82760bb3f04
+PODFILE CHECKSUM: f6461d5d51419b325775f1ba8dc30bc6d79c0aa2
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
