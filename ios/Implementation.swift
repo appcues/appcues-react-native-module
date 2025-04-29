@@ -77,6 +77,8 @@ public class Implementation: NSObject {
         if #available(iOS 13.0, *) {
             Appcues.elementTargeting = ReactNativeElementTargeting()
         }
+
+        handleStoredNativePush()
     }
 
     @objc
@@ -142,6 +144,41 @@ public class Implementation: NSObject {
 
         DispatchQueue.main.async {
             resolve(implementation.didHandleURL(url))
+        }
+    }
+}
+
+extension Implementation {
+    private static var pushToken: Data?
+    private static var notificationResponse: UNNotificationResponse?
+
+    @objc
+    public static func setPushToken(_ deviceToken: Data?) {
+        guard let impl = Implementation.implementation else {
+            Implementation.pushToken = deviceToken
+            return
+        }
+
+        impl.setPushToken(deviceToken)
+    }
+
+    @objc
+    public static func didReceiveNotification(response: UNNotificationResponse, completionHandler: @escaping () -> Void) -> Bool {
+        guard let impl = Implementation.implementation else {
+            Implementation.notificationResponse = response
+            return false
+        }
+
+        return impl.didReceiveNotification(response: response, completionHandler: completionHandler)
+    }
+
+    // To be called at setup
+    private func handleStoredNativePush() {
+        if let pushToken = Implementation.pushToken {
+            Implementation.implementation?.setPushToken(pushToken)
+        }
+        if let notification = Implementation.notificationResponse {
+            _ = Implementation.implementation?.didReceiveNotification(response: notification, completionHandler: {})
         }
     }
 }
