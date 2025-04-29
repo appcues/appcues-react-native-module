@@ -1,6 +1,6 @@
 PODS:
   - Appcues (4.3.6)
-  - appcues-react-native (4.4.0):
+  - appcues-react-native (4.4.1):
     - Appcues (~> 4.3.6)
     - DoubleConversion
     - glog
@@ -1884,7 +1884,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Appcues: 758c68c206d5329da909f93e79039c1a6332467e
-  appcues-react-native: cf48a899d82958a83f44ee4f7b99a604f55515f8
+  appcues-react-native: f42a8a7af86675ff886808d7b1493ee3a087bb11
   AppcuesNotificationService: fa70b5f904e22f499281235a2511c85ded97c6d0
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb

@@ -11,6 +11,7 @@
 		0C80B921A6F3F58F76C31292 /* libPods-AppcuesReactNativeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-AppcuesReactNativeExample.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C989D7112DBFDEE3008670B0 /* AppDelegate+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = C989D7102DBFDEE3008670B0 /* AppDelegate+Push.swift */; };
 		C9EBCBE92D5BC2E700D38F9D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EBCBE82D5BC2E700D38F9D /* NotificationService.swift */; };
 		C9EBCBED2D5BC2E700D38F9D /* NotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C9EBCBE62D5BC2E700D38F9D /* NotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C9EBCBF82D5BEC1300D38F9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EBCBF72D5BEC1200D38F9D /* AppDelegate.swift */; };
@@ -53,6 +54,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-AppcuesReactNativeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppcuesReactNativeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AppcuesReactNativeExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A683ABC4D04756079BB49854 /* Pods-NotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-NotificationServiceExtension/Pods-NotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		C989D7102DBFDEE3008670B0 /* AppDelegate+Push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppDelegate+Push.swift"; path = "AppcuesReactNativeExample/AppDelegate+Push.swift"; sourceTree = "<group>"; };
 		C9EBCBE62D5BC2E700D38F9D /* NotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9EBCBE82D5BC2E700D38F9D /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		C9EBCBEA2D5BC2E700D38F9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 			children = (
 				C9EBCBF22D5BC34E00D38F9D /* AppcuesReactNativeExample.entitlements */,
 				C9EBCBF72D5BEC1200D38F9D /* AppDelegate.swift */,
+				C989D7102DBFDEE3008670B0 /* AppDelegate+Push.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -357,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C989D7112DBFDEE3008670B0 /* AppDelegate+Push.swift in Sources */,
 				C9EBCBF82D5BEC1300D38F9D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -507,10 +511,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -579,10 +580,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
