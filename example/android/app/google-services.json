@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "465384230434",
     "project_id": "appcues-react-native",
-    "storage_bucket": "appcues-react-native.appspot.com"
+    "storage_bucket": "appcues-react-native.firebasestorage.app"
   },
   "client": [
     {
