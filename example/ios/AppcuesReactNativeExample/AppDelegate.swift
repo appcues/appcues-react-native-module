@@ -3,6 +3,7 @@ import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import AppcuesKit
+//import appcues_react_native
 
 @main
 class AppDelegate: RCTAppDelegate {
@@ -14,7 +15,11 @@ class AppDelegate: RCTAppDelegate {
     // They will be passed down to the ViewController used by React Native.
     self.initialProps = [:]
 
+    // Automatically configure for push notifications
     Appcues.enableAutomaticPushConfig()
+
+    // Or, manually configure for push notifications
+//    setupPush(application: application)
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
