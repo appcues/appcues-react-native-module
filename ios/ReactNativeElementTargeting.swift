@@ -84,9 +84,20 @@ internal class ReactNativeElementTargeting: AppcuesElementTargeting {
 }
 
 extension UIView {
+    var compatibleNativeID: String? {
+        #if RCT_NEW_ARCH_ENABLED
+        guard responds(to: Selector(("nativeId"))) else {
+            return nil
+        }
+        return value(forKey: "nativeId") as? String
+        #else
+        return nativeID
+        #endif
+    }
+
     var reactNativeSelector: ReactNativeElementSelector? {
         return ReactNativeElementSelector(
-            nativeID: nativeID.flatMap { $0.isEmpty ? nil : $0 },
+            nativeID: compatibleNativeID.flatMap { $0.isEmpty ? nil : $0 },
             // on iOS, the "testID" set on a react native view comes in through
             // the accessibilityIdentifier property on the UIView
             testID: accessibilityIdentifier.flatMap { $0.isEmpty ? nil : $0 }
