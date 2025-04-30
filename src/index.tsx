@@ -8,6 +8,7 @@ interface ReactNativeOptions {
   activityStorageMaxAge?: number;
   additionalAutoProperties?: object;
   enableTextScaling?: boolean;
+  enableStepRecoveryObserver?: boolean;
 }
 
 const LINKING_ERROR = `The package '@appcues/react-native' doesn't seem to be linked.`;
