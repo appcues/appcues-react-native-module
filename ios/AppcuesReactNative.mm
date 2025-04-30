@@ -58,6 +58,9 @@ RCT_EXPORT_MODULE()
     if (options.enableTextScaling().has_value()) {
         optionsDict[@"enableTextScaling"] = [NSNumber numberWithBool:options.enableTextScaling().value()];
     }
+    if (options.enableStepRecoveryObserver().has_value()) {
+        optionsDict[@"enableStepRecoveryObserver"] = [NSNumber numberWithBool:options.enableStepRecoveryObserver().value()];
+    }
 
     [implementation setupWithAccountID:accountID
                          applicationID:applicationID

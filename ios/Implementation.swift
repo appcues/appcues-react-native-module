@@ -60,6 +60,10 @@ public class Implementation: NSObject {
             config.activityStorageMaxAge(activityStorageMaxAge)
         }
 
+        if let enableStepRecoveryObserver = options["enableStepRecoveryObserver"] as? Bool {
+            config.enableStepRecoveryObserver(enableStepRecoveryObserver)
+        }
+
         // Enable text scaling by default because the React Native Text component has scaling enabled by default.
         config.enableTextScaling(options["enableTextScaling"] as? Bool ?? true)
 

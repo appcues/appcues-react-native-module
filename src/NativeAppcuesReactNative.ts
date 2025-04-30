@@ -9,6 +9,7 @@ export interface ReactNativeOptions {
   activityStorageMaxAge?: number;
   additionalAutoProperties?: Object;
   enableTextScaling?: boolean;
+  enableStepRecoveryObserver?: boolean;
 }
 
 export interface Spec extends TurboModule {
