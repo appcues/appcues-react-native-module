@@ -124,7 +124,7 @@ dependencies {
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2"
 
   // Appcues
-  api "com.appcues:appcues:4.3.8"
+  api "com.appcues:appcues:5.0.0-beta01"
 }
 
 if (isNewArchitectureEnabled()) {
