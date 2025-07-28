@@ -23,6 +23,15 @@ The `nativeID` or `testID` value must be unique on the screen where an anchored 
 />
 ```
 
+## Instrumenting Web Views
+
+HTML content loaded in a `WebView` ([react-native-webview](https://github.com/react-native-webview/react-native-webview)) is eligible for use with anchored tooltips. Any visible element with an `id` attribute or a `data-appcues-id` attribute will be selectable.
+
+```html
+<button id="my-button" type="button">My Button</button>
+<div data-appcues-id="some-id">...</div>
+```
+
 ### Bottom Tab Navigation
 
 A common use case for anchored tooltips is bottom tab navigation elements. For typical tab layouts using the Bottom Tabs Navigation from the React Navigation library (version 7.x), use the [`tabBarButtonTestID`](https://reactnavigation.org/docs/bottom-tab-navigator/#tabbarbuttontestid) option on the tab items to ensure the normal `testID` selector is set for the resulting view (note the property is called [`tabBarTestID`](https://reactnavigation.org/docs/6.x/bottom-tab-navigator#tabbartestid) in previous versions).
