@@ -7,29 +7,43 @@
 
 import AppcuesKit
 import UIKit
+import WebKit
 
 internal class ReactNativeElementSelector: AppcuesElementSelector {
+    let appcuesID: String?
     let nativeID: String?
     let testID: String?
+    let tag: String?
 
     var displayName: String? {
-        if let nativeID = nativeID {
+        if let appcuesID = appcuesID {
+            return appcuesID
+        } else if let nativeID = nativeID {
             return nativeID
         } else if let testID = testID {
             return testID
+        } else if let tag = tag {
+            return "(tag \(tag))"
         }
 
         return nil
     }
 
-    init?(nativeID: String?, testID: String?) {
+    init?(
+        appcuesID: String?,
+        nativeID: String?,
+        testID: String?,
+        tag: String?
+    ) {
         // must have at least one identifiable property to be a valid selector
-        if nativeID == nil && testID == nil {
+        if appcuesID == nil &&  nativeID == nil && testID == nil && tag == nil {
             return nil
         }
 
+        self.appcuesID = appcuesID
         self.nativeID = nativeID
         self.testID = testID
+        self.tag = tag
         super.init()
     }
 
@@ -41,44 +55,63 @@ internal class ReactNativeElementSelector: AppcuesElementSelector {
         // weight the selector property matches by how distinct they are considered
         var weight = 0
 
+        if appcuesID != nil && appcuesID == target.appcuesID {
+            weight += 1_000
+        }
+
         if nativeID != nil && nativeID == target.nativeID {
-            weight += 10_000
+            weight += 1_000
         }
 
         if testID != nil && testID == target.testID {
             weight += 1_000
         }
 
+        if tag != nil && tag == target.tag {
+            weight += 100
+        }
+
         return weight
     }
 
     private enum CodingKeys: String, CodingKey {
+        case appcuesID
         case nativeID
         case testID
+        case tag
     }
 
     override func encode(to encoder: Encoder) throws {
         try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
+        if let appcuesID = appcuesID, !appcuesID.isEmpty {
+            try container.encode(appcuesID, forKey: .appcuesID)
+        }
         if let nativeID = nativeID, !nativeID.isEmpty {
             try container.encode(nativeID, forKey: .nativeID)
         }
         if let testID = testID, !testID.isEmpty {
             try container.encode(testID, forKey: .testID)
         }
+        if let tag = tag, !tag.isEmpty {
+            try container.encode(tag, forKey: .tag)
+        }
     }
 }
 
 @available(iOS 13.0, *)
 internal class ReactNativeElementTargeting: AppcuesElementTargeting {
-    func captureLayout() -> AppcuesViewElement? {
-        return UIApplication.shared.windows.first { !$0.isAppcuesWindow }?.captureLayout()
+    @MainActor
+    func captureLayout() async -> AppcuesViewElement? {
+        return await UIApplication.shared.windows.first { !$0.isAppcuesWindow }?.captureLayout()
     }
 
     func inflateSelector(from properties: [String: String]) -> AppcuesElementSelector? {
         return ReactNativeElementSelector(
+            appcuesID: properties["appcuesID"],
             nativeID: properties["nativeID"],
-            testID: properties["testID"]
+            testID: properties["testID"],
+            tag: properties["tag"]
         )
     }
 }
@@ -97,18 +130,20 @@ extension UIView {
 
     var reactNativeSelector: ReactNativeElementSelector? {
         return ReactNativeElementSelector(
+            appcuesID: nil,
             nativeID: compatibleNativeID.flatMap { $0.isEmpty ? nil : $0 },
             // on iOS, the "testID" set on a react native view comes in through
             // the accessibilityIdentifier property on the UIView
-            testID: accessibilityIdentifier.flatMap { $0.isEmpty ? nil : $0 }
+            testID: accessibilityIdentifier.flatMap { $0.isEmpty ? nil : $0 },
+            tag: nil
         )
     }
 
-    func captureLayout() -> AppcuesViewElement? {
-        return self.asCaptureView(in: self.bounds, safeAreaInsets: self.safeAreaInsets)
+    func captureLayout() async -> AppcuesViewElement? {
+        return await self.asCaptureView(in: self.bounds, safeAreaInsets: self.safeAreaInsets)
     }
 
-    private func asCaptureView(in bounds: CGRect, safeAreaInsets: UIEdgeInsets) -> AppcuesViewElement? {
+    private func asCaptureView(in bounds: CGRect, safeAreaInsets: UIEdgeInsets) async -> AppcuesViewElement? {
         let absolutePosition = self.convert(self.bounds, to: nil)
 
         // discard views that are not visible in the screenshot image
@@ -121,10 +156,19 @@ extension UIView {
             right: max(safeAreaInsets.right, self.safeAreaInsets.right)
         )
 
-        let children: [AppcuesViewElement] = self.subviews.compactMap {
-            // discard hidden views and subviews within
-            guard !$0.isHidden else { return nil }
-            return $0.asCaptureView(in: bounds, safeAreaInsets: childInsets)
+        let children: [AppcuesViewElement]
+
+        if let webView = self as? WKWebView {
+            let adjustment: CGPoint = webView.scrollView.contentInsetAdjustmentBehavior == .never
+            ? absolutePosition.origin
+            : absolutePosition.inset(by: childInsets).origin
+            children = await webView.children(positionAdjustment: adjustment)
+        } else {
+            children = await self.subviews.asyncCompactMap {
+                // discard hidden views and subviews within
+                guard !$0.isHidden else { return nil }
+                return await $0.asCaptureView(in: bounds, safeAreaInsets: childInsets)
+            }
         }
 
         // find the rect of the visible area of the view within the safe area
@@ -150,5 +194,84 @@ extension UIView {
             selector: selector,
             children: children.isEmpty ? nil : children,
             displayName: selector?.displayName)
+    }
+}
+
+@available(iOS 13.0, *)
+private extension WKWebView {
+    func children(positionAdjustment: CGPoint) async -> [AppcuesViewElement] {
+        let script = """
+        [...document.querySelectorAll('[id], [data-appcues-id]')].reduce((result, el) => {
+            const { x, y, width, height } = el.getBoundingClientRect();
+            const tag = el.id ? `#${el.id}` : null;
+            const appcuesID = el.getAttribute('data-appcues-id')
+            if (height !== 0 && width !== 0) {
+                result.push({
+                    x,
+                    y,
+                    width,
+                    height,
+                    tag,
+                    appcuesID
+                });
+            }
+            return result;
+        }, []);
+        """
+
+        let response = try? await self.evaluateJavaScript(script)
+
+        guard let objects = response as? [Dictionary<String, Any>] else { return [] }
+
+        return objects.compactMap { element in
+            guard let x = element["x"] as? CGFloat,
+                  let y = element["y"] as? CGFloat,
+                  let width = element["width"] as? CGFloat,
+                  let height = element["height"] as? CGFloat
+            else {
+                return nil
+            }
+
+            let elementFrame = CGRect(x: x, y: y, width: width, height: height)
+            guard self.bounds.contains(CGPoint(x: elementFrame.midX, y: elementFrame.midY)) else {
+                return nil
+            }
+
+            let appcuesID = element["appcuesID"] as? String
+            let tag = element["tag"] as? String
+
+            return AppcuesViewElement(
+                x: positionAdjustment.x + x,
+                y: positionAdjustment.y + y,
+                width: width,
+                height: height,
+                type: "HTMLNode",
+                selector: ReactNativeElementSelector(
+                    appcuesID: appcuesID,
+                    nativeID: nil,
+                    testID: nil,
+                    tag: tag
+                ),
+                children: nil,
+                displayName: appcuesID ?? tag
+            )
+        }
+    }
+}
+
+@available(iOS 13.0, *)
+internal extension Sequence {
+    func asyncCompactMap<T>(_ transform: (Element) async throws -> T?) async rethrows -> [T] {
+        var values = [T]()
+
+        for element in self {
+            guard let value = try await transform(element) else {
+                continue
+            }
+
+            values.append(value)
+        }
+
+        return values
     }
 }
