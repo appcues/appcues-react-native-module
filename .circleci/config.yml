@@ -26,7 +26,7 @@ executors:
     working_directory: ~/project
   ios_compatible:
     macos:
-      xcode: 15.1.0
+      xcode: 16.4.0
     resource_class: macos.m1.medium.gen1
     working_directory: ~/project/example/ios
     shell: /bin/bash --login -o pipefail
@@ -137,6 +137,13 @@ jobs:
     executor: ios_compatible
     steps:
       - attach_project
+      - run:
+           name: Select ruby version
+           command: |
+             rbenv versions
+             rbenv global 3.1.7
+             rbenv rehash
+             ruby -v
       - setup_gems
       - run:
           name: Run fastlane validate code
@@ -164,6 +171,13 @@ jobs:
     executor: ios_compatible
     steps:
       - attach_project
+      - run:
+           name: Select ruby version
+           command: |
+             rbenv versions
+             rbenv global 3.1.7
+             rbenv rehash
+             ruby -v
       - setup_gems
       - run:
           name: Run example build
