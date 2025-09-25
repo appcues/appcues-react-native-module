@@ -33,7 +33,7 @@ This native module is a bridge between the native Appcues SDKs in a React Native
 
 **React Native** - your application should use React Native version 0.73 or above. Applications using Expo should use version 50 or above. The New Architecture is fully supported starting with version 4.4.0.
 
-**Android** - your application's `build.gradle` must have a `compileSdk` of 35+ and `minSdk` of 21+, and use Android Gradle Plugin (AGP) 8.1+.
+**Android** - your application's `build.gradle` must have a `compileSdk` of 35+ and `minSdk` of 21+, and use Android Gradle Plugin (AGP) 8.6+ (8.8.2+ recommended).
 
 ```
 android {
@@ -43,6 +43,12 @@ android {
         minSdk 21
     }
 }
+```
+
+For AGP versions < 8.8.2 (React Native versions < 0.79), you may need to add the [following line](https://developer.android.com/develop/ui/compose/tooling/lint) to your `gradle.properties`:
+
+```
+android.experimental.lint.version = 8.8.2
 ```
 
 **iOS** - your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content. Update the iOS project xcodeproj to set the deployment target, if needed. In the application's `Podfile`, include at least this minimum version.
