@@ -39,7 +39,7 @@ class AppcuesFrameViewManager(reactContext: ReactApplicationContext) : SimpleVie
   override fun setFrameID(view: AppcuesFrameWrapperView?, frameID: String?) {
     if (view == null || frameID == null) { return }
 
-    AppcuesReactNativeModule.implementation?.registerEmbed(frameID, view.contentView)
+    view.setFrameID(frameID)
   }
 
   companion object {

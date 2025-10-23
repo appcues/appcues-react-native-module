@@ -17,7 +17,7 @@ internal class AppcuesFrameViewManager(var context: ReactApplicationContext): Si
 
     @ReactProp(name = "frameID")
     fun setFrameId(view: AppcuesFrameWrapperView, frameId: String) {
-        AppcuesReactNativeModule.implementation?.registerEmbed(frameId, view.contentView)
+        view.setFrameID(frameId)
     }
 
     companion object {
