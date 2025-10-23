@@ -16,19 +16,37 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.UIManagerModule
 
-internal class AppcuesWrapperFragment(private var frame: AppcuesFrameView) : Fragment() {
+internal class AppcuesWrapperFragment : Fragment() {
+    private var frameID: String? = null
+    private var frameView: AppcuesFrameView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        return frame
+        frameView = AppcuesFrameView(requireContext())
+        return frameView!!
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        frameID?.let { id ->
+            frameView?.let { view ->
+                AppcuesReactNativeModule.implementation?.registerEmbed(id, view)
+            }
+        }
+    }
+
+    fun setFrameID(frameID: String) {
+        this.frameID = frameID
+        frameView?.let { view ->
+            AppcuesReactNativeModule.implementation?.registerEmbed(frameID, view)
+        }
     }
 }
 
 class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
-    val contentView: AppcuesFrameView = AppcuesFrameView(context)
-
+    private var wrapperFragment: AppcuesWrapperFragment? = null
     private var stateWrapper: StateWrapper? = null
-    private var fragmentCreated = false
+    private var frameID: String? = null
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -36,18 +54,17 @@ class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
     }
 
     private val addFragment = Runnable {
-        if (!fragmentCreated) {
+        if (wrapperFragment == null) {
           try {
-            val wrapperFragment = AppcuesWrapperFragment(contentView)
+            wrapperFragment = AppcuesWrapperFragment()
+            frameID?.let { wrapperFragment?.setFrameID(it) }
             val activity = (context as? ThemedReactContext)?.currentActivity as FragmentActivity
             activity.supportFragmentManager
               .beginTransaction()
               // the id value here is the react native view id that
               // has been assigned by the view manager system for this view instance
-              .replace(id, wrapperFragment, id.toString())
+              .replace(id, wrapperFragment!!, id.toString())
               .commitNow()
-
-            fragmentCreated = true
           } catch (_: Exception) {
             // should not get any exceptions here, but in case the transaction fails to put the fragment in place
             // we rather exit silent instead of crashing the app.
@@ -72,6 +89,11 @@ class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
         this.stateWrapper = stateWrapper
     }
 
+    fun setFrameID(frameID: String) {
+        this.frameID = frameID
+        wrapperFragment?.setFrameID(frameID)
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         // wait until the fragment has been embedded into the view and the
         // children are ready to measure - else it will give a (0,0) size and
@@ -79,7 +101,7 @@ class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
         //
         // Also in case fragment is not created, as a safe-guard, we should
         // skip the proper measuring of the view.
-        if (children.count() == 0 || !fragmentCreated) {
+        if (children.count() == 0 || wrapperFragment == null) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             return
         }
