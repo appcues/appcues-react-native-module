@@ -1,8 +1,6 @@
-# Configuring the Appcues URL Scheme with the Expo Managed Workflow
+# Configuring the Appcues URL Scheme with Expo
 
-The Appcues React Native Module includes support for a custom URL scheme that supports previewing Appcues experiences in-app prior to publishing and launching the Appcues debugger. This functionality can also be utilized in an Expo Managed Workflow app.
-
-This guide assumes you're using the `AppcuesWrapper` approach described in [Using Appcues React Native with the Expo Managed Workflow](https://github.com/appcues/appcues-react-native-module/blob/main/docs/ExpoManagedWorkflow.md).
+The Appcues React Native Module includes support for a custom URL scheme that supports previewing Appcues experiences in-app prior to publishing and launching the Appcues debugger. This functionality can also be utilized in an Expo app.
 
 ## Register the Custom URL Scheme
 
@@ -21,7 +19,7 @@ Add a [scheme](https://docs.expo.dev/versions/latest/config/app/#scheme) propert
 
 Install the [expo-linking](https://docs.expo.dev/versions/latest/sdk/linking) package which provides support for parsing deep links into your app:
 
-```sh 
+```sh
 $ npx expo install expo-linking
 ```
 
@@ -42,9 +40,25 @@ useEffect(() => {
 }, [url]);
 ```
 
+## Compatibility with Expo Router
+
+Expo Router will always evaluate a URL with the assumption that the URL targets a specific page within the app. To opt Appcues SDK deep links out of this URL handling, create a special file called `+native-intent.tsx` at the top level of your project's **app** directory, and `return null` for Appcues deep links. Refer to the [expo-router documentation](https://docs.expo.dev/router/advanced/native-intent/#rewrite-incoming-native-deep-links) for details.
+
+```js
+export function redirectSystemPath({ path, initial }) {
+  // If the incoming link starts with the Appcues UYL scheme, skip having the router handle it
+  if (path?.startsWith('appcues')) {
+    return null;
+  }
+
+  // Otherwise proceed as normal
+  return path;
+}
+```
+
 ## Verifying the Custom URL Scheme
 
-A new Development Build or your app must to be created to be able to use the newly registered URL Scheme. Review [Creating a Development Build](https://github.com/appcues/appcues-react-native-module/blob/main/docs/ExpoManagedWorkflow.md#create-a-development-build) for details.
+A new Development Build of your app must to be created to be able to use the newly registered URL Scheme. Review [Creating a Development Build](https://docs.expo.dev/develop/development-builds/introduction/) for details.
 
 To verify the URL scheme is registered and properly handled, open the Appcues debugger in your app with `AppcuesWrapper.debug()`, and tap the Appcues Deep Link row to check the configuration. If you see a green check mark, everything is set up properly!
 

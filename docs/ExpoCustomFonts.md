@@ -1,10 +1,10 @@
-# Registering Custom Fonts with the Expo Managed Workflow
+# Registering Custom Fonts with Expo
 
 [Expo Font](https://docs.expo.dev/versions/latest/sdk/font) is a library that allows loading fonts at runtime and using them in React Native components.
 
 This guide shows how to set up fonts in your Expo project to work in the Appcues React Native module.
 
-- [Registering Custom Fonts with the Expo Managed Workflow](#registering-custom-fonts-with-the-expo-managed-workflow)
+- [Registering Custom Fonts with Expo](#registering-custom-fonts-with-expo)
   - [Naming Font Files](#naming-font-files)
   - [Expo SDK 50 and above](#expo-sdk-50-and-above)
   - [Expo SDK 49 and below](#expo-sdk-49-and-below)
