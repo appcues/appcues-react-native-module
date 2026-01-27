@@ -3,6 +3,7 @@ import { NativeEventEmitter, NativeModules } from 'react-native';
 interface ReactNativeOptions {
   logging?: boolean;
   apiHost?: string;
+  settingsHost?: string;
   sessionTimeout?: number;
   activityStorageMaxSize?: number;
   activityStorageMaxAge?: number;

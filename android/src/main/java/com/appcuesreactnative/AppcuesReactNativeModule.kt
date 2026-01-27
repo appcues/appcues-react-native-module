@@ -62,6 +62,11 @@ class AppcuesReactNativeModule internal constructor(private val reactContext: Re
                     this.apiBasePath = apiHost
                 }
 
+                val settingsHost = it["settingsHost"] as? String
+                if (settingsHost != null) {
+                    this.apiSettingsPath = settingsHost
+                }
+
                 val sessionTimeout = it["sessionTimeout"] as? Double
                 if (sessionTimeout != null) {
                     this.sessionTimeout = sessionTimeout.toInt()

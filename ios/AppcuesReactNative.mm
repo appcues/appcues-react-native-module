@@ -45,6 +45,7 @@ RCT_EXPORT_MODULE()
         optionsDict[@"logging"] = [NSNumber numberWithBool:options.logging().value()];
     }
     optionsDict[@"apiHost"] = options.apiHost();
+    optionsDict[@"settingsHost"] = options.settingsHost();
     if (options.sessionTimeout().has_value()) {
         optionsDict[@"sessionTimeout"] = @(options.sessionTimeout().value());
     }
