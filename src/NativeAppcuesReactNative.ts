@@ -4,6 +4,7 @@ import { TurboModuleRegistry } from 'react-native';
 export interface ReactNativeOptions {
   logging?: boolean;
   apiHost?: string;
+  settingsHost?: string;
   sessionTimeout?: number;
   activityStorageMaxSize?: number;
   activityStorageMaxAge?: number;
