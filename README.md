@@ -16,6 +16,8 @@ This native module is a bridge between the native Appcues SDKs in a React Native
       - [Segment](#segment)
     - [One Time Setup](#one-time-setup)
       - [Initializing the SDK](#initializing-the-sdk)
+      - [Configuring Hosting Environment](#configuring-hosting-environment)
+        - [EU Hosting Environment Configuration](#eu-hosting-environment-configuration)
       - [Supporting Builder Preview and Screen Capture](#supporting-builder-preview-and-screen-capture)
       - [Enabling Push Notifications](#enabling-push-notifications)
     - [Identifying Users](#identifying-users)
@@ -52,6 +54,7 @@ android.experimental.lint.version = 8.8.2
 ```
 
 **iOS** - your application must target iOS 11+ to install the SDK, and iOS 13+ to render Appcues content. Update the iOS project xcodeproj to set the deployment target, if needed. In the application's `Podfile`, include at least this minimum version.
+
 ```rb
 # Podfile
 platform :ios, '11.0'
@@ -78,7 +81,7 @@ Note: You do not need to manually update your Podfile to add Appcues.
 
 #### Segment
 
-Appcues supports integration with Segment's [analytics-react-native](https://github.com/segmentio/analytics-react-native) package.  To install with Segment, you'll  use the [Segment Appcues plugin](https://github.com/appcues/segment-appcues-react-native).
+Appcues supports integration with Segment's [analytics-react-native](https://github.com/segmentio/analytics-react-native) package. To install with Segment, you'll use the [Segment Appcues plugin](https://github.com/appcues/segment-appcues-react-native).
 
 ### One Time Setup
 
@@ -87,12 +90,25 @@ Appcues supports integration with Segment's [analytics-react-native](https://git
 An instance of the Appcues SDK should be initialized when your app launches.
 
 ```js
-import * as Appcues from '@appcues/react-native'
+import * as Appcues from '@appcues/react-native';
 
-await Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID')
+await Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID');
 ```
 
 Initializing the SDK requires you to provide two values, an Appcues account ID, and an Appcues mobile application ID. These values can be obtained from your [Appcues settings](https://studio.appcues.com/settings/account). Refer to the help documentation on [Registering your mobile app in Studio](https://docs.appcues.com/article/848-registering-your-mobile-app-in-studio) for more information. Since the React Native bridge is asynchronous, the `setup` call should be resolved before calling subsequent SDK functions.
+
+#### Configuring Hosting Environment
+
+By default, the Appcues SDK will send data to the United States (US) hosting environment, and no additional configuration is required. To specify a different hosting environment, pass the `apiHost` and `settingsHost` options during initialization.
+
+##### EU Hosting Environment Configuration
+
+```js
+await Appcues.setup('APPCUES_ACCOUNT_ID', 'APPCUES_APPLICATION_ID', {
+  apiHost: 'https://api.eu.appcues.net',
+  settingsHost: 'https://fast.eu.appcues.com',
+});
+```
 
 #### Supporting Builder Preview and Screen Capture
 
@@ -108,16 +124,16 @@ In order to target content to the right users at the right time, you need to ide
 
 ```js
 // Identify a user
-Appcues.identify('my-user-id')
+Appcues.identify('my-user-id');
 // Identify a user with property
-Appcues.identify('my-user-id', {'Company': 'Appcues'})
+Appcues.identify('my-user-id', { Company: 'Appcues' });
 ```
 
 After identifying a user, you can optionally associate that user with group.
 
 ```js
 // Associate a user with a group, optionally including group properties
-Appcues.group('group-id', {'Plan Tier': 'standard'})
+Appcues.group('group-id', { 'Plan Tier': 'standard' });
 ```
 
 To ensure the most accurate content targeting based upon group information, it's recommended to supply the group information immediately after a new user is identified.
@@ -128,14 +144,14 @@ Events are the “actions” your users take in your application, which can be a
 
 ```js
 // Track event
-Appcues.track('Sent Message')
+Appcues.track('Sent Message');
 // Track event with property
-Appcues.track('Deleted Contact', {'ID': 123 })
+Appcues.track('Deleted Contact', { ID: 123 });
 
 // Track screen
-Appcues.screen('Contact List')
+Appcues.screen('Contact List');
 // Track screen with property
-Appcues.screen('Contact Details', {'Contact Reference': 'abc'})
+Appcues.screen('Contact Details', { 'Contact Reference': 'abc' });
 ```
 
 ### Anchored Tooltips
