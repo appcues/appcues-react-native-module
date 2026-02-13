@@ -26,8 +26,8 @@ executors:
     working_directory: ~/project
   ios_compatible:
     macos:
-      xcode: 16.4.0
-    resource_class: macos.m1.medium.gen1
+      xcode: 26.2.0
+    resource_class: m4pro.medium
     working_directory: ~/project/example/ios
     shell: /bin/bash --login -o pipefail
     environment:
