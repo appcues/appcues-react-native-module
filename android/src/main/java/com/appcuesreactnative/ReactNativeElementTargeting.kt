@@ -2,6 +2,7 @@ package com.appcuesreactnative
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContextWrapper
 import android.graphics.Rect
 import android.os.Build
 import android.util.Log
@@ -74,30 +75,24 @@ internal data class ReactNativeViewSelector(
 @Suppress("UNCHECKED_CAST")
 @SuppressLint("PrivateApi")
 internal fun Activity.getParentView(): ViewGroup {
-    // try to find the most applicable decorView to inject Appcues content into. Typically there is just a single
-    // decorView on the Activity window. However, if something like a dialog modal has been shown, this can add another
-    // window with another decorView on top of the Activity. If we want to support showing content above that layer, we need
-    // to find the top most decorView like below.
+    // Try to find the most applicable decorView to capture from. Typically there is just a single
+    // decorView on the Activity window. However, if something like a dialog modal has been shown,
+    // this can add another window with another decorView on top of the Activity. We need to find
+    // the topmost decorView belonging to this activity.
     val decorView = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        // this is the preferred method on API 29+ with the new WindowInspector function
-        // in case of multiple views, get the one that is hosting android.R.id.content
-        // we get the last one because sometimes stacking activities might be listed in this method,
-        // and we always want the one that is on top
-        WindowInspector.getGlobalWindowViews().findTopMost() ?: window.decorView
+        WindowInspector.getGlobalWindowViews().findTopMost(this) ?: window.decorView
       } else {
         @Suppress("SwallowedException", "TooGenericExceptionCaught")
         try {
-            // this is the less desirable method for API 21-28, using reflection to try to get the root views
             val windowManagerClass = Class.forName("android.view.WindowManagerGlobal")
             val windowManager = windowManagerClass.getMethod("getInstance").invoke(null)
             val getViewRootNames: Method = windowManagerClass.getMethod("getViewRootNames")
             val getRootView: Method = windowManagerClass.getMethod("getRootView", String::class.java)
             val rootViewNames = getViewRootNames.invoke(windowManager) as Array<Any?>
             val rootViews = rootViewNames.map { getRootView(windowManager, it) as View }
-            rootViews.findTopMost() ?: window.decorView
+            rootViews.findTopMost(this) ?: window.decorView
           } catch (ex: Exception) {
             Log.e("Appcues", "error getting decorView, ${ex.message}")
-            // if all else fails, use the decorView on the window, which is typically the only one
             window.decorView
           }
     }
@@ -105,7 +100,26 @@ internal fun Activity.getParentView(): ViewGroup {
     return decorView.rootView as ViewGroup
 }
 
-private fun List<View>.findTopMost() = lastOrNull { it.findViewById<View?>(android.R.id.content) != null }
+// Finds the topmost window root that is a real DecorView belonging to this activity.
+// Dialog windows wrap the activity context in ContextThemeWrapper, so we unwrap to match.
+// WindowInspector can also return non-DecorView roots (e.g. Compose PopupLayout) that
+// don't support addView — filtering by isDecorView() avoids those.
+private fun List<View>.findTopMost(activity: Activity) = lastOrNull {
+    it.isOwnedBy(activity) && it.isDecorView()
+}
+
+private fun View.isOwnedBy(activity: Activity): Boolean {
+    var ctx: android.content.Context? = context
+    while (ctx != null) {
+        if (ctx == activity) return true
+        ctx = (ctx as? ContextWrapper)?.baseContext
+    }
+    return false
+}
+
+private fun View.isDecorView(): Boolean {
+    return this::class.java.name == "com.android.internal.policy.DecorView"
+}
 
 internal class ReactNativeViewTargeting(
     private val module: AppcuesReactNativeModule
