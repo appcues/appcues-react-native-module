@@ -36,7 +36,16 @@ public class Implementation: NSObject {
         defer { resolve(nil) }
 
         // Fast refreshing can result in this being called multiple times which gets weird. `guard` is a quick way to shortcut that.
-        guard Implementation.implementation == nil else { return }
+        guard Implementation.implementation == nil else {
+          if analyticsDelegate.implementation == nil {
+            // Re-wire the analytics delegate so the current JS module instance
+            // receives events, even after a JS reload creates a new native module.
+            analyticsDelegate.implementation = self
+            Implementation.implementation?.analyticsDelegate = analyticsDelegate
+          }
+
+          return
+        }
 
         let config = Appcues.Config(accountID: accountID, applicationID: applicationID)
 
