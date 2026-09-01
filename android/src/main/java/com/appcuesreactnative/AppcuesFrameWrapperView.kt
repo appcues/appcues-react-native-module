@@ -53,31 +53,62 @@ class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
         post(addFragment)
     }
 
+    override fun onDetachedFromWindow() {
+        // cancel any callbacks still sitting on the handler queue. If a posted
+        // measureAndLayout runs after this view has left the window, measuring the child
+        // ComposeView throws from AbstractComposeView.onMeasure:
+        //   IllegalStateException: Cannot locate windowRecomposer; View ... is not attached to a window
+        removeCallbacks(measureAndLayout)
+        removeCallbacks(addFragment)
+        super.onDetachedFromWindow()
+    }
+
     private val addFragment = Runnable {
-        if (wrapperFragment == null) {
-          try {
+        // the view may have been detached between the post and this callback running
+        if (!isAttachedToWindow) return@Runnable
+
+        try {
+          // if the fragment exists and its view is still our child there is nothing to do.
+          // When a host screen is detached and later re-attached the fragment survives but its
+          // view is no longer parented here, so the transaction needs to run again - otherwise
+          // the frame stays permanently empty.
+          if (wrapperFragment != null && childCount > 0) return@Runnable
+
+          if (wrapperFragment == null) {
             wrapperFragment = AppcuesWrapperFragment()
             frameID?.let { wrapperFragment?.setFrameID(it) }
-            val activity = (context as? ThemedReactContext)?.currentActivity as FragmentActivity
-            activity.supportFragmentManager
-              .beginTransaction()
-              // the id value here is the react native view id that
-              // has been assigned by the view manager system for this view instance
-              .replace(id, wrapperFragment!!, id.toString())
-              .commitNow()
-          } catch (_: Exception) {
-            // should not get any exceptions here, but in case the transaction fails to put the fragment in place
-            // we rather exit silent instead of crashing the app.
           }
+
+          val activity = (context as? ThemedReactContext)?.currentActivity as? FragmentActivity
+            ?: return@Runnable
+
+          activity.supportFragmentManager
+            .beginTransaction()
+            // the id value here is the react native view id that
+            // has been assigned by the view manager system for this view instance
+            .replace(id, wrapperFragment!!, id.toString())
+            // allowing state loss here as the transaction can land after onSaveInstanceState,
+            // where commitNow would throw. Skipping an embed is preferable to crashing.
+            .commitNowAllowingStateLoss()
+        } catch (_: Exception) {
+          // should not get any exceptions here, but in case the transaction fails to put the fragment in place
+          // we rather exit silent instead of crashing the app.
         }
     }
 
     override fun requestLayout() {
         super.requestLayout()
+        // nothing to measure while detached, and requestLayout can be called several times per
+        // frame - remove any pending callback first so only a single pass is queued.
+        if (!isAttachedToWindow) return
+        removeCallbacks(measureAndLayout)
         post(measureAndLayout)
     }
 
     private val measureAndLayout = Runnable {
+        // the view may have been detached between the post and this callback running
+        if (!isAttachedToWindow) return@Runnable
+
         measure(
             MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
@@ -101,7 +132,11 @@ class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
         //
         // Also in case fragment is not created, as a safe-guard, we should
         // skip the proper measuring of the view.
-        if (children.count() == 0 || wrapperFragment == null) {
+        //
+        // The same applies while detached - measuring a child ComposeView that is not attached
+        // to a window throws, and the fragment and children are both still present at that
+        // point, so those checks alone do not cover it.
+        if (children.count() == 0 || wrapperFragment == null || !isAttachedToWindow) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             return
         }
