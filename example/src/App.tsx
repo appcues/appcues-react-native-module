@@ -6,6 +6,7 @@ import * as Appcues from '@appcues/react-native';
 import { UserContext } from './contexts/UserContext';
 import SignInScreen from './screens/signin/SignInScreen';
 import MainScreen from './screens/main/MainScreen';
+import { FrameModalDetailsView } from './screens/main/EmbedScreen';
 
 const RootStack = createNativeStackNavigator({
   initialRouteName: 'SignIn',
@@ -23,6 +24,13 @@ const RootStack = createNativeStackNavigator({
         presentation: 'fullScreenModal',
         animation: 'fade',
         headerShown: false,
+      },
+    },
+    FrameModalDetails: {
+      screen: FrameModalDetailsView,
+      options: {
+        headerTitle: 'Details',
+        headerShadowVisible: false,
       },
     },
   },

@@ -1,11 +1,20 @@
-import { useCallback } from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import { Modal, SafeAreaView, StyleSheet, ScrollView, View } from 'react-native';
+import {
+  useFocusEffect,
+  useNavigation,
+  type ParamListBase,
+} from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Appcues from '@appcues/react-native';
 import { AppcuesFrameView } from '@appcues/react-native';
 import Text from '../../components/Text';
+import { TintedButton } from '../../components/Button';
 
 export const EmbedView = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const [modalVisible, setModalVisible] = useState(false);
+
   useFocusEffect(
     useCallback(() => {
       Appcues.screen('Embed Container');
@@ -15,6 +24,13 @@ export const EmbedView = () => {
   return (
     <SafeAreaView>
       <ScrollView>
+        <View style={styles.reproContainer}>
+          <TintedButton
+            title="Show Frame in Modal"
+            testID="btnShowFrameModal"
+            onPress={() => setModalVisible(true)}
+          />
+        </View>
         <AppcuesFrameView frameID="frame1" />
         <View style={styles.textContainer}>
           <Text>
@@ -61,15 +77,67 @@ export const EmbedView = () => {
           </Text>
         </View>
       </ScrollView>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modal}>
+          <AppcuesFrameView frameID="modal-frame" style={styles.modalFrame} />
+          <TintedButton
+            title="Go to Details"
+            testID="btnModalFrameDetails"
+            onPress={() => navigation.navigate('FrameModalDetails')}
+          />
+          <TintedButton
+            title="Close Modal"
+            testID="btnCloseFrameModal"
+            onPress={() => setModalVisible(false)}
+          />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
 
+export const FrameModalDetailsView = () => {
+  useFocusEffect(
+    useCallback(() => {
+      Appcues.screen('Frame Modal Details');
+    }, [])
+  );
+
+  return (
+    <View style={styles.details}>
+      <Text>Details</Text>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
+  reproContainer: {
+    marginHorizontal: 20,
+    marginBottom: 12,
+  },
   textContainer: {
     flex: 1,
     marginHorizontal: 20,
     marginBottom: 12,
     flexDirection: 'row',
+  },
+  modal: {
+    flex: 1,
+    paddingTop: 200,
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  modalFrame: {
+    width: '100%',
+  },
+  details: {
+    flex: 1,
+    paddingTop: 40,
+    paddingHorizontal: 20,
   },
 });
