@@ -30,6 +30,11 @@ class AppcuesFrameViewManager(reactContext: ReactApplicationContext) : SimpleVie
     return AppcuesFrameWrapperView(context)
   }
 
+  override fun onDropViewInstance(view: AppcuesFrameWrapperView) {
+    view.dispose()
+    super.onDropViewInstance(view)
+  }
+
   override fun updateState(view: AppcuesFrameWrapperView, props: ReactStylesDiffMap?, stateWrapper: StateWrapper?): Any? {
     view.setStateWrapper(stateWrapper)
     return super.updateState(view, props, stateWrapper)

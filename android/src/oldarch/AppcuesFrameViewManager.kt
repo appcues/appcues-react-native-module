@@ -15,6 +15,11 @@ internal class AppcuesFrameViewManager(var context: ReactApplicationContext): Si
         return AppcuesFrameWrapperView(context)
     }
 
+    override fun onDropViewInstance(view: AppcuesFrameWrapperView) {
+        view.dispose()
+        super.onDropViewInstance(view)
+    }
+
     @ReactProp(name = "frameID")
     fun setFrameId(view: AppcuesFrameWrapperView, frameId: String) {
         view.setFrameID(frameId)

@@ -53,46 +53,68 @@ class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
         post(addFragment)
     }
 
-    override fun onDetachedFromWindow() {
-        // cancel any callbacks still sitting on the handler queue. If a posted
-        // measureAndLayout runs after this view has left the window, measuring the child
-        // ComposeView throws from AbstractComposeView.onMeasure:
-        //   IllegalStateException: Cannot locate windowRecomposer; View ... is not attached to a window
-        removeCallbacks(measureAndLayout)
-        removeCallbacks(addFragment)
-        super.onDetachedFromWindow()
+    fun dispose() {
+        val fragment = wrapperFragment
+        wrapperFragment = null
+
+        if (fragment?.isAdded != true) return
+
+        try {
+            val fragmentManager = fragment.parentFragmentManager
+            if (!fragmentManager.isDestroyed) {
+                fragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commitNowAllowingStateLoss()
+            }
+        } catch (_: Exception) {
+            // The host may already be tearing down. Do not let native-view disposal crash it.
+        }
     }
 
     private val addFragment = Runnable {
         // the view may have been detached between the post and this callback running
         if (!isAttachedToWindow) return@Runnable
 
-        try {
-          // if the fragment exists and its view is still our child there is nothing to do.
-          // When a host screen is detached and later re-attached the fragment survives but its
-          // view is no longer parented here, so the transaction needs to run again - otherwise
-          // the frame stays permanently empty.
-          if (wrapperFragment != null && childCount > 0) return@Runnable
+        // Retain the fragment only while its view remains parented here. FragmentManager
+        // optimizes a replace with the same added fragment away, so it cannot restore a
+        // destroyed child view. A fresh fragment makes this transaction recreate the view.
+        if (wrapperFragment != null && childCount > 0) return@Runnable
 
-          if (wrapperFragment == null) {
-            wrapperFragment = AppcuesWrapperFragment()
-            frameID?.let { wrapperFragment?.setFrameID(it) }
-          }
-
-          val activity = (context as? ThemedReactContext)?.currentActivity as? FragmentActivity
+        val activity = (context as? ThemedReactContext)?.currentActivity as? FragmentActivity
             ?: return@Runnable
 
-          activity.supportFragmentManager
-            .beginTransaction()
-            // the id value here is the react native view id that
-            // has been assigned by the view manager system for this view instance
-            .replace(id, wrapperFragment!!, id.toString())
-            // allowing state loss here as the transaction can land after onSaveInstanceState,
-            // where commitNow would throw. Skipping an embed is preferable to crashing.
-            .commitNowAllowingStateLoss()
+        // isAttachedToWindow is not enough. FragmentStateManager resolves the container with
+        // findViewById on the activity, so a view attached to a different window - an RN Modal
+        // renders into its own Dialog window - is never found. Committing anyway adds the
+        // fragment to the store and then throws, and the next state pass over the store throws
+        // again from createView(), killing the activity.
+        if (activity.findViewById<View?>(id) !== this) return@Runnable
+
+        val fragment = AppcuesWrapperFragment()
+        frameID?.let { fragment.setFrameID(it) }
+        val fragmentManager = activity.supportFragmentManager
+
+        try {
+            fragmentManager
+                .beginTransaction()
+                // the id value here is the react native view id that
+                // has been assigned by the view manager system for this view instance
+                .replace(id, fragment, id.toString())
+                // allowing state loss here as the transaction can land after onSaveInstanceState,
+                // where commitNow would throw. Skipping an embed is preferable to crashing.
+                .commitNowAllowingStateLoss()
+            wrapperFragment = fragment
         } catch (_: Exception) {
-          // should not get any exceptions here, but in case the transaction fails to put the fragment in place
-          // we rather exit silent instead of crashing the app.
+            // commitNow adds the fragment to the store before it can fail, so failing here
+            // without removing it leaves a fragment that every later state pass tries to
+            // create a view for. Exiting silently is only safe once it is gone.
+            wrapperFragment = null
+            try {
+                fragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commitNowAllowingStateLoss()
+            } catch (_: Exception) {
+            }
         }
     }
 
@@ -126,17 +148,9 @@ class AppcuesFrameWrapperView(context: Context) : FrameLayout(context) {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        // wait until the fragment has been embedded into the view and the
-        // children are ready to measure - else it will give a (0,0) size and
-        // not layout correctly.
-        //
-        // Also in case fragment is not created, as a safe-guard, we should
-        // skip the proper measuring of the view.
-        //
-        // The same applies while detached - measuring a child ComposeView that is not attached
-        // to a window throws, and the fragment and children are both still present at that
-        // point, so those checks alone do not cover it.
-        if (children.count() == 0 || wrapperFragment == null || !isAttachedToWindow) {
+        // Wait until the fragment has been embedded into the view and the children are ready
+        // to measure; otherwise it reports a (0, 0) size and does not lay out correctly.
+        if (children.count() == 0 || wrapperFragment == null) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             return
         }
