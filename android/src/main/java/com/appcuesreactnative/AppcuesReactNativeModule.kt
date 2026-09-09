@@ -31,7 +31,7 @@ class AppcuesReactNativeModule internal constructor(private val reactContext: Re
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
     val activity: Activity?
-      get() = getCurrentActivity()
+      get() = reactApplicationContext.currentActivity
 
     override fun getName(): String {
         return NAME
@@ -199,14 +199,14 @@ class AppcuesReactNativeModule internal constructor(private val reactContext: Re
 
     @ReactMethod
     override fun debug() {
-        getCurrentActivity()?.let {
+        reactApplicationContext.currentActivity?.let {
             implementation?.debug(it)
         }
     }
 
     @ReactMethod
     override fun didHandleURL(url: String, promise: Promise) {
-        val activity = getCurrentActivity()
+        val activity = reactApplicationContext.currentActivity
         val uri = Uri.parse(url)
         if (activity != null) {
             val intent = Intent(Intent.ACTION_VIEW)
