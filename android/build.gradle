@@ -104,7 +104,8 @@ android {
 
   sourceSets {
     main {
-      java.srcDirs += [
+      // Kotlin-only extra dirs. AGP 9 built-in Kotlin ignores java.srcDirs for .kt.
+      kotlin.srcDirs += [
         isNewArchitectureEnabled() ? "src/newarch" : "src/oldarch",
         // Support for RN 0.73 which needs TurboReactPackage
         REACT_NATIVE_MINOR_VERSION <= 73 ? "src/package/73" : "src/package/latest"
