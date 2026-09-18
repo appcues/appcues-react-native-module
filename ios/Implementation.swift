@@ -27,8 +27,8 @@ public class Implementation: NSObject {
         accountID: String,
         applicationID: String,
         options: [String: Any],
-        resolve: RCTPromiseResolveBlock,
-        reject: RCTPromiseRejectBlock
+        resolve: ResolveBlock,
+        reject: RejectBlock
     ) {
 
         // since a native module makes native calls asynchronously, we use a Promise here to allow callers to
@@ -154,7 +154,7 @@ public class Implementation: NSObject {
     public func didHandleURL(
         url: String,
         resolver resolve: @escaping ResolveBlock,
-        rejecter reject: RCTPromiseRejectBlock
+        rejecter reject: @escaping RejectBlock
     ) {
         guard let url = URL(string: url) else { return resolve(false) }
         guard let implementation = Implementation.implementation else { return resolve(false) }
